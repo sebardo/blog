@@ -6,7 +6,7 @@ Command line to install blog and dependencies:
 
         php composer.phar require sebardo/core:dev-master sebardo/admin:dev-master sebardo/blog:dev-master
         
-Or you can try with this steps
+Or you can try with this steps (virtual host for blog.dev already created)
 
         1- Install symfony and execute: symfony new blog 2.8
         2- Edit your composer.json
@@ -16,6 +16,8 @@ Or you can try with this steps
         6- Edit config.yml
         7- Execute: php composer.phar update
         8- Execute build symfony command: php app/console doctrine:schema:drop --force && php app/console doctrine:schema:create && php app/console doctrine:fixtures:load
+        9- And if you want develop environment edit .httacces in order to repalce app.php => app_dev.php
+        10- Done!! you can try http://blog.dev/login and login as "admin@admin.com" and pass "admin" or u c
 
 Add required to composer.json
 
@@ -34,6 +36,7 @@ Add required to composer.json
 Add paramters to parameter.yml
 
     # edit this lines
+    database_driver:   pdo_mysql
     database_name: symfony => dev_blog
     database_user: root  => blog
     database_password: ~ => blog
