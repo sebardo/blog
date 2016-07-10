@@ -20,7 +20,21 @@ Or you can try with this steps (virtual host for blog.dev already created)
         10- Done!! you can try http://blog.dev/login and login as "admin@admin.com" and pass "admin" or u c
 
 Add required to composer.json
-
+        
+        ...
+        "psr-0": { 
+            "CoreBundle": [
+                "vendor/sebardo/core/"
+            ],
+            "AdminBundle": [
+                "vendor/sebardo/admin/"
+            ],
+            "BlogBundle": [
+                "vendor/sebardo/blog/"
+            ]},
+            
+        ...
+        
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "symfony/assetic-bundle": "^2.8",
         "twig/extensions": "~1.0",
