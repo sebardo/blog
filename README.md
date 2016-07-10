@@ -69,7 +69,17 @@ Add routing.yml to route file
             resource: "@CoreBundle/Resources/config/routing.yml"
             prefix:   /
 
-Edit config.yml
+Remove this lines in config.yml
+
+        - { resource: security.yml }
+        - { resource: services.yml }
+        
+And add this lines or edit this lines in config.yml
+        
+        - { resource: "@CoreBundle/Resources/config/security.yml" }
+        - { resource: "@CoreBundle/Resources/config/services.yml" }
+        - { resource: "@AdminBundle/Resources/config/services.yml" }
+        - { resource: "@BlogBundle/Resources/config/services.yml" }
 
         parameters:
             locale: es
