@@ -41,6 +41,8 @@ Add paramters to parameter.yml
     database_user: root  => blog
     database_password: ~ => blog
     
+    node_path: /usr/bin/nodejs
+    node_modules_path: /usr/local/lib/node_modules
     core:
         name: Site name
         extended_layout: ''
