@@ -15,6 +15,7 @@ Or you can try with this steps
         5- Add routing
         6- Edit config.yml
         7- Execute: php composer.phar update
+        8- Execute build symfony command: php app/console doctrine:schema:drop --force && php app/console doctrine:schema:create && php app/console doctrine:fixtures:load
 
 Add required to composer.json
 
