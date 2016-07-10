@@ -21,4 +21,33 @@ Add required libraries
         "sebardo/admin": "dev-master",
         "sebardo/blog": "dev-master"
         
+Add paramters to parameter.yml
 
+    node_path: /usr/bin/node
+    node_modules_path: /usr/lib/node_modules
+    core:
+        name: Kundalini Woman
+        extended_layout: 'FrontBundle:Base:layout.html.twig'
+        extended_layout_admin: 'AdminBundle:Base:layout.html.twig'
+        upload_directory: uploads
+        server_base_url: 'http://kundaliniwoman.dev'
+        fixtures_test: false
+        admin_email: admin@admin.com
+        company:
+            id: XXX123123
+            name: Kundalini Woman
+            address: 'Weimheimer str. 12'
+            postal_code: '14199'
+            city: Berlin
+            country: Alemania
+            telephone: '0157 557 58150'
+            email: sj.ehlemann@gmail.com
+            website_url: www.kundaliniwoman.com
+            instagram: 'kundaliniwoman'
+    admin:
+        - google_application_name: Analitycs
+        - google_oauth2_client_id: 459960642348-nqhsk0rr1e41gv3kbb519g1nlk6rq78a.apps.googleusercontent.com
+        - google_oauth2_client_secret: KScqc1jDkZHUBaanmMGV8QpB
+        - google_oauth2_redirect_uri: 'http://optisoop2.dev/admin/analitycs'
+        - google_developer_key: AIzaSyCda_bsJ-kEa1M1DJenwKfUfyLVlVKuC6I
+        - google_site_name: Kundalini Woman
