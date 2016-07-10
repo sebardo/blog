@@ -6,11 +6,15 @@ Command line to install blog and dependencies:
 
         php composer.phar require sebardo/core:dev-master sebardo/admin:dev-master sebardo/blog:dev-master
         
-Or u can try with this steps
+Or you can try with this steps
 
         1- Install symfony and execute: symfony new blog 2.8
-        1- Edit your composer.json
-        2- Add lines to parameter yml and configure your database
+        2- Edit your composer.json
+        3- Add lines to parameter.yml and configure your database
+        4- Add class to AppKernel.php
+        5- Add routing
+        6- Edit config.yml
+        7- Execute: php composer.phar update
 
 Add required to composer.json
 
