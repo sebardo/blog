@@ -2,10 +2,15 @@
 Blog bundle for sandbox
 
 
-
 Command line to install blog and dependencies:
 
-php composer.phar require sebardo/core:dev-master sebardo/admin:dev-master sebardo/blog:dev-master
+        php composer.phar require sebardo/core:dev-master sebardo/admin:dev-master sebardo/blog:dev-master
+        
+Or u can try with this steps
+
+        1- Install symfony and execute: symfony new blog 2.8
+        1- Edit your composer.json
+        2- Add lines to parameter yml and configure your database
 
 Add required to composer.json
 
@@ -23,34 +28,37 @@ Add required to composer.json
         
 Add paramters to parameter.yml
 
-    node_path: /usr/bin/node
-    node_modules_path: /usr/lib/node_modules
+    # edit this lines
+    database_name: symfony => dev_blog
+    database_user: root  => blog
+    database_password: ~ => blog
+    
     core:
-        name: Kundalini Woman
-        extended_layout: 'FrontBundle:Base:layout.html.twig'
+        name: Site name
+        extended_layout: ''
         extended_layout_admin: 'AdminBundle:Base:layout.html.twig'
         upload_directory: uploads
-        server_base_url: 'http://kundaliniwoman.dev'
+        server_base_url: 'http://sitename.dev'
         fixtures_test: false
         admin_email: admin@admin.com
         company:
             id: XXX123123
-            name: Kundalini Woman
-            address: 'Weimheimer str. 12'
+            name: Company Name
+            address: 'Address str. 12'
             postal_code: '14199'
-            city: Berlin
-            country: Alemania
+            city: City Name
+            country: Country
             telephone: '0157 557 58150'
-            email: sj.ehlemann@gmail.com
-            website_url: www.kundaliniwoman.com
-            instagram: 'kundaliniwoman'
+            email: company@email.com
+            website_url: www.sitename.com
+            instagram: 'sitename'
     admin:
         - google_application_name: Analitycs
         - google_oauth2_client_id: 459960642348-nqhsk0rr1e41gv3kbb519g1nlk6rq78a.apps.googleusercontent.com
         - google_oauth2_client_secret: KScqc1jDkZHUBaanmMGV8QpB
         - google_oauth2_redirect_uri: 'http://optisoop2.dev/admin/analitycs'
         - google_developer_key: AIzaSyCda_bsJ-kEa1M1DJenwKfUfyLVlVKuC6I
-        - google_site_name: Kundalini Woman
+        - google_site_name: Site Name
 
 Add class to AppKernel.php
 
@@ -96,7 +104,7 @@ And add this lines or edit this lines in config.yml
             debug:          "%kernel.debug%"
             use_controller: '%kernel.debug%'
             bundles:
-                [ CoreBundle, AdminBundle, BlogBundle, FrontBundle ]
+                [ CoreBundle, AdminBundle, BlogBundle ]
             node: "%node_path%"
             filters:
                 cssrewrite:
