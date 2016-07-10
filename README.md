@@ -7,7 +7,7 @@ Command line to install blog and dependencies:
 
 php composer.phar require sebardo/core:dev-master sebardo/admin:dev-master sebardo/blog:dev-master
 
-Add required libraries
+Add required to composer.json
 
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "symfony/assetic-bundle": "^2.8",
@@ -51,3 +51,20 @@ Add paramters to parameter.yml
         - google_oauth2_redirect_uri: 'http://optisoop2.dev/admin/analitycs'
         - google_developer_key: AIzaSyCda_bsJ-kEa1M1DJenwKfUfyLVlVKuC6I
         - google_site_name: Kundalini Woman
+
+Add class to AppKernel.php
+
+        new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+        new Symfony\Bundle\AsseticBundle\AsseticBundle(),
+        new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+        new Ensepar\Html2pdfBundle\EnseparHtml2pdfBundle(),
+        
+        new CoreBundle\CoreBundle(),
+        new AdminBundle\AdminBundle(),
+        new BlogBundle\BlogBundle(),
+        
+Add routing.yml to route file
+
+        app:
+            resource: "@CoreBundle/Resources/config/routing.yml"
+            prefix:   /
