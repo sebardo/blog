@@ -1,0 +1,9 @@
+<div class="tags">
+    <h5>{{ 'post.tags' | trans | upper}}</h5>
+    <h5>{{ 'blog.singular' | trans | upper}}</h5>
+    {% for tag in get_tags() %}
+        <a href="{{ path('blog_blog_tag', {'tag': tag.slug }) }}">
+           <i class="ion-ios-arrow-right"></i> {{ tag.name }}({{ tag.posts | length }})
+        </a>
+ {% endfor %}     
+</div>

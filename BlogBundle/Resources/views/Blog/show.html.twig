@@ -1,0 +1,232 @@
+{% extends core['extended_layout'] ? core['extended_layout'] : 'CoreBundle:Base:base.layout.html.twig' %}
+
+{% block metas %}
+    <title>{{ post.title }}</title>
+    {% if post.images|length > 0 %}
+        {% set path = '/uploads/images/posts/'~post.id~'/'~post.images.first.path %}
+    {% else %}
+        {% set path = '/bundles/admin/img/default-no-image.png' %}
+    {% endif %}
+    <meta property="og:image" content="{{core.server_base_url}}{{path}}"/>
+    <meta name="twitter:image" content="{{core.server_base_url}}{{path}}">
+    <meta name="description" content="{{ post.description | striptags}}">
+    <meta name="organization" content="core.com">
+    <meta name="copyright" content="core.com">
+    <meta name="distribution" content="global">
+    <meta name="revisit-after" content="1 DAYS">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Expires" content="Mon, 01 Jan 1990 00:00:01 GMT">
+{% endblock %}
+    
+
+{% block wrappers %}
+    <div id="menu-blog">
+        <div class="container">
+            <div class="row" style="margin: 0">
+                <div class="col-md-12 subcategory-container">
+                    {% set count = 10%}
+
+                    {% for cat in categories %}
+                        {% if loop.index < count %}
+                            {% if cat.subcategories | length > 0 %}
+                                <div class="btn-group {% if category is defined and category.slug ==  cat.slug%}active{% endif %}" style="width: auto!important;">
+                                    <a  href="{{ path('blog_blog_category', {'category': cat.slug }) }}" class="item dropdown-toggle {% if category is defined and category.slug ==  cat.slug%}current{% endif %}" data-toggle="dropdown" aria-expanded="false">
+                                        {{ cat.name }}({{ cat.posts | length }})
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        {% for sub in cat.subCategories %}
+                                        <li>
+                                            <a href="{{ path('blog_blog_category', {'category': sub.slug }) }}">
+                                                {{ sub.name }}({{ sub.posts | length }})
+                                            </a>
+                                        </li>
+                                        {% endfor %}  
+                                    </ul>
+                                </div>
+                            {% else %}
+                                <a class="{% if category is defined and category.slug ==  cat.slug%}current{% endif %}" href="{{ path('blog_blog_category', {'category': cat.slug }) }}">
+                                    {{ cat.name }}({{ cat.posts | length }})
+                                </a>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}  
+
+                    <div class="btn-group more-blog-categories">
+                        <a  href="javascript:;" class="item dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span style="margin-top: 0px;" class="login-label ion-chevron-down"></span>
+                        </a>
+                         <ul class="dropdown-menu dropdown-menu-right" role="menu" style="margin-top: 0;padding-top: 0px;">
+                            {% for cat in categories %}
+                                {% if loop.index > 10 %}
+                                    <li >
+                                        <a href="{{ path('blog_blog_category', {'category': cat.slug }) }}">
+                                           {{ cat.name }}({{ cat.posts | length }})
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}  
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}                           
+
+{% block content %}
+       
+<div class="container-content">
+  <div class="container">
+    <div class="row core-row blog">
+  
+    <div id="mainContent" class="col-md-8 col-sm-8">
+        <div class="row post-list">
+
+            <div class="col-md-12">
+                <article>
+                    <div class="post-content show">
+                        {% if post.images|length > 0 %}
+                            {% set path = post.images.first.path %}
+                        {% else %}
+                            {% set path = '/bundles/admin/img/default-no-image.png' %}
+                        {% endif %}
+                        <h3>{{ post.title }}</h3>
+                        <div class="date">{{ "post.date" | trans }}  <span>{{ post.published | date ('d')}}.{{ post.published | date ('m') | trans }}.{{ post.published | date ('y')}}</span> </div>
+
+                        <img src="{{ path }}" />
+
+                        <div class="networks">
+                            <div class="share-content" data="{{app.request.uri}}" style="display: inline-block">
+                                {% if post.title is not defined %}
+                                    {{shareUrlBlog( app.request.uri, true , 'Blog Kundalini Woman')}}
+                                {% else%}
+                                    {{shareUrlBlog( app.request.uri, true , post.title)}}
+                                {% endif %}
+
+                            </div>
+                        </div>
+
+                        <div class="post-description">{{ post.description | raw }}</div>
+                        <p class="post-categories"><b>{% for category in post.categories %}{{ category.name }}{% if not loop.last%}, {% endif %}{% endfor  %}</b></p>
+
+                     
+                        {% include 'BlogBundle:Blog:post_footer.html.twig'%}
+                    </div>
+                </article>
+
+                <div class="col-md-12 col-xs-12 comments">
+
+                    {% include 'CoreBundle:Base:alert.messages.html.twig' %}
+
+                    <div id="comments">{% include "BlogBundle:Blog:comments.html.twig" %}</div>
+                    <div>
+                        <h5>{{ 'comment.leave' | trans }} </h5>
+                    </div>
+
+                    {% include 'BlogBundle:Blog:_form_comment.html.twig' %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="sidebarContent" class="col-md-4 post-sidebar">
+        {% include 'BlogBundle:Blog:sidebar.html.twig'%}
+    </div>
+
+    <div style="clear: both"></div>
+    
+    {% if related | length %}
+        <div class="col-md-12 col-xs-12 realted blog">
+            <h3>Te puede interesar ...</h3>
+            <div id="related" class="post-list">
+                {% for post in related %}
+                    {% if loop.index < 5 %}
+                        <div class="col-md-3 col-xs-6" data-position="{{loop.index}}">
+                        <article>
+                            <div class="post-content list">
+                                {% if post.images|length > 0 %}
+                                    {% set path = '/uploads/images/post/' ~  entity.id ~ '/' ~ get_thumb_image(post.images.first.path, '260') %}
+                                {% else %}
+                                    {% set path = '/bundles/admin/img/default-no-image.png' %}
+                                 {% endif %}
+                                <a  href="{{path("blog_blog_show", {slug: post.slug})}}" >
+                                    <img style="width: 100%" src="{{ path }}" />
+                                    <p>{{ post.title }}</p>
+                                </a>
+                            </div>
+                        </article>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    
+    
+    </div>
+  </div>
+</div>
+
+        
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+            'bundles/blog/less/blog.less'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock %}
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        
+        $(".blog-menu a.item").click(function (event) {   
+            console.log($(this).attr('href')); 
+            window.location.href = $(this).attr('href');
+         });
+         
+        $('.list > li a').click(function () {
+            $(this).parent().find('ul').eq(0).slideToggle('slow');
+
+            if ($('#' + $(this).attr('id') + " span.active").css('display') == 'inline-block') {
+                $('#' + $(this).attr('id') + " span.active").css('display', 'none');
+                $('#' + $(this).attr('id') + " span.pasive").css('display', 'inline-block');
+            } else {
+                $('#' + $(this).attr('id') + " span.pasive").css('display', 'none');
+                $('#' + $(this).attr('id') + " span.active").css('display', 'inline-block');
+            }
+        });
+
+        {#$('.share-content').each(function( index ) {
+                var dir = $( this ).attr('data');
+                if(dir != ''){
+                    //var url = dir.replace("http://", "");
+                    var self = $(this);
+                    $.ajax({
+                        type: 'GET',
+                        url: "/blog/share-counter?url="+dir
+                        //data: {'url': url}
+                    }).done(function(result) {
+                        //console.log(result);
+                        //console.log(self.find('.tweet-counter>span.share-container-counter').html());
+                        self.find('.tweet-counter span.share-container-counter').text(result.tweet);
+                        self.find('.facebook-counter span.share-container-counter').text(result.facebook);
+                        self.find('.google-counter span.share-container-counter').text(result.google);
+                        self.find('.linked-counter span.share-container-counter').text(result.linkedin);
+                    });
+                }
+              });#}
+                  $("#comments").on("click", "div.postNav a", function () {
+                      $("#comments").html("Cagando comentarios...");
+                      $.get($(this).attr("href"), function (data) {
+                          $('#comments').html(data);
+                      });
+                      return false;
+                  });
+    </script>
+{% endblock %}

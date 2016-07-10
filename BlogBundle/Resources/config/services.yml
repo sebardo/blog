@@ -1,0 +1,14 @@
+# import it in config.yml
+services:
+    
+    blog.twig.extension:
+        class: "BlogBundle\\Twig\\BlogExtension"
+        calls:
+            - [setContainer, ["@service_container"] ]
+        tags:
+            - { name: twig.extension }
+
+    blog_manager:
+        class: "BlogBundle\\Service\\BlogManager"
+        calls:
+            - [setContainer, ["@service_container"] ]

@@ -1,0 +1,381 @@
+<?php
+
+namespace BlogBundle\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use BlogBundle\Model\CommentFront;
+use BlogBundle\Form\CommentFrontType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Request;
+use BlogBundle\Entity\Comment;
+use CoreBundle\CoreBundle\Entity\Actor;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use DateTime;
+
+/**
+* @Route("/blog")
+* @Template()
+*/
+class BlogController extends Controller
+{
+    /**
+     * @Route("/")
+     * @Template()
+     */
+    public function indexAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $categories = $em->getRepository('BlogBundle:Category')->findBy(array('parentCategory' => null ), array('order' => 'ASC'));
+        $tags = $em->getRepository('BlogBundle:Tag')->findBy(array(), array('name' => 'ASC'));
+        $posts = $em->getRepository('BlogBundle:Post')->findBy(array(),array('published' =>  'ASC'));
+        
+        return array(
+            'categories' => $categories,
+            'posts' => $posts,
+            'tags' => $tags
+        );
+
+    }
+   
+    /**
+    * @Route("/share-counter")
+    */
+    public function shareCounterAction()
+    {
+    //        $data = $this->get('request')->request->all();
+        $url = $this->get('request')->query->get('url');
+        //$this->getRequest()->isXmlHttpRequest() &&
+        if (isset($url)) {
+            $returnValues = $this->get('blog_manager')->shareCounter($url);
+
+            return new JsonResponse($returnValues);
+        }
+
+        return JsonResponse();
+   }
+   
+   
+    /**
+    * @Route("/feed")
+    */
+    public function feedAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $manager = $this->getDoctrine()->getManager();
+        $core = $this->getParameter('core');
+        
+        $dql = "SELECT p FROM BlogBundle:Post p ORDER BY p.created DESC";
+        $entities = $manager
+           ->createQuery($dql)
+           ->getResult()
+        ;
+
+        $rssfeed = '<?xml version="1.0" encoding="ISO-8859-1"?>';
+        $rssfeed .= '<rss version="2.0">';
+        $rssfeed .= '<channel>';
+        $rssfeed .= '<title>Kundalini Woman RSS feed</title>';
+        $rssfeed .= '<link>http://www.undaliniwoman.com</link>';
+        $rssfeed .= '<description>This is an example Kundalini Woman RSS feed</description>';
+        $rssfeed .= '<language>en-us</language>';
+        $rssfeed .= '<copyright>Copyright (C) 2009 mywebsite.com</copyright>';
+
+        foreach ($entities as $value) {
+            $rssfeed .= '<item>';
+            $rssfeed .= '<title>' . utf8_decode($value->getTitle()) . '</title>';
+            $rssfeed .= '<description>' . utf8_decode($value->getDescription()) . '</description>';
+            $rssfeed .= '<link>' . $core['server_base_url'].$this->generateUrl('blog_blog_show', array('slug' => $value->getSlug())) . '</link>';
+            $rssfeed .= '<pubDate>' . $value->getCreated()->format("D, d M Y H:i:s O")  . '</pubDate>';
+            $rssfeed .= '</item>';
+        }
+
+        $rssfeed .= '</channel>';
+        $rssfeed .= '</rss>';
+
+        $response = new Response($rssfeed);
+        $response->headers->set('Content-Type', 'application/rss+xml');
+
+        $response->setPublic();
+        $response->setMaxAge(3600);
+        $now = new DateTime();
+        $response->setLastModified($now);
+
+        return $response;
+
+   }
+   
+    /**
+     * @Route("/{slug}")
+     * @Method("GET")
+     * @Template()
+     */
+    public function showAction($slug)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $entity = $em->getRepository('BlogBundle:Post')->findOneBy(array('slug' => $slug));
+        $categories = $em->getRepository('BlogBundle:Category')->findBy(array('parentCategory' => null ), array('order' => 'ASC'));
+        $tags = $em->getRepository('BlogBundle:Tag')->findBy(array(), array('name' => 'ASC'));
+        $comments = $em->getRepository('BlogBundle:Comment')->findBy(array('post' => $entity->getId(), 'isActive' => true));
+        
+        $related = $this->getRelatedPost($entity);
+        
+
+        $form = $this->createCommentForm(new CommentFront(), $entity);
+        
+        return array(
+            'post'       => $entity,
+            'comments'   => $comments,
+            'categories' => $categories,
+            'form'       => $form->createView(),
+            'tags'       => $tags,
+            'related'   =>  $related
+        );
+        
+    }
+    
+    private function getRelatedPost($entity)
+    {
+        $categories = $entity->getCategories();
+        $em = $this->getDoctrine()->getManager();
+        $returnValues = array();
+        
+        foreach ($categories as $category) {
+            $posts = $em->getRepository('BlogBundle:Post')->loadPostsCategory(0, 5, $category);
+            foreach ($posts as $post) {
+                if($entity->getId() != $post->getId())
+                $returnValues[] = $post;
+            }
+        }
+        return $returnValues;
+    }
+
+    /**
+     * @Route("/category/{category}")
+     * @Template()
+     */
+    public function categoryAction(Request $request, $category)
+    {
+        
+        $em = $this->getDoctrine()->getManager();
+        $categoryEntity = $em->getRepository('BlogBundle:Category')->findOneBySlug($category);
+        
+   
+        if ($request->isXmlHttpRequest()) {
+            $offset = $request->get('offset');
+            $limit = $request->get('limit');
+            $posts = $em->getRepository('BlogBundle:Post')->loadPostsCategory($offset, $limit, $categoryEntity);
+            
+            return $this->render('BlogBundle:Blog:loadMorePosts.html.twig', array(
+                'posts'    => $posts,
+                'position' => $offset
+            ));
+        } else {
+            $categories = $em->getRepository('BlogBundle:Category')->findBy(array('parentCategory' => null ), array('order' => 'ASC'));
+            $tags = $em->getRepository('BlogBundle:Tag')->findBy(array(), array('name' => 'ASC'));
+
+            $posts = $em->getRepository('BlogBundle:Post')->loadPostsCategory(0, 6, $categoryEntity);
+//            $query = ' SELECT p'
+//                    . ' FROM BlogBundle:Post p'
+//                    . ' JOIN p.category c '
+//                    . " WHERE c.slug = '".$category."' "
+//                    ;
+//            $q = $em->createQuery($query);
+//            $posts = $q->getResult();
+
+            $total_items = $em->getRepository('BlogBundle:Post')->countTotal();
+
+//            print_r(count($categories));die();
+            return array(
+                'category'   => $categoryEntity,
+                'posts'      => $posts,
+                'categories' => $categories,
+                'total_items' => $total_items,
+                'tags'       => $tags
+            );
+        }
+        
+    }
+    
+    /**
+     * @Route("/tag/{tag}")
+     * @Template()
+     */
+    public function tagAction($tag)
+    {
+        $em = $this->getDoctrine()->getManager();
+              
+        $categories = $em->getRepository('BlogBundle:Category')->findBy(array('parentCategory' => null ), array('order' => 'ASC'));
+        $tags = $em->getRepository('BlogBundle:Tag')->findBy(array(), array('name' => 'ASC'));
+        $tagEntity = $em->getRepository('BlogBundle:Tag')->findOneBySlug($tag);
+
+
+        $qb = $em->getRepository('BlogBundle:Post')
+                ->createQueryBuilder('p')
+                ->join('p.tags', 't')
+                ->where('t.id = :tag')
+                ->setParameter('tag', $tagEntity->getId())
+                ->setMaxResults(3)
+                ->orderBy('p.published', 'DESC');
+        $posts = $qb->getQuery()->getResult();
+       
+        return array(
+            'tag'        => $tagEntity,
+            'tags'       => $tags,
+            'posts'      => $posts,
+            'categories' => $categories,
+        );
+    }
+    
+    
+    
+     
+    
+   
+    /**
+     * @Route("/comment/")
+     * @Method("POST")
+     * @Template()
+     */
+    public function commentAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $comment = new Comment();
+
+        try {
+            $comment = $this->resolve($comment, $request);
+            $this->get('session')->getFlashBag()->add('warning', 'comment.wait.for.validate');
+        } catch (\Exception $exception) {
+            // Write flash message
+            print_r($exception->getMessage());die();
+        }
+
+        //save
+        $em->persist($comment);
+        $em->flush();
+       
+        return $this->redirect($this->getRefererPath($request));
+    }
+    /**
+     * Creates a form to create a Post entity.
+     *
+     * @param Post $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createCommentForm(CommentFront $model, $entity)
+    {
+        $type = new CommentFrontType();
+        $form = $this->createForm($type, $model, array(
+            'action' => $this->generateUrl('blog_blog_comment', array('post' => $entity->getId())),
+            'method' => 'POST',
+            'attr' => array('id' => $type->getName(),'class' => 'comment-form')
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Enviar', 'attr' => array('class' => 'btn btn-core btn-flat white')));
+
+        return $form;
+    }
+    
+    
+    
+    /**
+     * @param Comment $comment
+     * @param Request $request
+     *
+     * @throws ItemResolvingException
+     * @return CartItemInterface|void
+     */
+    public function resolve(Comment $comment, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $postId = $request->query->get('post');
+        $itemForm = $request->get('comment_front');
+
+        if( $this->container->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') ){
+            $comment->setActor($this->container->get('security.token_storage')->getToken()->getUser());
+        }else{
+            //register user
+            $actor = $this->createActor($itemForm);
+            $comment->setActor($actor);
+        }
+        
+        $postRepository = $em->getRepository('BlogBundle:Post');
+        if (!$postId || !$post = $postRepository->find($postId)) {
+            // no product id given, or product not found
+            throw new \Exception('Requested post was not found');
+        }
+
+        // assign the product and quantity to the item
+        $comment->setPost($post);
+        $comment->setComment($itemForm['comment']);
+        
+        return $comment;
+    }
+    
+    public function createActor($itemForm) 
+    {
+        $em = $this->getDoctrine()->getManager();
+        $uniqid = uniqid();
+        $actor = new Actor();
+        $actor->setNewsletter(false);
+        $actor->setUsername($uniqid);
+        $actor->setName($itemForm['name']);
+        $actor->setEmail($itemForm['email']);
+        
+        //Encode pass
+        $factory = $this->get('security.encoder_factory');
+        $encoder = $factory->getEncoder($actor);
+        $password = $encoder->encodePassword($uniqid, $actor->getSalt());
+        $actor->setPassword($password);
+        
+        
+        //Add ROLE
+        $role = $em->getRepository('CoreBundle:Role')->findOneBy(array('role' => 'ROLE_USER'));
+        $actor->addRole($role);
+
+        $em->persist($actor);
+        $em->flush();
+        
+        return $actor;
+    }
+    
+    public function getRefererPath(Request $request=null)
+    {
+        $referer = $request->headers->get('referer');
+
+        $baseUrl = $request->getSchemeAndHttpHost();
+
+        $lastPath = substr($referer, strpos($referer, $baseUrl) + strlen($baseUrl));
+
+        return $lastPath;
+    }
+ 
+    /**
+     * @Route("/search/", name="blog_search")
+     * @Route("/search/{search}")
+     * 
+     */
+    public function searchAction(Request $request, $search = null) {
+
+        if ($request->getMethod() == 'POST') {
+            $search = $request->request->get('search');
+        }
+        
+        $em = $this->getDoctrine()->getManager();
+        $categories = $em->getRepository('BlogBundle:Category')->findBy(array('parentCategory' => null ), array('order' => 'ASC'));
+        $tags = $em->getRepository('BlogBundle:Tag')->findBy(array(), array('name' => 'ASC'));
+        $posts = $em->getRepository('BlogBundle:Post')->findPost($search);
+        
+        return $this->render('BlogBundle:Blog:search.html.twig', array(
+            'search'     => $search,
+            'posts'      => $posts,
+            'categories' => $categories,
+            'tags'       => $tags
+        ));
+    }
+   
+}

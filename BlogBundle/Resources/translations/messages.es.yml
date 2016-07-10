@@ -1,0 +1,88 @@
+es: España
+mx: Mexico
+Bad credentials: El correo electrónico o la contraseña que ingresaste son incorrectos.
+January: Enero
+February: Febrero
+March: Marzo
+April: Abril
+May:  Mayo
+June: Junio
+July: Julio
+August: Augusto
+September: Septiembre
+October: Octubre
+November: Noviembre
+December: Deciembre
+
+blog:
+  singular: Blog
+  plural: Blogs
+  
+post:
+  singular: Publicación
+  plural: Publicaciones
+  title: Titulo
+  category: Categoría
+  categories: Categorías
+  tags: Tags
+  slug: Slug
+  new: Nueva novedad
+  description: Descripción
+  createdAt: Fecha de creacion
+  updatedAt:  Fecha de actualización
+  published: Fecha de publicación
+  created: Se ha creado la publicación satisfactoriamente
+  edited: Se ha editado la publicación satisfactoriamente
+  deleted: Se ha eliminado la publicación satisfactoriamente
+  updated: Se ha editado la publicación satisfactoriamente
+  date: Publicado el
+  of: de
+  continue: Continuar leyendo
+  
+    
+category:
+  singular: Categoría
+  plural: Categorías
+  choose: Elige una categoría
+  parent: Categoría padre
+  created: Se ha creado la categoría satisfactoriamente
+  edited: Se ha editado la categoría satisfactoriamente
+  deleted: Se ha eliminado la categoría satisfactoriamente
+
+subcategory:
+  plural: Subcategorías
+  from_category: Subcategorías de %category%
+  
+category.sort: Ordenar categorias
+category.sub:
+  created: Se ha creado la subcategoría satisfactoriamente
+  edited: Se ha editado la subcategoría satisfactoriamente
+  deleted: Se ha eliminado la subcategoría satisfactoriamente
+  
+tag:
+  singular: Etiqueta
+  plural: Etiquetas
+  sort: Ordenar etiquetas
+  created: Se ha creado la etiqueta satisfactoriamente
+  edited: Se ha editado la etiqueta satisfactoriamente
+  deleted: Se ha eliminado la etiqueta satisfactoriamente
+
+new.tag: Nueva etiqueta
+new.post: Nueva publicación
+
+comment:
+  singular: Comentario
+  plural: Comentarios
+  active: Activado
+  actor: Usuario
+  leave: ¡Deja un comentario!
+  header: Hay
+  header2: comentarios en esta entrada
+  new: Nuevo comentario
+  created: Se ha creado el comentario satisfactoriamente
+  edited: Se ha editado el comentario satisfactoriamente
+  deleted: Se ha eliminado el comentario satisfactoriamente
+  wait.for.validate: Su comentario esta esperando validación.
+
+site:
+  singular: Sitio

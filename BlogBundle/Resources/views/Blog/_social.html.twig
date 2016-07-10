@@ -1,0 +1,12 @@
+<div class="networks">
+    <h5>REDES SOCIALES</h5>
+    <h5>{{ 'blog.singular' | trans | upper}}</h5>
+    <div class="share-content" data="{{app.request.uri}}" style="display: inline-block">
+        {% if post.title is not defined %}
+            {{shareUrlBlog( app.request.uri, true , 'Blog KundaliniWoman') | raw  }}
+        {% else%}
+            {{shareUrlBlog( app.request.uri, true , post.title) | raw  }}
+        {% endif %}
+        
+    </div>
+</div>

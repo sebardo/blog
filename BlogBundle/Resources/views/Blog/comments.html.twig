@@ -1,0 +1,19 @@
+
+{% if comments | length > 0 %}
+    <h1>{{ 'comment.header' | trans }} {{comments | length }} {{ 'comment.header2' | trans }} </h1>
+
+    {% for comment in comments %}
+
+        <div class="row singleComment">
+            <div class="col-md-2 col-xs-2">
+                <img src="{{ get_profile_image( comment.actor) }}">
+            </div>
+            <div class="col-md-10 col-xs-10">
+                <div class="name"><b>{{ comment.actor.name }}</b></div>
+                <div class="date">{{ "post.date" | trans }} {{ comment.created | date ('d')}}  {{ "post.of" | trans }} {{ comment.created | date ('F') | trans }} {{ "post.of" | trans }} {{ comment.created | date ('Y')}} </div>
+                <p>{{ comment.comment }}</p>
+            </div>
+        </div>
+
+    {% endfor %}
+{% endif %}

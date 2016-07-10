@@ -1,0 +1,152 @@
+{#% extends extended_layout_admin ? extended_layout_admin : 'AdminBundle:Base:layout.html.twig' %#}
+{% extends "AdminBundle:Base:layout.html.twig" %}
+
+{% block section %}posts{% endblock %}
+
+{% block content %}
+    
+    
+    
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        {{ entity.title }}
+        <small></small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="{{ path('admin_default_index') }}"> <i class="ion-home"></i>  {{ "home" | trans }}</a></li>
+        <li><a href="javascript:">{{ "blog.plural" | trans }}</a></li>
+        <li><a href="{{ path('blog_post_index') }}">{{ "post.plural" | trans }}</a></li>
+        <li><a href="{{ path('blog_post_show', { id: entity.id }) }}">{{ entity.title }}</a></li>
+      </ol>
+    </section>
+      
+    <section class="content">
+      <div class="row">
+          <div class="col-md-12">
+              
+              {% include 'CoreBundle:Base:alert.messages.html.twig' %}
+              
+              <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                  <li class="{{ not app.request.get('images') and
+                                not app.request.get('related') ? 'active' }}">
+                      <a href="#info_tab" data-toggle="tab">{{ "information" | trans }}</a>
+                  </li>
+                  <li class="{{ app.request.get('images') ? 'active' }}"><a href="#images_tab" data-toggle="tab">{{ "image.plural" | trans }}</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane {{ not app.request.get('images') ? 'active' }}" id="info_tab">
+                        <div class="box-body show-tables">
+                          <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>Id</td>
+                                    <td>{{ entity.id }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "post.title" | trans }}</td>
+                                    <td>{{ entity.title }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "post.description" | trans }}</td>
+                                    <td>{{ entity.description | raw}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "post.slug" | trans }}</td>
+                                    <td>{{ entity.slug }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "post.category" | trans }}</td>
+                                    <td>
+                                        {% for category in entity.categories %}
+                                            <li>{{ category.name }}</li>
+                                        {% endfor  %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "post.tags" | trans }}</td>
+                                    <td>
+                                        {% for tag in entity.tags %}
+                                            <li>{{ tag.name }}</li>
+                                        {% endfor  %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "post.created" | trans }}</td>
+                                    <td>{{ entity.created | date ('d/m/Y H:i:s') }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "post.updatedAt" | trans }}</td>
+                                    <td>{{ entity.updated | date ('d/m/Y H:i:s')}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ "post.published" | trans }}</td>
+                                    <td>{{ entity.published | date ('d/m/Y H:i:s')}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>{{ "highlighted" | trans }}</td>
+                                    <td>
+                                        {% if entity.highlighted %}
+                                            <span class="label label-success">{{ "yes" | trans }}</span>
+                                        {% else %}
+                                            <span class="label label-danger">{{ "no" | trans }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                
+                            </tbody>
+                          </table>
+                        </div>   
+                        <div class="box-footer">
+                            <a href="{{ path('blog_post_edit', { id: entity.id }) }}" class="btn btn-primary btn-flat blue"><i class="ion-compose"></i> {{ "edit.singular" | trans }}</a>
+                            <button type="submit" class="btn btn-danger btn-flat pull-right" id="delete-btn">{{ "delete" | trans }}</button>
+                            {{ form_start(delete_form, {'action': path('blog_post_delete', { id: entity.id }) , 'method': 'post', attr: { 'id': 'delete-entity' } }) }}
+                                <input type="hidden" name="_method" value="DELETE" />
+                                {{ form_widget(delete_form) }}
+                            {{ form_end(delete_form) }}
+
+                        </div>
+                    </div>
+
+                 
+                    <div class="tab-pane {{ app.request.get('images') ? 'active' }}" id="images_tab">
+                        <div class="box-body show-entity-images">
+                                {% for image in entity.images %}
+                                    <img width="200" src="/uploads/images/post/{{entity.id}}/{{image.path}}" alt="{{ "image.of.entity" | trans({ '%entity%': entity.title }) }}" />
+                                {% else %}
+                                    <img width="200" src="{{ asset('bundles/core/images/no-image.png') }}" />
+                                {% endfor %}
+                        </div>   
+                        <div class="box-footer">
+                            <a href="{{ path('blog_post_edit', { id: entity.id, images: 1 }) }}" class="btn btn-flat btn-info"><i class="ion-android-camera"></i> {{ "image.manage" | trans }}</a>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+          </div>
+      </div>
+    </section>       
+    
+{% endblock %}
+    
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        jQuery(document).ready(function() {
+            $('#delete-btn').on('click', function(e) {
+                e.preventDefault();
+
+                if (confirm('{{ "are.you.sure" | trans }}')) {
+                    $('#delete-entity').submit();
+                }
+            });
+
+            //App.init();
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,28 @@
+{
+    "name": "sebardo/blog",
+    "type": "library",
+    "description": "Blog bundle for sandbox",
+    "keywords": ["admin"],
+    "homepage": "https://github.com/sebardo/blog",
+    "license": "GNU",
+    "authors": [
+        {
+            "name": "Dario Sebastian Sasturain",
+            "email": "sebastian.sasturain@gmail.com",
+            "homepage": "http://sasturain.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "sebardo/core": "dev-master",
+        "sebardo/admin": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "BlogBundle": [
+                "vendor/sebardo/blog/"
+            ]
+        }
+    }
+}
