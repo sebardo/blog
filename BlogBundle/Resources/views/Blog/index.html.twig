@@ -44,17 +44,15 @@
                                 <article>
                                     <div class="post-content listing">
                                         {% if post.images|length > 0 %}
-                                            {% set path = '/uploads/images/post/' ~ post.id ~ '/' ~ post.images.first.path %}
+                                            {% set path = post.images.first.path %}
                                         {% else %}
-                                            {% set path = '/bundles/admin/img/default-no-image.png' %}
+                                            {% set path = '' %}
                                         {% endif %}
-                                        <h3><i class="icon ion-compose "></i> <a  href="{{path("blog_blog_show", {slug: post.slug})}}">{{ post.title }}</a></h3>
+                                        <h3><a  href="{{path("blog_blog_show", {slug: post.slug})}}">{{ post.title }}</a></h3>
                                         <div class="date">POST <span>{{ post.published | date ('d')}}.{{ post.published | date ('m') | trans }}.{{ post.published | date ('y')}}</span> </div>
-                                        <img src="{{ path }}" />
-
-                                        <p>
-                                            <b>{% for category in post.categories %}{{ category.name }}{% endfor  %}:</b>  {{ post.title }}
-                                        </p>
+                                        {% if path != ''%}<img src="{{ path }}" />{% endif %}
+                                        
+                                        <p>{{ post.description | striptags | truncate(500, true, '...')  }}</p>
 
                                         <div class="read-more">
                                             <a  href="{{path("blog_blog_show", {slug: post.slug})}}" > [Leer Más] </a>

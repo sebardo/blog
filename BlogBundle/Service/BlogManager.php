@@ -103,7 +103,7 @@ class BlogManager
     {
         $absolutePath = $baseDir . '/../../../../web/uploads/images/post/'.$post->getId().'/'.$fileName;
         $image = new Image();
-        $image->setPath($fileName);
+        $image->setPath('/uploads/images/post/'.$post->getId().'/'.$fileName);
         $filename =  $baseDir . '/../../Resources/public/images/'.$fileName ;
         $this->createPath($baseDir . '/../../../../web/uploads/images/post/'.$post->getId());
         $this->createPath($baseDir . '/../../../../web/uploads/images/post/'.$post->getId().'/thumbnail');
