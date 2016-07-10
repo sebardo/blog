@@ -100,6 +100,12 @@ And add this lines or edit this lines in config.yml
         parameters:
             locale: es
             
+        
+        framework:
+            ...
+            # and descomment 
+            translator:      { fallbacks: ["%locale%"] }
+            
         # Twig Configuration
         twig:
             debug:            "%kernel.debug%"
