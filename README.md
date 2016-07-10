@@ -68,3 +68,81 @@ Add routing.yml to route file
         app:
             resource: "@CoreBundle/Resources/config/routing.yml"
             prefix:   /
+
+Edit config.yml
+
+        parameters:
+            locale: es
+            
+        # Twig Configuration
+        twig:
+            debug:            "%kernel.debug%"
+            strict_variables: "%kernel.debug%"
+            globals:
+                core: %core%
+
+        # Assetic Configuration
+        assetic:
+            debug:          "%kernel.debug%"
+            use_controller: '%kernel.debug%'
+            bundles:
+                [ CoreBundle, AdminBundle, BlogBundle, FrontBundle ]
+            node: "%node_path%"
+            filters:
+                cssrewrite:
+                    apply_to: "\.css$"
+                less:
+                    node: "%node_path%"
+                    node_paths: ["%node_modules_path%"]
+                    apply_to: "\.less$"
+                  
+        # OAuth login social networks  
+        hwi_oauth:
+             #name of the firewall in which this bundle is active, this setting MUST be set
+        
+            firewall_name: secured_area
+            target_path_parameter: /
+            resource_owners:
+                twitter:
+                    type:                twitter
+                    client_id:           lV0OGkdpom7fu0umpyOYl69v4
+                    client_secret:       i0JA4XNVvqGLED88X031208nJzydR07ek3zNOPjqWtiaoEyTsU
+                google:
+                    type:                google
+                    client_id:           295710704391-kuvgr89k3empant281ilbk0aescnhiee.apps.googleusercontent.com
+                    client_secret:       Vvo_sIbWW7mdi-vLh6tpLkMa
+                    scope:               "email profile"
+                    options:
+                        access_type:     offline
+                        approval_prompt: force
+                        display:         popup
+                        login_hint:      sub
+                facebook:
+                    type:                facebook
+                    client_id:           502605306534870
+                    client_secret:       8e85bc722eff0f6485ebf08abad30f5b
+                    scope:               "email"
+                    options:
+                        display: popup 
+                        
+        # Pdf exportation
+        ensepar_html2pdf:
+            orientation: P
+            format: A4
+            lang: en
+            unicode: true
+            encoding: UTF-8
+            margin: [10,15,10,15]
+            
+        # Doctrine DQL funtions added
+        doctrine:
+            ...
+            orm:
+                auto_generate_proxy_classes: "%kernel.debug%"
+                naming_strategy: doctrine.orm.naming_strategy.underscore
+                auto_mapping: true
+                dql:
+                    numeric_functions:
+                        DISTANCE: Optisoop\Bundle\CoreBundle\Functions\DistanceFunction
+                    string_functions:
+                        GroupConcat: Optisoop\Bundle\CoreBundle\Functions\GroupConcatFunction
