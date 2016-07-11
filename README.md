@@ -50,10 +50,10 @@ Add required to composer.json
 Add paramters to parameter.yml
 
     # edit this lines
-    database_driver:   pdo_mysql
-    database_name: symfony => dev_blog
-    database_user: root  => blog
-    database_password: ~ => blog
+    database_name: dev_blog
+    database_name_test: test_blog
+    database_user: blog
+    database_password: blog
     
     node_path: /usr/bin/nodejs
     node_modules_path: /usr/local/lib/node_modules
@@ -106,7 +106,7 @@ Remove this lines in config.yml
         - { resource: security.yml }
         - { resource: services.yml }
         
-And add this lines or edit this lines in config.yml
+And add this lines or edit this lines in config.yml and config_test.yml
         
         - { resource: "@CoreBundle/Resources/config/security.yml" }
         - { resource: "@CoreBundle/Resources/config/services.yml" }
@@ -194,3 +194,26 @@ And add this lines or edit this lines in config.yml
                         DISTANCE: CoreBundle\Functions\DistanceFunction
                     string_functions:
                         GroupConcat: CoreBundle\Functions\GroupConcatFunction
+
+
+in config_test.yml
+
+        # Doctrine Configuration
+        doctrine:
+            dbal:
+                driver:   pdo_mysql
+                host:     "%database_host%"
+                port:     "%database_port%"
+                dbname:   "%database_name_test%"
+                user:     "%database_user%"
+                password: "%database_password%"
+                charset:  UTF8
+            orm:
+                auto_generate_proxy_classes: "%kernel.debug%"
+                naming_strategy: doctrine.orm.naming_strategy.underscore
+                auto_mapping: true
+                dql:
+                    numeric_functions:
+                        DISTANCE: Optisoop\Bundle\CoreBundle\Functions\DistanceFunction
+                    string_functions:
+                        GroupConcat: Optisoop\Bundle\CoreBundle\Functions\GroupConcatFunction
