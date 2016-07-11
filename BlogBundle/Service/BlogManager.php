@@ -23,19 +23,19 @@ class BlogManager
     public function blogHistory()
     {
         $manager = $this->getManager();
-        if($this->container->getParameter('database_driver') == 'pdo_mysql'){
+//        if($this->container->getParameter('database_driver') == 'pdo_mysql'){
             $sql= " SELECT YEAR(post.published) as year, MONTH(post.published) as month, post.title, post.slug "
                     . " FROM post as post  "
                     . " group by post.published, post.title,  post.slug "
                     . " order by year DESC, month ASC, title ASC "
                     ;
-        }elseif($this->container->getParameter('database_driver') == 'pdo_pgsql'){
-            $sql= " SELECT date_part('year', post.published)as year, date_part('month', post.published) as month, post.title, post.slug "
-                . " FROM post as post  "
-                . " group by post.published, post.title,  post.slug "
-                . " order by year DESC, month ASC, title ASC "
-                ;
-        }
+//        }elseif($this->container->getParameter('database_driver') == 'pdo_pgsql'){
+//            $sql= " SELECT date_part('year', post.published)as year, date_part('month', post.published) as month, post.title, post.slug "
+//                . " FROM post as post  "
+//                . " group by post.published, post.title,  post.slug "
+//                . " order by year DESC, month ASC, title ASC "
+//                ;
+//        }
     
         $stmt = $manager->getConnection()->prepare($sql);
         $stmt->execute();
