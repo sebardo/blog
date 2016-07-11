@@ -13,7 +13,7 @@ Or you can try with this steps (virtual host for blog.dev already created)
         3- Add lines to parameter.yml and configure your database
         4- Add class to AppKernel.php
         5- Add routing
-        6- Edit config.yml
+        6- Edit config.yml and config_test.yml
         7- Install and execute composer: curl -sS https://getcomposer.org/installer | php && php composer.phar update
         8- Execute build symfony command (dev and test): 
                 (dev) php app/console doctrine:schema:drop --force && php app/console doctrine:schema:create && php app/console doctrine:fixtures:load 
