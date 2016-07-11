@@ -17,7 +17,7 @@ Or you can try with this steps (virtual host for blog.dev already created)
         7- Install and execute composer: curl -sS https://getcomposer.org/installer | php && php composer.phar update
         8- Execute build symfony command (dev and test): 
                 (dev) php app/console doctrine:schema:drop --force && php app/console doctrine:schema:create && php app/console doctrine:fixtures:load 
-                (test) php app/console doctrine:schema:drop --force --env=test && php app/console doctrine:schema:create --env=test && doctrine:fixtures:load --fixtures=vendor/sebardo/core/CoreBundle/DataFixtures/ORM/test/LoadCoreTestData.php --env=test
+                (test) php app/console doctrine:schema:drop --force --env=test && php app/console doctrine:schema:create --env=test && php app/console doctrine:fixtures:load --fixtures=vendor/sebardo/core/CoreBundle/DataFixtures/ORM/test/LoadCoreTestData.php --env=test
         9- And if you want develop environment edit .httacces in order to repalce app.php => app_dev.php
         10- Done!! you can try http://blog.dev/login and login as "admin@admin.com" and pass "admin" or u c
 
