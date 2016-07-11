@@ -214,6 +214,6 @@ in config_test.yml
                 auto_mapping: true
                 dql:
                     numeric_functions:
-                        DISTANCE: Optisoop\Bundle\CoreBundle\Functions\DistanceFunction
+                        DISTANCE: CoreBundle\Functions\DistanceFunction
                     string_functions:
-                        GroupConcat: Optisoop\Bundle\CoreBundle\Functions\GroupConcatFunction
+                        GroupConcat: CoreBundle\Functions\GroupConcatFunction
