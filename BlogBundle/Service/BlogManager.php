@@ -115,10 +115,10 @@ class BlogManager
         if(preg_match('/\.jpeg/', $fileName)) $arr = explode('.jpeg', $fileName);
         if(preg_match('/\.jpg/', $fileName)) $arr = explode('.jpg', $fileName);
         $img_name = $arr[0];
-        $this->container->get('admin_manager')->resizeImage($absolutePath, $img_name.'_380', 380, 180, __DIR__ . '/../../../../../web/uploads/images/post/'.$post->getId().'/');
-        $this->container->get('admin_manager')->resizeImage($absolutePath, $img_name.'_260', 260, 123, __DIR__ . '/../../../../../web/uploads/images/post/'.$post->getId().'/');
-        $this->container->get('admin_manager')->resizeImage($absolutePath, $img_name.'_142', 142, 88, __DIR__ . '/../../../../../web/uploads/images/post/'.$post->getId().'/');
-        $this->container->get('admin_manager')->resizeImage($absolutePath, $img_name.'_150', 150, 150, __DIR__ . '/../../../../../web/uploads/images/post/'.$post->getId().'/');
+        $this->container->get('core_manager')->resizeImage($absolutePath, $img_name.'_380', 380, 180, __DIR__ . '/../../../../../web/uploads/images/post/'.$post->getId().'/');
+        $this->container->get('core_manager')->resizeImage($absolutePath, $img_name.'_260', 260, 123, __DIR__ . '/../../../../../web/uploads/images/post/'.$post->getId().'/');
+        $this->container->get('core_manager')->resizeImage($absolutePath, $img_name.'_142', 142, 88, __DIR__ . '/../../../../../web/uploads/images/post/'.$post->getId().'/');
+        $this->container->get('core_manager')->resizeImage($absolutePath, $img_name.'_150', 150, 150, __DIR__ . '/../../../../../web/uploads/images/post/'.$post->getId().'/');
     }
      
     public static function createPath($path)
