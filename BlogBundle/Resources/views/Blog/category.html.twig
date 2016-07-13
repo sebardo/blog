@@ -3,13 +3,15 @@
 
 {% block body_class %}{{parent()}} blog {% endblock %}
 {% block header %}
-    <div class="container">
-        {% include 'BlogBundle:Blog/Block:carousel.blog.html.twig' %}
-    </div>
+    {{parent()}}
+    {% include 'BlogBundle:Blog/Block:menu.blog.html.twig' %}
+    
 {% endblock %}
 
 {% block content_header %}
-    {% include 'BlogBundle:Blog/Block:menu.blog.html.twig' %}
+    <div>
+        {% include 'BlogBundle:Blog/Block:carousel.blog.html.twig' %}
+    </div>
 {% endblock %}
 
 {% block content %}
