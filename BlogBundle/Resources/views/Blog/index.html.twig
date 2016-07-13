@@ -4,28 +4,14 @@
 {% block body_class %}{{parent()}} blog {% endblock %}
 
 {% block content_header %}
-    {% include 'BlogBundle:Blog:menu.blog.html.twig' %}
+    {% include 'BlogBundle:Blog/Block:menu.blog.html.twig' %}
 {% endblock %}
 
 {% block content %}
     <div class="container-content">
         <div class="container">
             
-            <div class="row core-row">
-                {% block breadcrumb %}
-                    <div class="col-md-6 col-xs-6 back">
-                        <a href="#" onclick="window.history.go(-1); return false;">
-                        <i class="ion-reply"></i><span>Volver</span>
-                        </a>
-                    </div>
-                    <div class="col-md-6 col-xs-6">
-                        <ol class="breadcrumb">
-                            <li ><a href="/">Inicio</a></li>
-                            <li><a href="{{ path('blog_blog_index') }}">{{ 'blog.singular' | trans | upper}}</a></li>
-                        </ol>
-                    </div>
-                {% endblock %}
-            </div> 
+            {% include 'BlogBundle:Blog/Block:breadcrumb.html.twig' %}
             
             <div class="row core-row blog">
                 <div id="mainContent" class="col-md-8 col-sm-8 col-xs-12">
@@ -46,15 +32,15 @@
                                 <article>
                                     <div class="post-content listing">
                                         {% if post.images|length > 0 %}
-                                            {% set path = post.images.first.path %}
+                                            {% set path = get_thumb_image(post.images.first.path, '142') %}
                                         {% else %}
                                             {% set path = '' %}
                                         {% endif %}
                                         <h3><a  href="{{path("blog_blog_show", {slug: post.slug})}}">{{ post.title }}</a></h3>
                                         <div class="date">POST <span>{{ post.published | date ('d')}}.{{ post.published | date ('m') | trans }}.{{ post.published | date ('y')}}</span> </div>
-                                        {% if path != ''%}<img src="{{ path }}" />{% endif %}
+                                        {% if path != ''%}<img class="post-img-list" src="{{ path }}" />{% endif %}
                                         
-                                        <p>{{ post.description | striptags | truncate(500, true, '...')  }}</p>
+                                        <p>{{ post.description | striptags | truncate(400, true, '...')  }}</p>
 
                                         <div class="read-more">
                                             <a  href="{{path("blog_blog_show", {slug: post.slug})}}" > [Leer Más] </a>

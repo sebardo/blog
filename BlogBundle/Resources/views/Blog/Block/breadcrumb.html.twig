@@ -1,0 +1,15 @@
+<div class="row core-row">
+    {% block breadcrumb %}
+        <div class="col-md-6 col-xs-6 back">
+            <a href="#" onclick="window.history.go(-1); return false;">
+            <i class="ion-reply"></i><span>Volver</span>
+            </a>
+        </div>
+        <div class="col-md-6 col-xs-6">
+            <ol class="breadcrumb">
+                <li ><a href="/">Inicio</a></li>
+                <li><a href="{{ path('blog_blog_index') }}">{{ 'blog.singular' | trans }}</a></li>
+            </ol>
+        </div>
+    {% endblock %}
+</div> 

@@ -28,91 +28,93 @@
        
 <div class="container-content">
   <div class="container">
+      
+    {% include 'BlogBundle:Blog/Block:breadcrumb.html.twig' %}
     <div class="row core-row blog">
   
-    <div id="mainContent" class="col-md-8 col-sm-8">
-        <div class="row post-list">
+        <div id="mainContent" class="col-md-8 col-sm-8">
+            <div class="row post-list">
 
-            <div class="col-md-12">
-                <article>
-                    <div class="post-content show">
-                        {% if post.images|length > 0 %}
-                            {% set path = post.images.first.path %}
-                        {% else %}
-                            {% set path = '/bundles/admin/img/default-no-image.png' %}
-                        {% endif %}
-                        <h3>{{ post.title }}</h3>
-                        <div class="date">{{ "post.date" | trans }}  <span>{{ post.published | date ('d')}}.{{ post.published | date ('m') | trans }}.{{ post.published | date ('y')}}</span> </div>
+                <div class="col-md-12">
+                    <article>
+                        <div class="post-content show">
+                            {% if post.images|length > 0 %}
+                                {% set path = post.images.first.path %}
+                            {% else %}
+                                {% set path = '/bundles/admin/img/default-no-image.png' %}
+                            {% endif %}
+                            <h3>{{ post.title }}</h3>
+                            <div class="date">{{ "post.date" | trans }}  <span>{{ post.published | date ('d')}}.{{ post.published | date ('m') | trans }}.{{ post.published | date ('y')}}</span> </div>
 
-                        <img src="{{ path }}" />
+                            <img src="{{ path }}" />
 
-                        <div class="networks">
-                            <div class="share-content" data="{{app.request.uri}}" style="display: inline-block">
-                                {% if post.title is not defined %}
-                                    {{shareUrlBlog( app.request.uri, true , 'Blog Kundalini Woman')}}
-                                {% else%}
-                                    {{shareUrlBlog( app.request.uri, true , post.title)}}
-                                {% endif %}
+                            <div class="networks">
+                                <div class="share-content" data="{{app.request.uri}}" style="display: inline-block">
+                                    {% if post.title is not defined %}
+                                        {{shareUrlBlog( app.request.uri, true , 'Blog Kundalini Woman')}}
+                                    {% else%}
+                                        {{shareUrlBlog( app.request.uri, true , post.title)}}
+                                    {% endif %}
 
+                                </div>
                             </div>
+
+                            <div class="post-description">{{ post.description | raw }}</div>
+                            <p class="post-categories"><b>{% for category in post.categories %}{{ category.name }}{% if not loop.last%}, {% endif %}{% endfor  %}</b></p>
+
+
+                            {% include 'BlogBundle:Blog/Block:post_footer.html.twig'%}
+                        </div>
+                    </article>
+
+                    <div class="col-md-12 col-xs-12 comments">
+
+                        {% include 'CoreBundle:Base:alert.messages.html.twig' %}
+
+                        <div id="comments">{% include "BlogBundle:Blog/Block:comments.html.twig" %}</div>
+                        <div>
+                            <h5>{{ 'comment.leave' | trans }} </h5>
                         </div>
 
-                        <div class="post-description">{{ post.description | raw }}</div>
-                        <p class="post-categories"><b>{% for category in post.categories %}{{ category.name }}{% if not loop.last%}, {% endif %}{% endfor  %}</b></p>
-
-                     
-                        {% include 'BlogBundle:Blog/Block:post_footer.html.twig'%}
-                    </div>
-                </article>
-
-                <div class="col-md-12 col-xs-12 comments">
-
-                    {% include 'CoreBundle:Base:alert.messages.html.twig' %}
-
-                    <div id="comments">{% include "BlogBundle:Blog/Block:comments.html.twig" %}</div>
-                    <div>
-                        <h5>{{ 'comment.leave' | trans }} </h5>
+                        {% include 'BlogBundle:Blog/Block:_form_comment.html.twig' %}
                     </div>
 
-                    {% include 'BlogBundle:Blog/Block:_form_comment.html.twig' %}
                 </div>
-
             </div>
         </div>
-    </div>
 
-    <div id="sidebarContent" class="col-md-4 post-sidebar">
-        {% include 'BlogBundle:Blog:sidebar.html.twig'%}
-    </div>
-
-    <div style="clear: both"></div>
-    
-    {% if related | length %}
-        <div class="col-md-12 col-xs-12 realted blog">
-            <h3>Te puede interesar ...</h3>
-            <div id="related" class="post-list">
-                {% for post in related %}
-                    {% if loop.index < 5 %}
-                        <div class="col-md-3 col-xs-6" data-position="{{loop.index}}">
-                        <article>
-                            <div class="post-content list">
-                                {% if post.images|length > 0 %}
-                                    {% set path = '/uploads/images/post/' ~  entity.id ~ '/' ~ get_thumb_image(post.images.first.path, '260') %}
-                                {% else %}
-                                    {% set path = '/bundles/admin/img/default-no-image.png' %}
-                                 {% endif %}
-                                <a  href="{{path("blog_blog_show", {slug: post.slug})}}" >
-                                    <img style="width: 100%" src="{{ path }}" />
-                                    <p>{{ post.title }}</p>
-                                </a>
-                            </div>
-                        </article>
-                    </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
+        <div id="sidebarContent" class="col-md-4 post-sidebar">
+            {% include 'BlogBundle:Blog:sidebar.html.twig'%}
         </div>
-    {% endif %}
+
+        <div style="clear: both"></div>
+
+        {% if related | length %}
+            <div class="col-md-12 col-xs-12 realted blog">
+                <h3>Te puede interesar ...</h3>
+                <div id="related" class="post-list">
+                    {% for post in related %}
+                        {% if loop.index < 5 %}
+                            <div class="col-md-3 col-xs-6" data-position="{{loop.index}}">
+                            <article>
+                                <div class="post-content list">
+                                    {% if post.images|length > 0 %}
+                                        {% set path = '/uploads/images/post/' ~  entity.id ~ '/' ~ get_thumb_image(post.images.first.path, '260') %}
+                                    {% else %}
+                                        {% set path = '/bundles/admin/img/default-no-image.png' %}
+                                     {% endif %}
+                                    <a  href="{{path("blog_blog_show", {slug: post.slug})}}" >
+                                        <img style="width: 100%" src="{{ path }}" />
+                                        <p>{{ post.title }}</p>
+                                    </a>
+                                </div>
+                            </article>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
     
     
     </div>
