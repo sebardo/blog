@@ -23,12 +23,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class SubcategoryController extends Controller
 {
     /**
-     * Lists all subcategories from a Category entity.
-     *
-     * @param int $categoryId The category id
-     *
-     * @throws NotFoundHttpException
-     * @return array
+     * Lists all SubCategory entities.
      *
      * @Route("/")
      * @Method("GET")
@@ -76,81 +71,33 @@ class SubcategoryController extends Controller
     }
 
     /**
-     * Creates a new Category entity.
+     * Creates a new SubCategory entity.
      *
-     * @param Request $request    The request
-     * @param int     $categoryId The category id
-     *
-     * @throws NotFoundHttpException
-     * @return array|RedirectResponse
-     *
-     * @Route("/")
-     * @Method("POST")
-     * @Template("BlogBundle:Category:new.html.twig")
+     * @Route("/new")
+     * @Method({"GET", "POST"})
+     * @Template("BlogBundle:Subcategory:new.html.twig")
      */
-    public function createAction(Request $request, $categoryId)
+    public function newAction(Request $request, Category $categoryId)
     {
-        $em = $this->getDoctrine()->getManager();
 
-        /** @var Category $category */
-        $category = $em->getRepository('BlogBundle:Category')->find($categoryId);
-
-        if (!$category) {
-            throw $this->createNotFoundException('Unable to find Category entity.');
-        }
-
-        $entity  = new Category();
-        $form = $this->createForm('BlogBundle\Form\SubcategoryType', $entity);
-        $entity->setParentCategory($category);
-
+        $entity = new Category();
+        $form   = $this->createForm('BlogBundle\Form\SubcategoryType', $entity);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $entity->getParentCategory($categoryId);
             $em->persist($entity);
             $em->flush();
 
             $this->get('session')->getFlashBag()->add('success', 'category.sub.created');
-
-            return $this->redirect($this->generateUrl('blog_category_show', array('id' => $entity->getId())));
+            
+            return $this->redirectToRoute('blog_category_show', array('id' => $entity->getId()));
         }
-
+        
         return array(
             'entity' => $entity,
-            'category' => $category,
-            'form'   => $form->createView(),
-        );
-    }
-
-    /**
-     * Displays a form to create a new Category entity.
-     *
-     * @param int $categoryId The category id
-     *
-     * @throws NotFoundHttpException
-     * @return array
-     *
-     * @Route("/new")
-     * @Method("GET")
-     * @Template("BlogBundle:Subcategory:new.html.twig")
-     */
-    public function newAction($categoryId)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        /** @var Category $category */
-        $category = $em->getRepository('BlogBundle:Category')->find($categoryId);
-
-        if (!$category) {
-            throw $this->createNotFoundException('Unable to find Category entity.');
-        }
-
-        $entity = new Category();
-        $form   = $this->createForm('BlogBundle\Form\SubcategoryType', $entity);
-
-        return array(
-            'entity' => $entity,
-            'category' => $category,
+            'category' => $categoryId,
             'form'   => $form->createView(),
         );
     }

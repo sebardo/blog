@@ -20,60 +20,9 @@
 {% endblock %}
     
 
-{% block wrappers %}
-    <div id="menu-blog">
-        <div class="container">
-            <div class="row" style="margin: 0">
-                <div class="col-md-12 subcategory-container">
-                    {% set count = 10%}
-
-                    {% for cat in categories %}
-                        {% if loop.index < count %}
-                            {% if cat.subcategories | length > 0 %}
-                                <div class="btn-group {% if category is defined and category.slug ==  cat.slug%}active{% endif %}" style="width: auto!important;">
-                                    <a  href="{{ path('blog_blog_category', {'category': cat.slug }) }}" class="item dropdown-toggle {% if category is defined and category.slug ==  cat.slug%}current{% endif %}" data-toggle="dropdown" aria-expanded="false">
-                                        {{ cat.name }}({{ cat.posts | length }})
-                                    </a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        {% for sub in cat.subCategories %}
-                                        <li>
-                                            <a href="{{ path('blog_blog_category', {'category': sub.slug }) }}">
-                                                {{ sub.name }}({{ sub.posts | length }})
-                                            </a>
-                                        </li>
-                                        {% endfor %}  
-                                    </ul>
-                                </div>
-                            {% else %}
-                                <a class="{% if category is defined and category.slug ==  cat.slug%}current{% endif %}" href="{{ path('blog_blog_category', {'category': cat.slug }) }}">
-                                    {{ cat.name }}({{ cat.posts | length }})
-                                </a>
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}  
-
-                    <div class="btn-group more-blog-categories">
-                        <a  href="javascript:;" class="item dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            <span style="margin-top: 0px;" class="login-label ion-chevron-down"></span>
-                        </a>
-                         <ul class="dropdown-menu dropdown-menu-right" role="menu" style="margin-top: 0;padding-top: 0px;">
-                            {% for cat in categories %}
-                                {% if loop.index > 10 %}
-                                    <li >
-                                        <a href="{{ path('blog_blog_category', {'category': cat.slug }) }}">
-                                           {{ cat.name }}({{ cat.posts | length }})
-                                        </a>
-                                    </li>
-                                {% endif %}
-                            {% endfor %}  
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-{% endblock %}                           
+{% block content_header %}
+    {% include 'BlogBundle:Blog/Block:menu.blog.html.twig' %}
+{% endblock %}                        
 
 {% block content %}
        
@@ -112,7 +61,7 @@
                         <p class="post-categories"><b>{% for category in post.categories %}{{ category.name }}{% if not loop.last%}, {% endif %}{% endfor  %}</b></p>
 
                      
-                        {% include 'BlogBundle:Blog:post_footer.html.twig'%}
+                        {% include 'BlogBundle:Blog/Block:post_footer.html.twig'%}
                     </div>
                 </article>
 
@@ -120,12 +69,12 @@
 
                     {% include 'CoreBundle:Base:alert.messages.html.twig' %}
 
-                    <div id="comments">{% include "BlogBundle:Blog:comments.html.twig" %}</div>
+                    <div id="comments">{% include "BlogBundle:Blog/Block:comments.html.twig" %}</div>
                     <div>
                         <h5>{{ 'comment.leave' | trans }} </h5>
                     </div>
 
-                    {% include 'BlogBundle:Blog:_form_comment.html.twig' %}
+                    {% include 'BlogBundle:Blog/Block:_form_comment.html.twig' %}
                 </div>
 
             </div>

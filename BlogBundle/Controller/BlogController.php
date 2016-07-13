@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use BlogBundle\Model\CommentFront;
-use BlogBundle\Form\CommentFrontType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use BlogBundle\Entity\Comment;
@@ -163,7 +162,6 @@ class BlogController extends Controller
         $em = $this->getDoctrine()->getManager();
         $categoryEntity = $em->getRepository('BlogBundle:Category')->findOneBySlug($category);
         
-   
         if ($request->isXmlHttpRequest()) {
             $offset = $request->get('offset');
             $limit = $request->get('limit');
@@ -176,19 +174,9 @@ class BlogController extends Controller
         } else {
             $categories = $em->getRepository('BlogBundle:Category')->findBy(array('parentCategory' => null ), array('order' => 'ASC'));
             $tags = $em->getRepository('BlogBundle:Tag')->findBy(array(), array('name' => 'ASC'));
-
             $posts = $em->getRepository('BlogBundle:Post')->loadPostsCategory(0, 6, $categoryEntity);
-//            $query = ' SELECT p'
-//                    . ' FROM BlogBundle:Post p'
-//                    . ' JOIN p.category c '
-//                    . " WHERE c.slug = '".$category."' "
-//                    ;
-//            $q = $em->createQuery($query);
-//            $posts = $q->getResult();
-
             $total_items = $em->getRepository('BlogBundle:Post')->countTotal();
 
-//            print_r(count($categories));die();
             return array(
                 'category'   => $categoryEntity,
                 'posts'      => $posts,
@@ -268,14 +256,11 @@ class BlogController extends Controller
      */
     private function createCommentForm(CommentFront $model, $entity)
     {
-        $type = new CommentFrontType();
-        $form = $this->createForm($type, $model, array(
+        $form = $this->createForm('BlogBundle\Form\CommentFrontType', $model, array(
             'action' => $this->generateUrl('blog_blog_comment', array('post' => $entity->getId())),
             'method' => 'POST',
-            'attr' => array('id' => $type->getName(),'class' => 'comment-form')
+            'attr' => array('id' => 'comment-form','class' => 'comment-form')
         ));
-
-        $form->add('submit', 'submit', array('label' => 'Enviar', 'attr' => array('class' => 'btn btn-core btn-flat white')));
 
         return $form;
     }
@@ -339,6 +324,8 @@ class BlogController extends Controller
 
         $em->persist($actor);
         $em->flush();
+        
+        $this->get('core.mailer')->sendRegisteredEmailMessage($actor);
         
         return $actor;
     }

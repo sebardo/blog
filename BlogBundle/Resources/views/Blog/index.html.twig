@@ -1,10 +1,12 @@
 {% extends core['extended_layout'] ? core['extended_layout'] : 'CoreBundle:Base:base.layout.html.twig' %}
 
-{% block blog_menu %}
+
+{% block body_class %}{{parent()}} blog {% endblock %}
+
+{% block content_header %}
     {% include 'BlogBundle:Blog:menu.blog.html.twig' %}
 {% endblock %}
 
-{% block body_class %}{{parent()}} blog {% endblock %}
 {% block content %}
     <div class="container-content">
         <div class="container">
@@ -25,7 +27,7 @@
                 {% endblock %}
             </div> 
             
-            <div class="row core-row ">
+            <div class="row core-row blog">
                 <div id="mainContent" class="col-md-8 col-sm-8 col-xs-12">
                     {% if search is defined%}
                         <div class="search-results">
@@ -60,7 +62,7 @@
                                     </div>
                                     {% if posts|length > 1%}
                                         <div class="post-footer col-md-12 col-sm-12 col-xs-12">
-                                            {% include 'BlogBundle:Blog:post_footer.html.twig'%}
+                                            {% include 'BlogBundle:Blog/Block:post_footer.html.twig'%}
                                         </div>
                                     {% endif %}
                                 </article>

@@ -11,14 +11,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *
  * To run the testcase:
  * @code
- * phpunit -v -c app vendor/core/blog/BlogBundle/Tests/Controller/TagControllerTest.php
+ * phpunit -v -c app vendor/sebardo/blog/BlogBundle/Tests/Controller/TagControllerTest.php
  * @endcode
  */
 class TagControllerTest  extends CoreTest
 {
     /**
      * @code
-     * phpunit -v --filter testTagAdmin -c app vendor/core/blog/BlogBundle/Tests/Controller/TagControllerTest.php
+     * phpunit -v --filter testTagAdmin -c app vendor/sebardo/blog/BlogBundle/Tests/Controller/TagControllerTest.php
      * @endcode
      * 
      */

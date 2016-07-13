@@ -2,40 +2,16 @@
 
 
 {% block body_class %}{{parent()}} blog {% endblock %}
-{% block container_header %}
-    {% include 'FrontBundle:Shared:header.html.twig' %}
-    
-    
-    {% block blog_menu %}
-        {% include 'FrontBundle:Shared:menu.blog.html.twig' %}
-    {% endblock %}
-    
-     
-    <div class="container" style="width: 1050px;margin-top: 30px">
-        <div class="row core-row" >
-           {% block breadcrumb %}
-               <div class="col-md-12 col-xs-12">
-                   <ol class="breadcrumb">
-                       <li ><a href="/">Inicio</a></li>
-                       <li><a href="{{ path('blog_index') }}">{{ 'blog.singular' | trans | upper}}</a></li>
-                       <li><a href="{{ path('blog_blog_tag', {'tag': tag.slug }) }}">{{ tag.name | upper}}</a></li>
-                   </ol>
-               </div>
-           {% endblock %}
-       </div>
-   </div> 
-
-    <div class="container" style="width: 1020px">
-        {% include 'FrontBundle:Shared:carousel.blog.html.twig' with { 'category' : tag}%}
-    </div>
-    
-    
+ 
+{% block content_header %}
+    {% include 'BlogBundle:Blog/Block:menu.blog.html.twig' %}
 {% endblock %}
+   
 
-{% block container_content %}
+{% block content %}
     <div class="container-content">
-      <div class="container" style="width: 1020px">
-        <div class="row core-row">
+      <div class="container">
+        <div class="row core-row blog">
           <div id="mainContent" class="col-md-8">
             <div class="row post-list" id="post-list">
                 <script> position = 0; </script> 
@@ -78,7 +54,14 @@
   </div>
 {% endblock %}
    
-    
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+            'bundles/blog/less/blog.less'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}

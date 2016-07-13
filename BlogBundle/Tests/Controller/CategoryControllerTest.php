@@ -11,14 +11,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *
  * To run the testcase:
  * @code
- * phpunit -v -c app src/Optisoop/Bundle/BlogBundle/Tests/Controller/CategoryControllerTest.php
+ * phpunit -v -c app vendor/sebardo/blog/BlogBundle/Tests/Controller/CategoryControllerTest.php
  * @endcode
  */
 class CategoryControllerTest  extends CoreTest
 {
     /**
      * @code
-     * phpunit -v --filter testCategoryAdmin -c app src/Optisoop/Bundle/BlogBundle/Tests/Controller/CategoryControllerTest.php
+     * phpunit -v --filter testCategoryAdmin -c app vendor/sebardo/blog//BlogBundle/Tests/Controller/CategoryControllerTest.php
      * @endcode
      * 
      */

@@ -46,7 +46,7 @@ class BlogExtension extends \Twig_Extension
     {
         $twig = $this->container->get('twig');
 
-        $content = $twig->render('BlogBundle:Blog:_search.html.twig', array());
+        $content = $twig->render('BlogBundle:Blog/Block:_search.html.twig', array());
 
         return $content;
     }
@@ -56,7 +56,7 @@ class BlogExtension extends \Twig_Extension
 
         $twig = $this->container->get('twig');
 
-        $content = $twig->render('BlogBundle:Blog:_tags.html.twig', array());
+        $content = $twig->render('BlogBundle:Blog/Block:_tags.html.twig', array());
 
         return $content;
     }
@@ -65,7 +65,7 @@ class BlogExtension extends \Twig_Extension
     {
         $twig = $this->container->get('twig');
 
-        $content = $twig->render('BlogBundle:Blog:_feed.html.twig', array());
+        $content = $twig->render('BlogBundle:Blog/Block:_feed.html.twig', array());
 
         return $content;
     }
@@ -74,7 +74,7 @@ class BlogExtension extends \Twig_Extension
     {
         $twig = $this->container->get('twig');
 
-        $content = $twig->render('BlogBundle:Blog:_social.html.twig', array());
+        $content = $twig->render('BlogBundle:Blog/Block:_social.html.twig', array());
 
         return $content;
     }
@@ -86,7 +86,7 @@ class BlogExtension extends \Twig_Extension
 
         $twig = $this->container->get('twig');
 
-        $content = $twig->render('BlogBundle:Blog:blog.history.html.twig', array(
+        $content = $twig->render('BlogBundle:Blog/Block:_blog.history.html.twig', array(
             'history' => $history
             ));
 
@@ -124,7 +124,7 @@ class BlogExtension extends \Twig_Extension
         $linkedUrl = 'https://www.linkedin.com/shareArticle?summary=&ro=false&title='.$text.'&mini=true&url='.$url.'&source=';
 
         $twig = $this->container->get('twig');
-        $content = $twig->render('BlogBundle:Blog:share.html.twig', array(
+        $content = $twig->render('BlogBundle:Blog/Block:_share.html.twig', array(
             "tweetUrl" => $tweetUrl,
             "faceUrl" => $faceUrl,
             "googleUrl" => $googleUrl,

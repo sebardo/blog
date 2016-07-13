@@ -1,0 +1,45 @@
+{% set items = get_carousel_items_blog(category) %}
+
+{% if items | length > 0 %}
+  <!-- Half Page Image Background Carousel Header -->
+  <div id="myCarousel" class="carousel slide carousel-blog">
+    <!-- Indicators -->
+    {% if items|length > 1%}
+    <ol class="carousel-indicators">
+        {% for item in items %}
+            <li data-target="#myCarousel" data-slide-to="{{loop.index-1}}" class="{% if loop.first %}active{% endif %}"></li>
+        {% endfor %}
+    </ol>
+    {% endif %}
+    <!-- Wrapper for Slides -->
+    <div class="carousel-inner">
+        {% for item in items %}
+        <div class="item {% if loop.first %}active{% endif %}">
+            <!-- Set the first background image using inline CSS below. -->
+            
+            {% if item.title != '' %}
+                <div class="fill" style="background-image:url('{{check_slider_image(item.images.first)}}');"></div>
+                <div class="carousel-caption">
+                    <a href="{{path("blog_blog_show", {slug: item.slug})}}">
+                        <h2>{{item.title}}</h2>
+                    </a>
+                </div>
+            {% else %}
+                {% if item.url != '' %}<a {% if item.openInNewWindow %}target="_blank"{% endif %} href="{{item.url}}">{% endif %}
+                    <div class="fill" style="background-image:url('{{check_slider_image(item.images.first)}}');"></div>
+                {% if item.url != '' %}</a>{% endif %}
+            {% endif%}
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Controls -->
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+        <span class="icon-prev"></span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+        <span class="icon-next"></span>
+    </a>
+
+  </div>
+{% endif %}

@@ -25,7 +25,11 @@
       <div class="row">
         <div class="col-xs-12">
             <div class="box box-info">
-                <form action="{{ path('blog_subcategory_create', { categoryId: category.id }) }}" method="post" {{ form_enctype(form) }} class="form-horizontal form-row-seperated">
+                {{ form_start(form, {
+                            'action': path('blog_subcategory_new', { categoryId: category.id }), 
+                            'method': 'post', 
+                            'attr': {'class': 'form-horizontal form-row-seperated'}
+                            }) }}
                     <div class="box-body">
                         {{ include('BlogBundle:Subcategory:_form.html.twig', { form: form, categoryId: category.id }) }}
                     </div><!-- /.box-body -->
@@ -33,10 +37,10 @@
                         <div class="col-sm-2"></div>
                         <div class="col-sm-10">
                             <button type="submit" class="btn btn-primary btn-flat"><i class="ion-checkmark"></i> {{ "save" | trans }}</button>
-                            <a href="{{ path('blog_category_index') }}" class="btn btn-default btn-flat">{{ "cancel.singular" | trans }}</a>
+                            <a href="{{ path('blog_category_index') }}" class="btn-core btn btn-default btn-flat">{{ "cancel.singular" | trans }}</a>
                         </div>
                     </div>
-                </form>
+                {{ form_end(form) }}
             </div>
         </div>
       </div>
