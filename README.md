@@ -23,28 +23,13 @@ Or you can try with this steps (virtual host for blog.dev already created)
 
 Add required to composer.json
         
-        ...
-        "psr-0": { 
-            "CoreBundle": [
-                "vendor/sebardo/core/"
-            ],
-            "AdminBundle": [
-                "vendor/sebardo/admin/"
-            ],
-            "BlogBundle": [
-                "vendor/sebardo/blog/"
-            ]},
-            
-        ...
-        
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "symfony/assetic-bundle": "^2.8",
         "twig/extensions": "~1.0",
         "gedmo/doctrine-extensions":  "dev-master",
         "google/apiclient": "@beta",
         "hwi/oauth-bundle": "0.4.*@dev",
-        "ensepar/html2pdf-bundle" : "~2.0",
-        
+
         "sebardo/core": "dev-master",
         "sebardo/admin": "dev-master",
         "sebardo/blog": "dev-master"
@@ -174,15 +159,6 @@ And add this lines or edit this lines in config.yml and config_test.yml
                     scope:               "email"
                     options:
                         display: popup 
-                        
-        # Pdf exportation
-        ensepar_html2pdf:
-            orientation: P
-            format: A4
-            lang: en
-            unicode: true
-            encoding: UTF-8
-            margin: [10,15,10,15]
             
         # Doctrine DQL funtions added
         doctrine:
