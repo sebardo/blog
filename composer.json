@@ -19,10 +19,6 @@
         "sebardo/admin": "dev-master"
     },
     "autoload": {
-        "psr-0": {
-            "BlogBundle": [
-                "vendor/sebardo/blog/"
-            ]
-        }
+        "psr-4": {"BlogBundle\\": "BlogBundle"}
     }
 }
