@@ -29,22 +29,22 @@ Add required to composer.json
         "gedmo/doctrine-extensions":  "dev-master",
         "google/apiclient": "@beta",
         "hwi/oauth-bundle": "0.4.*@dev",
-
+        
         "sebardo/core": "dev-master",
         "sebardo/admin": "dev-master",
         "sebardo/blog": "dev-master"
         
 Add paramters to parameter.yml
 
-    # edit this lines
-    database_name: dev_blog
-    database_name_test: test_blog
-    database_user: blog
-    database_password: blog
-    
-    node_path: /usr/bin/nodejs
-    node_modules_path: /usr/local/lib/node_modules
-    core:
+        # edit this lines
+        database_name: dev_blog
+        database_name_test: test_blog
+        database_user: blog
+        database_password: blog
+        
+        node_path: /usr/bin/nodejs
+        node_modules_path: /usr/local/lib/node_modules
+        core:
         name: Site name
         extended_layout: ''
         extended_layout_admin: 'AdminBundle:Base:layout.html.twig'
@@ -63,21 +63,20 @@ Add paramters to parameter.yml
             email: company@email.com
             website_url: www.sitename.com
             instagram: 'sitename'
-    admin:
-        - google_application_name: Analitycs
-        - google_oauth2_client_id: 459960642348-nqhsk0rr1e41gv3kbb519g1nlk6rq78a.apps.googleusercontent.com
-        - google_oauth2_client_secret: KScqc1jDkZHUBaanmMGV8QpB
-        - google_oauth2_redirect_uri: 'http://optisoop2.dev/admin/analitycs'
-        - google_developer_key: AIzaSyCda_bsJ-kEa1M1DJenwKfUfyLVlVKuC6I
-        - google_site_name: Site Name
+        admin:
+            - google_application_name: Analitycs
+            - google_oauth2_client_id: 459960642348-nqhsk0rr1e41gv3kbb519g1nlk6rq78a.apps.googleusercontent.com
+            - google_oauth2_client_secret: KScqc1jDkZHUBaanmMGV8QpB
+            - google_oauth2_redirect_uri: 'http://optisoop2.dev/admin/analitycs'
+            - google_developer_key: AIzaSyCda_bsJ-kEa1M1DJenwKfUfyLVlVKuC6I
+            - google_site_name: Site Name
 
 Add class to AppKernel.php
 
         new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
         new Symfony\Bundle\AsseticBundle\AsseticBundle(),
         new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
-        new Ensepar\Html2pdfBundle\EnseparHtml2pdfBundle(),
-        
+
         new CoreBundle\CoreBundle(),
         new AdminBundle\AdminBundle(),
         new BlogBundle\BlogBundle(),
