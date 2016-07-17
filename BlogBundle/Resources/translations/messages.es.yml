@@ -18,6 +18,7 @@ blog:
   singular: Blog
   plural: Blogs
   
+posts: Publicaciones
 post:
   singular: Publicación
   plural: Publicaciones
@@ -39,7 +40,7 @@ post:
   of: de
   continue: Continuar leyendo
   
-    
+postcategories: Categorías
 category:
   singular: Categoría
   plural: Categorías
@@ -59,6 +60,7 @@ category.sub:
   edited: Se ha editado la subcategoría satisfactoriamente
   deleted: Se ha eliminado la subcategoría satisfactoriamente
   
+posttags: Etiquetas
 tag:
   singular: Etiqueta
   plural: Etiquetas
@@ -70,6 +72,7 @@ tag:
 new.tag: Nueva etiqueta
 new.post: Nueva publicación
 
+postcomments: Comentarios
 comment:
   singular: Comentario
   plural: Comentarios
