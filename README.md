@@ -83,8 +83,16 @@ Add class to AppKernel.php
         
 Add routing.yml to route file
 
-        app:
+        core:
             resource: "@CoreBundle/Resources/config/routing.yml"
+            prefix:   /
+            
+        admin:
+            resource: "@AdminBundle/Resources/config/routing.yml"
+            prefix:   /
+        
+        blog:
+            resource: "@BlogBundle/Resources/config/routing.yml"
             prefix:   /
 
 Remove this lines in config.yml
@@ -172,7 +180,16 @@ And add this lines or edit this lines in config.yml and config_test.yml
                     string_functions:
                         GroupConcat: CoreBundle\Functions\GroupConcatFunction
 
-
+        # If you want add item in admin menu use this example
+        # dashboard:
+        #    icon_class: 'fa fa-dashboard'
+        #    label: 'dashboard'
+        #    options:
+        #        menuitems: core_menuitem_index
+        #        sliders: core_slider_index
+        core:
+            admin_menus:  ~
+            
 in config_test.yml
 
         # Doctrine Configuration
