@@ -4,7 +4,7 @@ Blog bundle for sandbox
 
 Command line to install blog and dependencies:
 
-        php composer.phar require sebardo/core:dev-master sebardo/admin:dev-master sebardo/blog:dev-master
+        php composer.phar require sebardo/blog:dev-master
         
 Or you can try with this steps (virtual host for blog.dev already created)
 
@@ -19,19 +19,10 @@ Or you can try with this steps (virtual host for blog.dev already created)
                 (dev) php app/console doctrine:schema:drop --force && php app/console doctrine:schema:create && php app/console doctrine:fixtures:load 
                 (test) php app/console doctrine:schema:drop --force --env=test && php app/console doctrine:schema:create --env=test && php app/console doctrine:fixtures:load --fixtures=vendor/sebardo/core/CoreBundle/DataFixtures/ORM/test/LoadCoreTestData.php --env=test
         9- And if you want develop environment edit .httacces in order to repalce app.php => app_dev.php
-        10- Done!! you can try http://blog.dev/login and login as "admin@admin.com" and pass "admin" or u c
+        10- Done!! you can try http://blog.dev/login and login as "admin@admin.com" and pass "admin" or you can login as user with "user" and pass "user"
 
 Add required to composer.json
-        
-        "doctrine/doctrine-fixtures-bundle": "dev-master",
-        "symfony/assetic-bundle": "^2.8",
-        "twig/extensions": "~1.0",
-        "gedmo/doctrine-extensions":  "dev-master",
-        "google/apiclient": "@beta",
-        "hwi/oauth-bundle": "0.4.*@dev",
-        
-        "sebardo/core": "dev-master",
-        "sebardo/admin": "dev-master",
+
         "sebardo/blog": "dev-master"
         
 Add paramters to parameter.yml
