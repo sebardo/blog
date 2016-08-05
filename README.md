@@ -54,13 +54,6 @@ Add paramters to parameter.yml
             email: company@email.com
             website_url: www.sitename.com
             instagram: 'sitename'
-        admin:
-            - google_application_name: Analitycs
-            - google_oauth2_client_id: 459960642348-nqhsk0rr1e41gv3kbb519g1nlk6rq78a.apps.googleusercontent.com
-            - google_oauth2_client_secret: KScqc1jDkZHUBaanmMGV8QpB
-            - google_oauth2_redirect_uri: 'http://optisoop2.dev/admin/analitycs'
-            - google_developer_key: AIzaSyCda_bsJ-kEa1M1DJenwKfUfyLVlVKuC6I
-            - google_site_name: Site Name
 
 Add class to AppKernel.php
 
@@ -178,9 +171,17 @@ And add this lines or edit this lines in config.yml and config_test.yml
         #    options:
         #        menuitems: core_menuitem_index
         #        sliders: core_slider_index
-        core:
+        admin:
             admin_menus:  ~
-            
+            apis:
+                google_analytics:
+                    options:
+                        application_name: Analitycs integración
+                        oauth2_client_id: 43533348693-s4rafifpr1o07gja2kgnfbhf4tjq2g0f.apps.googleusercontent.com
+                        oauth2_client_secret: lo04F5hvUi_gPaAxyucY70jy
+                        oauth2_redirect_uri: 'http://sasturain.dev/admin/analytics'
+                        developer_key: AIzaSyCda_bsJ-kEa1M1DJenwKfUfyLVlVKuC6I
+        
 in config_test.yml
 
         # Doctrine Configuration
