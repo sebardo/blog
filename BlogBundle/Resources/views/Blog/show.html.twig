@@ -2,13 +2,11 @@
 
 {% block metas %}
     <title>{{ post.title }}</title>
+    {% set path = '' %}
     {% if post.images|length > 0 %}
-        {% set path = '/uploads/images/posts/'~post.id~'/'~post.images.first.path %}
-    {% else %}
-        {% set path = '/bundles/admin/img/default-no-image.png' %}
+        {% set path = get_thumb_image(post.images.first.path, '260') %}
     {% endif %}
-    <meta property="og:image" content="{{core.server_base_url}}{{path}}"/>
-    <meta name="twitter:image" content="{{core.server_base_url}}{{path}}">
+    {%if path != ''%}<meta property="og:image" content="{{core.server_base_url}}{{path}}"/><meta name="twitter:image" content="{{core.server_base_url}}{{path}}">{%endif%}
     <meta name="description" content="{{ post.description | striptags}}">
     <meta name="organization" content="core.com">
     <meta name="copyright" content="core.com">
@@ -34,20 +32,16 @@
   
         <div id="mainContent" class="col-md-8 col-sm-8">
             <div class="row post-list">
-
                 <div class="col-md-12">
                     <article>
                         <div class="post-content show">
-                            {% if post.images|length > 0 %}
-                                {% set path = post.images.first.path %}
-                            {% else %}
-                                {% set path = '/bundles/admin/img/default-no-image.png' %}
-                            {% endif %}
-                            <h3>{{ post.title }}</h3>
+                            <h1>{{ post.title }}</h1>
                             <div class="date">{{ "post.date" | trans }}  <span>{{ post.published | date ('d')}}.{{ post.published | date ('m') | trans }}.{{ post.published | date ('y')}}</span> </div>
-
-                            <img src="{{ path }}" />
-
+                            {% set path = '' %}
+                            {% if post.images|length > 0 %}
+                                {% set path = get_thumb_image(post.images.first.path, '260') %}
+                            {% endif %}
+                            {%if path != ''%}<img style="width: 100%" src="{{ path }}" />{%endif%}
                             <div class="networks">
                                 <div class="share-content" data="{{app.request.uri}}" style="display: inline-block">
                                     {% if post.title is not defined %}
@@ -58,27 +52,18 @@
 
                                 </div>
                             </div>
-
                             <div class="post-description">{{ post.description | raw }}</div>
                             <p class="post-categories"><b>{% for category in post.categories %}{{ category.name }}{% if not loop.last%}, {% endif %}{% endfor  %}</b></p>
-
-
                             {% include 'BlogBundle:Blog/Block:post_footer.html.twig'%}
                         </div>
                     </article>
-
                     <div class="col-md-12 col-xs-12 comments">
-
                         {% include 'CoreBundle:Base:alert.messages.html.twig' %}
-
                         <div id="comments">{% include "BlogBundle:Blog/Block:comments.html.twig" %}</div>
-                        <div>
-                            <h5>{{ 'comment.leave' | trans }} </h5>
-                        </div>
+                        <div><h5>{{ 'comment.leave' | trans }} </h5></div>
 
                         {% include 'BlogBundle:Blog/Block:_form_comment.html.twig' %}
                     </div>
-
                 </div>
             </div>
         </div>
@@ -98,13 +83,12 @@
                             <div class="col-md-3 col-xs-6" data-position="{{loop.index}}">
                             <article>
                                 <div class="post-content list">
-                                    {% if post.images|length > 0 %}
-                                        {% set path = '/uploads/images/post/' ~  entity.id ~ '/' ~ get_thumb_image(post.images.first.path, '260') %}
-                                    {% else %}
-                                        {% set path = '/bundles/admin/img/default-no-image.png' %}
-                                     {% endif %}
                                     <a  href="{{path("blog_blog_show", {slug: post.slug})}}" >
-                                        <img style="width: 100%" src="{{ path }}" />
+                                        {% set path = '' %}
+                                        {% if post.images|length > 0 %}
+                                            {% set path = get_thumb_image(post.images.first.path, '260') %}
+                                        {% endif %}
+                                        {%if path != ''%}<img style="width: 100%" src="{{ path }}" />{%endif%}
                                         <p>{{ post.title }}</p>
                                     </a>
                                 </div>
@@ -115,8 +99,6 @@
                 </div>
             </div>
         {% endif %}
-    
-    
     </div>
   </div>
 </div>
