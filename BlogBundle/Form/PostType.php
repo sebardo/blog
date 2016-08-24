@@ -42,7 +42,7 @@ class PostType extends AbstractType
       
         
         $builder
-            ->add('title')
+            ->add('translations', 'A2lix\TranslationFormBundle\Form\Type\TranslationsType')
             ->add('categories', EntityType::class, array(
                 'class' => 'BlogBundle:Category',
                 'query_builder' => function (\Doctrine\ORM\EntityRepository $er) {
@@ -56,8 +56,6 @@ class PostType extends AbstractType
                 'expanded' => false
             ))
             ->add('tags', EntityType::class, $tagConf)
-            ->add('description', TextareaType::class, array('required' => true,))
-            ->add('slug', TextType::class, array('required' => false))
             ->add('published', DateTimeType::class, array(
                     'label' => 'Fecha de publicación',
                     'format' => 'dd/MM/yyyy',

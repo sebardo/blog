@@ -21,8 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PostController extends Controller
 {
-
-    
+    use \A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
     /**
      * Lists all Post entities.
      *

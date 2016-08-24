@@ -1,3 +1,13 @@
+blog:
+  singular: Blog
+  plural: Blogs
+  search: Buscar
+  social:
+      singular: Red Social
+      plural: Redes Sociales
+  history: Historial del blog
+  
+      
 es: España
 mx: Mexico
 Bad credentials: El correo electrónico o la contraseña que ingresaste son incorrectos.
@@ -14,9 +24,7 @@ October: Octubre
 November: Noviembre
 December: Deciembre
 
-blog:
-  singular: Blog
-  plural: Blogs
+
   
 posts: Publicaciones
 post:

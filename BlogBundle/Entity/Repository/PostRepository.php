@@ -39,13 +39,15 @@ class PostRepository extends EntityRepository
     {
         // select
         $qb = $this->getQueryBuilder()
-            ->select('p')
+            ->select('p, pTrans')
+            ->join('p.translations', 'pTrans')
             ;    
-
+        
+        
         // search
         if (!empty($search)) {
-            $qb->where('p.title LIKE :search')
-                ->orWhere('p.description LIKE :search')
+            $qb->where('pTrans.title LIKE :search')
+                ->orWhere('pTrans.description LIKE :search')
                 ->setParameter('search', '%'.$search.'%');
         }
 
@@ -65,19 +67,25 @@ class PostRepository extends EntityRepository
      */
     public function findAllForDataTables($search, $sortColumn, $sortDirection)
     {
+        $locale = 'es';
+        
         // select
         $qb = $this->getQueryBuilder()
-            ->select('p.id, p.title')
-            ;    
+            ->select('p.id, pTrans.title');    
 
         // join
-        //$qb->leftJoin('p.site', 'pp');
-        //$qb->where('p.site is NULL');
+        $qb->join('p.translations', 'pTrans');
         
         // search
         if (!empty($search)) {
             $qb->andWhere('p.title LIKE :search')
-                ->setParameter('search', '%'.$search.'%');
+                ->andWhere('pTrans.locale = :locale ')
+                ->setParameter('search', '%'.$search.'%')
+                ->setParameter('locale', $locale);
+        }else{
+            $qb->andWhere('pTrans.locale = :locale ')
+               ->setParameter('locale', $locale)
+                    ;
         }
 
         // sort by column
@@ -86,7 +94,7 @@ class PostRepository extends EntityRepository
                 $qb->orderBy('p.id', $sortDirection);
                 break;
             case 1:
-                $qb->orderBy('p.title', $sortDirection);
+                $qb->orderBy('pTrans.title', $sortDirection);
                 break;
  
         }

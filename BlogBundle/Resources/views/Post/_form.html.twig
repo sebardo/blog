@@ -1,10 +1,11 @@
 
-{{ form_row(form.title, {'label': 'post.title' | trans,  'attr' : { 'class' : 'm-wrap large' } }) }}
+<div class="">
+    {{ form_errors(form.translations) }}
+    {{ form_widget(form.translations) }}
+</div>
+    
 {{ form_row(form.categories, {'label': 'category.singular' | trans ,'attr' : { 'class' : 'm-wrap large' } }) }}
 {{ form_row(form.tags, {'label': 'post.tags' } ) }}
 
-{{ form_row(form.description, {'label': 'post.description'} ) }}
-
-{{ form_row(form.slug, {'attr' : { 'class' : 'm-wrap large' } }) }}
 {{ form_row(form.published, {'attr' : { 'class' : 'm-wrap large' } }) }}
 {{ form_widget(form.highlighted, { name: 'highlighted' }) }}

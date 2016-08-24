@@ -2,12 +2,10 @@
 
 
 {% block body_class %}{{parent()}} blog {% endblock %}
-{% block container_header %}
-    {% include 'FrontBundle:Shared:header.html.twig' %}
-    
-    
+{% block content_header %}
+     
     {% block blog_menu %}
-        {% include 'FrontBundle:Shared:menu.blog.html.twig' %}
+        {% include 'BlogBundle:Blog/Block:menu.blog.html.twig' %}
     {% endblock %}
     
      
@@ -16,9 +14,9 @@
            {% block breadcrumb %}
                <div class="col-md-12 col-xs-12">
                    <ol class="breadcrumb">
-                       <li ><a href="/">Inicio</a></li>
-                       <li><a href="{{ path('blog_index') }}">{{ 'blog.singular' | trans }}</a></li>
-                       <li><a href="{{ path('blog_blog_search') }}">{{ 'Buscar' }}</a></li>
+                       <li ><a href="/">{{ 'home' | trans }}</a></li>
+                       <li><a href="{{ path('blog_blog_index') }}">{{ 'blog.singular' | trans }}</a></li>
+                       <li><a href="{{ path('blog_blog_search') }}">{{ 'search' | trans }}</a></li>
                    </ol>
                </div>
            {% endblock %}
@@ -27,30 +25,33 @@
 
 {% endblock %}
 
-{% block container_content %}
-    <div class="container-content">
-      <div class="container" style="width: 1020px">
-        <div class="row core-row">
-          <div id="mainContent" class="col-md-8">
+{% block content %}
+    
+<div class="container-content">
+  <div class="container">
+      
+    {% include 'BlogBundle:Blog/Block:breadcrumb.html.twig' %}
+    <div class="row core-row blog">
+  
+        <div id="mainContent" class="col-md-8 col-sm-8">
             <div class="row post-list" id="post-list">
                 <script> position = 0; </script> 
-               {% for post in posts %}
-               <script> position = position + 1; </script> 
-                <div class="col-md-6 col-xs-12" data-position="{{loop.index}}">
-                    <article>
-                        <div class="post-content list">
-                            {% if post.images|length > 0 %}
-                                {% set path = get_thumb_image(post.images.first.path, '260') %}
-                            {% else %}
-                                {% set path = '/bundles/admin/img/default-no-image.png' %}
-                            {% endif %}
-                            <a  href="{{path("blog_blog_show", {slug: post.slug})}}" >
-                                <img style="width: 100%" src="{{ path }}" />
-                                <p>{{ post.title }}</p>
-                            </a>
-                        </div>
-                    </article>
-                </div>
+                {% for post in posts %}
+                    <div class="col-md-6 col-xs-12"   data-position="{{loop.index}}">
+                        <script> position = position + 1; </script>
+                        <article>
+                            <div class="post-content list">
+                                {% set path = '' %}
+                                {% if post.images|length > 0 %}
+                                    {% set path = get_thumb_image(post.images.first.path, '260') %}
+                                {% endif %}
+                                <a  href="{{path("blog_blog_show", {slug: post.slug})}}" >
+                                    <img style="width: 100%" src="{{ path }}" />
+                                    <p>{{ post.title }}</p>
+                                </a>
+                            </div>
+                        </article>
+                    </div>
                 {% if loop.index % 2 == 0%}<div style="clear: both; padding: 0"> </div> {% endif %}
                 {% endfor %}
             </div>
@@ -65,15 +66,23 @@
                 </div>
             {% endif %}
         </div>
+
         <div id="sidebarContent" class="col-md-4 post-sidebar">
             {% include 'BlogBundle:Blog:sidebar.html.twig'%}
-        </div>
+        </div>            
       </div>
-    </div>
   </div>
+</div>   
 {% endblock %}
    
-    
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+            'bundles/blog/less/blog.less'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock %}    
 
 {% block javascripts %}
     {{ parent() }}

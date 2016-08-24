@@ -1,0 +1,8 @@
+blog:
+  singular: Blog
+  plural: Blogs
+  search: Search
+  social:
+      singular: Social Network
+      plural: Social Networks
+  history: Blog history

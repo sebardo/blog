@@ -7,6 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 use CoreBundle\Entity\Actor;
 use CoreBundle\Entity\Timestampable;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="BlogBundle\Entity\Repository\PostRepository")
@@ -14,24 +15,14 @@ use CoreBundle\Entity\Timestampable;
  */
 class Post  extends Timestampable
 {
-
+    use \A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue
      */
     protected $id;
-
-    /**
-     * @ORM\Column(name="title", type="string", length=140)
-     */
-    protected $title;
     
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    protected $description;
-
     /**
      * @var ArrayCollection
      *
@@ -42,11 +33,6 @@ class Post  extends Timestampable
      */
     private $images;
     
-    /**
-     * @Gedmo\Slug(fields={"title"}, updatable=true, separator="-")
-     * @ORM\Column(name="slug", type="string", length=140)
-     */
-    protected $slug;
 
     /**
      * @ORM\ManyToOne(targetEntity="\CoreBundle\Entity\Actor", inversedBy="posts")
@@ -90,6 +76,11 @@ class Post  extends Timestampable
     private $highlighted;
     
     /**
+     * @Assert\Valid
+     */
+    protected $translations;
+    
+    /**
      * Constructor
      */
     public function __construct()
@@ -98,6 +89,7 @@ class Post  extends Timestampable
         $this->comments = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
     
     /**
@@ -117,51 +109,6 @@ class Post  extends Timestampable
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set title
-     *
-     * @param  string $title
-     * @return Post
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * Get title
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * Set description
-     *
-     * @param text $description
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-        
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return text
-     */
-    public function getDescription()
-    {
-        return $this->description;
     }
     
     /**
@@ -196,29 +143,6 @@ class Post  extends Timestampable
     public function getImages()
     {
         return $this->images;
-    }
-    
-    /**
-     * Set slug
-     *
-     * @param  string $slug
-     * @return Post
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->slug;
     }
 
     /**
@@ -393,5 +317,16 @@ class Post  extends Timestampable
     public function getHighlighted()
     {
         return $this->highlighted;
+    }
+    
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    public function setTranslations($translations)
+    {
+        $this->translations = $translations;
+        return $this;
     }
 }

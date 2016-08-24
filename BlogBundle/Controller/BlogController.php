@@ -32,6 +32,14 @@ class BlogController extends Controller
         $tags = $em->getRepository('BlogBundle:Tag')->findBy(array(), array('name' => 'ASC'));
         $posts = $em->getRepository('BlogBundle:Post')->findBy(array(),array('published' =>  'ASC'));
         
+//         $qb = $em->getRepository('BlogBundle:Post')->createQueryBuilder('p')
+//                ->join('p.translations', 't')
+////                ->where('t.id = :tag')
+////                ->setParameter('tag', $tagEntity->getId())
+////                ->setMaxResults(3)
+//                ->orderBy('p.published', 'ASC');
+//        $posts = $qb->getQuery()->getResult();
+        
         return array(
             'categories' => $categories,
             'posts' => $posts,
@@ -67,7 +75,8 @@ class BlogController extends Controller
         $manager = $this->getDoctrine()->getManager();
         $core = $this->getParameter('core');
         
-        $dql = "SELECT p FROM BlogBundle:Post p ORDER BY p.created DESC";
+
+        $dql = "SELECT p, pTrans FROM BlogBundle:Post p JOIN p.translations pTrans ORDER BY p.created DESC";
         $entities = $manager
            ->createQuery($dql)
            ->getResult()
@@ -115,7 +124,14 @@ class BlogController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         
-        $entity = $em->getRepository('BlogBundle:Post')->findOneBy(array('slug' => $slug));
+//        $entity = $em->getRepository('BlogBundle:Post')->findOneBy(array('slug' => $slug));
+        $qb = $em->getRepository('BlogBundle:Post')->createQueryBuilder('p')
+                ->join('p.translations', 't')
+                ->where('t.slug = :slug')
+                ->setParameter('slug', $slug)
+                ->setMaxResults(1);
+        $entity = $qb->getQuery()->getSingleResult();
+                
         $categories = $em->getRepository('BlogBundle:Category')->findBy(array('parentCategory' => null ), array('order' => 'ASC'));
         $tags = $em->getRepository('BlogBundle:Tag')->findBy(array(), array('name' => 'ASC'));
         $comments = $em->getRepository('BlogBundle:Comment')->findBy(array('post' => $entity->getId(), 'isActive' => true));
@@ -351,7 +367,7 @@ class BlogController extends Controller
         if ($request->getMethod() == 'POST') {
             $search = $request->request->get('search');
         }
-        
+       
         $em = $this->getDoctrine()->getManager();
         $categories = $em->getRepository('BlogBundle:Category')->findBy(array('parentCategory' => null ), array('order' => 'ASC'));
         $tags = $em->getRepository('BlogBundle:Tag')->findBy(array(), array('name' => 'ASC'));
