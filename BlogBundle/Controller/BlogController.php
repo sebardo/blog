@@ -179,18 +179,18 @@ class BlogController extends Controller
         $categoryEntity = $em->getRepository('BlogBundle:Category')->findOneBySlug($category);
         
         if ($request->isXmlHttpRequest()) {
+            
             $offset = $request->get('offset');
             $limit = $request->get('limit');
             $posts = $em->getRepository('BlogBundle:Post')->loadPostsCategory($offset, $limit, $categoryEntity);
-            
-            return $this->render('BlogBundle:Blog:loadMorePosts.html.twig', array(
+            return $this->render('BlogBundle:Blog/Block:more.post.html.twig', array(
                 'posts'    => $posts,
                 'position' => $offset
             ));
         } else {
             $categories = $em->getRepository('BlogBundle:Category')->findBy(array('parentCategory' => null ), array('order' => 'ASC'));
             $tags = $em->getRepository('BlogBundle:Tag')->findBy(array(), array('name' => 'ASC'));
-            $posts = $em->getRepository('BlogBundle:Post')->loadPostsCategory(0, 6, $categoryEntity);
+            $posts = $em->getRepository('BlogBundle:Post')->loadPostsCategory(0, 2, $categoryEntity);
             $total_items = $em->getRepository('BlogBundle:Post')->countTotal();
 
             return array(

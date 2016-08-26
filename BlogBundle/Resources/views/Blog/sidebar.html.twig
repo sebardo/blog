@@ -11,7 +11,15 @@
     </div>
     <div class="panel-body">
         <ul class="list-inline">
-            No entry
+            {% for category in categories %}
+                <li>
+                    <a href="{{ path('blog_blog_category', {'category': category.slug }) }}">
+                        <i class="ion-ios-arrow-right"></i> {{ category.name }}({{ category.posts | length }})
+                    </a>
+                </li>
+            {% else %}
+                No entry
+            {% endfor %}  
         </ul>
     </div>
 </div>
