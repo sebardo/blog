@@ -24,7 +24,7 @@ class PostTranslation implements \A2lix\I18nDoctrineBundle\Doctrine\Interfaces\O
      * @var string
      *
      * @Gedmo\Slug(fields={"title"})
-     * @ORM\Column(length=255, unique=true)
+     * @ORM\Column(length=255, unique=true, nullable=true)
      */
     private $slug;
     

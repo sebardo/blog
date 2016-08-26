@@ -1,12 +1,13 @@
-<div class="networks">
-    <h5>{{ 'blog.social.plural' | trans | upper}}</h5>
-    <h5>{{ 'blog.singular' | trans | upper}}</h5>
-    <div class="share-content" data="{{app.request.uri}}" style="display: inline-block">
+<!-- Share -->
+<div class="panel panel-default networks">
+    <div class="panel-heading">
+        <h4>{{ 'blog.social.plural' | trans | upper}}</h4>
+    </div>
+    <div class="panel-body">
         {% if post.title is not defined %}
             {{shareUrlBlog( app.request.uri, true , 'Blog KundaliniWoman') | raw  }}
         {% else%}
             {{shareUrlBlog( app.request.uri, true , post.title) | raw  }}
         {% endif %}
-        
     </div>
 </div>

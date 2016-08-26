@@ -234,11 +234,6 @@ class BlogController extends Controller
         );
     }
     
-    
-    
-     
-    
-   
     /**
      * @Route("/comment/")
      * @Method("POST")

@@ -38,11 +38,23 @@ class PostType extends AbstractType
                 'expanded' => false,
                 'required' => false,
             );
-                
-      
-        
         $builder
-            ->add('translations', 'A2lix\TranslationFormBundle\Form\Type\TranslationsType')
+            ->add('translations', 'a2lix_translations', array(
+                'fields' => array(                               
+                    'title' => array(                       
+                        'required' => true
+                    ),
+                    'slug' => array(                         
+                        'required' => false
+                    ),
+                    'shortDescription' => array(                         
+                        'required' => true
+                    ),
+                    'description' => array(                         
+                        'required' => true
+                    ),
+                ),
+            ))
             ->add('categories', EntityType::class, array(
                 'class' => 'BlogBundle:Category',
                 'query_builder' => function (\Doctrine\ORM\EntityRepository $er) {

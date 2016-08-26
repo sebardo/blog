@@ -1,9 +1,19 @@
-<div class="tags">
-    <h5>{{ 'post.tags' | trans | upper}}</h5>
-    <h5>{{ 'blog.singular' | trans | upper}}</h5>
-    {% for tag in get_tags() %}
-        <a href="{{ path('blog_blog_tag', {'tag': tag.slug }) }}">
-           <i class="ion-ios-arrow-right"></i> {{ tag.name }}({{ tag.posts | length }})
-        </a>
- {% endfor %}     
+<!-- Tags -->
+<div class="panel panel-default tags">
+    <div class="panel-heading">
+        <h4>{{ 'post.tags' | trans | upper}}</h4>
+    </div>
+    <div class="panel-body">
+        <ul class="list-inline">
+            {% for tag in get_tags() %}
+                <li>
+                    <a href="{{ path('blog_blog_tag', {'tag': tag.slug }) }}">
+                        <i class="ion-ios-arrow-right"></i> {{ tag.name }}({{ tag.posts | length }})
+                    </a>
+                </li>
+            {% else %}
+                No entry
+            {% endfor %}  
+        </ul>
+    </div>
 </div>

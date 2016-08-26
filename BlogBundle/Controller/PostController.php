@@ -13,6 +13,7 @@ use BlogBundle\CommonBundle\Exception\ExceptionBase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use stdClass;
 use Symfony\Component\HttpFoundation\Response;
+use A2lix\I18nDoctrineBundle\Annotation\I18nDoctrine;
 
 /**
  * Post controller.
@@ -21,7 +22,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PostController extends Controller
 {
-    use \A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
     /**
      * Lists all Post entities.
      *
@@ -109,6 +109,7 @@ class PostController extends Controller
      * @Route("/{id}/edit")
      * @Method({"GET", "POST"})
      * @Template()
+     * @I18nDoctrine
      */
     public function editAction(Request $request, Post $post)
     {

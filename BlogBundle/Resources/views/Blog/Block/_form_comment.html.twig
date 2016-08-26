@@ -1,10 +1,20 @@
-{{ form_start(form) }}
+{{ form_start(form, { 'attr': {'class': 'clearfix'} } ) }}
           
-{{ form_widget(form.name, {'attr' : { 'class' : 'form-control', 'placeholder': 'Ingresa tu nombre'} }) }}
-{{ form_widget(form.email, {'attr' : { 'class' : 'form-control' , 'placeholder': 'Ingresa tu email'} }) }}
-{{ form_widget(form.comment, {'attr' : { 'class' : 'form-control', 'placeholder': 'Ingresa tu comentario' } }) }}
-        
-<input type="submit" class="btn btn-core btn-flat white" value="Comentar" />
+    <div class="col-md-6 form-group">
+        <label class="sr-only" for="name">Name</label>
+        {{ form_widget(form.name, {'attr' : { 'class' : 'form-control', 'placeholder': 'Ingresa tu nombre'} }) }}
+    </div>
+    <div class="col-md-6 form-group">
+        <label class="sr-only" for="email">Email</label>
+        {{ form_widget(form.email, {'attr' : { 'class' : 'form-control' , 'placeholder': 'Ingresa tu email'} }) }}
+    </div>
+    <div class="col-md-12 form-group">
+        <label class="sr-only" for="email">Comment</label>
+        {{ form_widget(form.comment, {'attr' : { 'class' : 'form-control', 'placeholder': 'Ingresa tu comentario' } }) }}
+    </div> 
+    <div class="col-md-12 form-group text-right">
+        <input type="submit" class="btn btn-core btn-primary" value="Comentar" />
+    </div>        
 {{ form_end(form) }}
  
               
