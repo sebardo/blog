@@ -12,6 +12,7 @@ use BlogBundle\Entity\Comment;
 use CoreBundle\CoreBundle\Entity\Actor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use A2lix\I18nDoctrineBundle\Annotation\I18nDoctrine;
 use DateTime;
 
 /**
@@ -30,15 +31,15 @@ class BlogController extends Controller
         
         $categories = $em->getRepository('BlogBundle:Category')->findBy(array('parentCategory' => null ), array('order' => 'ASC'));
         $tags = $em->getRepository('BlogBundle:Tag')->findBy(array(), array('name' => 'ASC'));
-        $posts = $em->getRepository('BlogBundle:Post')->findBy(array(),array('published' =>  'ASC'));
+//        $posts = $em->getRepository('BlogBundle:Post')->findBy(array(),array('published' =>  'ASC'));
         
-//         $qb = $em->getRepository('BlogBundle:Post')->createQueryBuilder('p')
-//                ->join('p.translations', 't')
-////                ->where('t.id = :tag')
-////                ->setParameter('tag', $tagEntity->getId())
-////                ->setMaxResults(3)
-//                ->orderBy('p.published', 'ASC');
-//        $posts = $qb->getQuery()->getResult();
+         $qb = $em->getRepository('BlogBundle:Post')->createQueryBuilder('p')
+                ->join('p.translations', 't')
+//                ->where('t.id = :tag')
+//                ->setParameter('tag', $tagEntity->getId())
+//                ->setMaxResults(3)
+                ->orderBy('p.published', 'ASC');
+        $posts = $qb->getQuery()->getResult();
         
         return array(
             'categories' => $categories,
@@ -119,6 +120,7 @@ class BlogController extends Controller
      * @Route("/{slug}")
      * @Method("GET")
      * @Template()
+     * @I18nDoctrine
      */
     public function showAction($slug)
     {
