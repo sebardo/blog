@@ -32,12 +32,14 @@ class BlogControllerTest  extends CoreTest
         
         $container = $this->client->getContainer();
         $manager = $container->get('doctrine')->getManager();
-        $post = $manager->getRepository('BlogBundle:Post')->findOneByTitle('post '.$uid);
-        
+        $post = $manager->getRepository('BlogBundle:PostTranslation')->findOneByTitle('post '.$uid.' (es)');
+        //$post = $post->getTranslatable();
+
         $crawler = $this->client->request('GET', '/blog/'.$post->getSlug(), array(), array(), array(
                 'PHP_AUTH_USER' => 'admin',
                 'PHP_AUTH_PW'   => 'admin',
             ));
+        
         //Asserts
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("'.$post->getTitle().'")')->count());

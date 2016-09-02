@@ -50,8 +50,16 @@ class PostControllerTest  extends CoreTest
         //fill form
         $uid = rand(999,9999);
         $form = $crawler->filter('form[name="post"]')->form();
-        $form['post[title]'] = 'post '.$uid;
-        $form['post[description]'] = '<p>post <b>description</b> '.$uid. '</p>';
+        
+        $locales = $this->client->getContainer()->get('core_manager')->getLocales();
+        foreach ($locales as $locale) {
+            $form['post[translations]['.$locale.'][title]'] = 'post '.$uid.' ('.$locale.')';
+            $form['post[translations]['.$locale.'][shortDescription]'] = 'post shot description'.$uid. ' ('.$locale.')</p>';
+            $form['post[translations]['.$locale.'][description]'] = '<p>post <b>description</b> '.$uid. ' ('.$locale.')</p>';
+            $form['post[translations]['.$locale.'][metaTitle]'] = 'meta title  ('.$locale.')'.$uid;
+            $form['post[translations]['.$locale.'][metaDescription]'] = 'meta description ('.$locale.')'.$uid;
+        }
+        
         $form['post[published]'] = date('d').'/'.date('m').'/'.date('Y');
         $form['post[highlighted]']->tick();
         $crawler = $this->client->submit($form);// submit the form

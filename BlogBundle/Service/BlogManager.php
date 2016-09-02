@@ -28,7 +28,7 @@ class BlogManager
 //        if($this->container->getParameter('database_driver') == 'pdo_mysql'){
             $sql= " SELECT YEAR(post.published) as year, MONTH(post.published) as month, t.title, t.slug "
                     . " FROM post as post  "
-                    . " LEFT JOIN PostTranslation as t ON t.translatable_id = post.id AND t.locale = '$locale' "
+                    . " LEFT JOIN post_translation as t ON t.translatable_id = post.id AND t.locale = '$locale' "
                     . " group by post.published, t.title,  t.slug "
                     . " order by year DESC, month ASC, title ASC "
                     ;
