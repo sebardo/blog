@@ -1,0 +1,37 @@
+<article data-position="{{position}}">
+    <h2><a  href="{{path("blog_blog_show", {slug: post.slug})}}">{{ post.title }}</a></h2>
+    <div class="row">
+        <div class="col-sm-6 col-md-6">
+            <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
+            {% for category in post.categories %}
+                <a href="{{ path('blog_blog_tag', {'tag': category.slug }) }}">{{ category.name }} ({{ category.posts | length }})</a>
+                {{ (not loop.last) ? ',' : ''}} 
+            {% endfor %}&nbsp;&nbsp;
+            <span class="glyphicon glyphicon-bookmark"></span>
+            {% for tag in post.tags %}
+                <a href="{{ path('blog_blog_tag', {'tag': tag.slug }) }}">{{ tag.name }} ({{ tag.posts | length }})</a>
+                {{ (not loop.last) ? ',' : ''}} 
+            {% endfor %} 
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <span class="glyphicon glyphicon-pencil"></span> <a href="singlepost.html#comments">{{post.comments | length}} Comments</a>			          		
+            &nbsp;&nbsp;<span class="glyphicon glyphicon-time"></span> 
+            {{ post.published | date ('F') | trans }} {{ post.published | date ('d\, Y h:i A')}}
+        </div>
+    </div>
+    <hr>
+    {% set path = '' %}
+    {% if post.images|length > 0 %}
+        {% set path = post.images.first.path %}
+    {% endif %}
+    {% if path != ''%}
+        <img src="{{path}}" class="img-responsive">
+    {%else%}
+        <img src="http://placehold.it/900x300" class="img-responsive">
+    {% endif%}
+    <br>
+    <p class="lead">{{ post.shortDescription }}</p>
+    <p>{{ post.description | striptags | truncate(400, true, '...') | raw }}</p>
+    <p class="text-right"><a href="{{path("blog_blog_show", {slug: post.slug})}}"> continue reading... </a></p>
+  <hr>
+</article>

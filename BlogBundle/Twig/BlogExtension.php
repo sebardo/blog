@@ -27,6 +27,7 @@ class BlogExtension extends \Twig_Extension
     {
         return array(
             new Twig_SimpleFunction('blog_search', array($this, 'blogSearch')),
+            new Twig_SimpleFunction('blog_categories', array($this, 'blogCategories')),
             new Twig_SimpleFunction('blog_tags', array($this, 'blogTags')),
             new Twig_SimpleFunction('blog_feed', array($this, 'blogFeed')),
             new Twig_SimpleFunction('blog_social', array($this, 'blogSocial')),
@@ -45,19 +46,20 @@ class BlogExtension extends \Twig_Extension
     public function blogSearch()
     {
         $twig = $this->container->get('twig');
-
         $content = $twig->render('BlogBundle:Blog/Block:_search.html.twig', array());
-
         return $content;
     }
     
+    public function blogCategories()
+    {
+        $twig = $this->container->get('twig');
+        $content = $twig->render('BlogBundle:Blog/Block:_categories.html.twig', array());
+        return $content;
+    }
     public function blogTags()
     {
-
         $twig = $this->container->get('twig');
-
         $content = $twig->render('BlogBundle:Blog/Block:_tags.html.twig', array());
-
         return $content;
     }
     
@@ -163,6 +165,7 @@ class BlogExtension extends \Twig_Extension
             $qb = $em->getRepository('BlogBundle:Post')
                 ->createQueryBuilder('p')
                 ->join('p.categories', 'c')
+                ->join('p.translations', 't')
                 ->where('c.id = :category')
                 ->andWhere('p.highlighted = true')
                 ->setParameter('category', $entity->getId())
@@ -172,6 +175,7 @@ class BlogExtension extends \Twig_Extension
             $qb = $em->getRepository('BlogBundle:Post')
                 ->createQueryBuilder('p')
                 ->join('p.tags', 't')
+                ->join('p.translations', 't')
                 ->where('t.id = :tag')
                 ->andWhere('p.highlighted = true')
                 ->setParameter('tag', $entity->getId())

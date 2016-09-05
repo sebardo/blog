@@ -7,22 +7,7 @@
     {% block blog_menu %}
         {% include 'BlogBundle:Blog/Block:menu.blog.html.twig' %}
     {% endblock %}
-    
-     
-    <div class="container" style="width: 1050px;margin-top: 30px">
-        <div class="row core-row" >
-           {% block breadcrumb %}
-               <div class="col-md-12 col-xs-12">
-                   <ol class="breadcrumb">
-                       <li ><a href="/">{{ 'home' | trans }}</a></li>
-                       <li><a href="{{ path('blog_blog_index') }}">{{ 'blog.singular' | trans }}</a></li>
-                       <li><a href="{{ path('blog_blog_search') }}">{{ 'search' | trans }}</a></li>
-                   </ol>
-               </div>
-           {% endblock %}
-       </div>
-   </div> 
-
+ 
 {% endblock %}
 
 {% block content %}
@@ -30,7 +15,6 @@
 <div class="container-content">
   <div class="container">
       
-    {% include 'BlogBundle:Blog/Block:breadcrumb.html.twig' %}
     <div class="row core-row blog">
   
         <div id="mainContent" class="col-md-8 col-sm-8">

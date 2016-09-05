@@ -8,65 +8,41 @@
     
 {% endblock %}
 
-{% block content_header %}
-    <div>
-        {% include 'BlogBundle:Blog/Block:carousel.blog.html.twig' %}
-    </div>
-{% endblock %}
 
 {% block content %}
     <div class="container container-blog">
         <div class="row core-row blog">
+            <h1>List Posts</h1>
+            
+            
+
+
+            {% if category is defined %}
+                <div>{% include 'BlogBundle:Blog/Block:carousel.blog.html.twig' %}</div>
+            {% endif %}
             <div class="col-md-8 post-list" id="post-list">
-                <h1>Latest Posts</h1>
+                
+                {% if search is defined%}
+                    <div class="search-results">
+                        {% if posts|length > 0 %}
+                            <h4>RESULTADOS PARA LA BÚSQUEDA: <b>{{search}}</b></h4>
+                        {% else %}
+                            <h4>NO HAY RESULTADOS PARA LA BÚSQUEDA: <b>{{search}}</b></h4>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
                 {% set position = 0 %}
                 <script> position = 0; </script> 
                 {% for post in posts %}
                     <script> position = position + 1; </script> 
                     {% set position = position + 1 %}
-                    <article data-position="{{position}}">
-                        <h2><a  href="{{path("blog_blog_show", {slug: post.slug})}}">{{ post.title }}</a></h2>
-                        <div class="row">
-                            <div class="col-sm-6 col-md-6">
-                                <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
-                                {% for category in post.categories %}
-                                    <a href="{{ path('blog_blog_tag', {'tag': category.slug }) }}">{{ category.name }} ({{ category.posts | length }})</a>
-                                    {{ (not loop.last) ? ',' : ''}} 
-                                {% endfor %}&nbsp;&nbsp;
-                                <span class="glyphicon glyphicon-bookmark"></span>
-                                {% for tag in post.tags %}
-                                    <a href="{{ path('blog_blog_tag', {'tag': tag.slug }) }}">{{ tag.name }} ({{ tag.posts | length }})</a>
-                                    {{ (not loop.last) ? ',' : ''}} 
-                                {% endfor %} 
-                            </div>
-                            <div class="col-sm-6 col-md-6">
-                                <span class="glyphicon glyphicon-pencil"></span> <a href="singlepost.html#comments">{{post.comments | length}} Comments</a>			          		
-                                &nbsp;&nbsp;<span class="glyphicon glyphicon-time"></span> 
-                                {{ post.published | date ('F') | trans }} {{ post.published | date ('d\, Y h:i A')}}
-                            </div>
-                        </div>
-                        <hr>
-                        {% set path = '' %}
-                        {% if post.images|length > 0 %}
-                            {% set path = post.images.first.path %}
-                        {% endif %}
-                        {% if path != ''%}
-                            <img src="{{path}}" class="img-responsive">
-                        {%else%}
-                            <img src="http://placehold.it/900x300" class="img-responsive">
-                        {% endif%}
-                        <br>
-                        <p class="lead">{{ post.shortDescription }}</p>
-                        <p>{{ post.description | striptags | truncate(400, true, '...') | raw }}</p>
-                        <p class="text-right"><a href="{{path("blog_blog_show", {slug: post.slug})}}"> continue reading... </a></p>
-                      <hr>
-                    </article>
+                    {% include 'BlogBundle:Blog/Block:_article.html.twig' %}
                 {% endfor %}
                 {% if total_items is defined and posts|length >  1 %}
                     <ul class="post-more pager text-center">
                         <li class="more"><a href="#" id="load-more">Load more post <span class="loading" style="display: none;">cargando...</span></a> </li>
                     </ul>
-                    
                 {% endif %}
             </div>
             <div class="col-md-4 post-sidebar">
@@ -91,19 +67,14 @@
     <script type="text/javascript">
         
         {% if total_items is defined %}
-            
             $(".blog-menu a.item").click(function (event) {   
                console.log($(this).attr('href')); 
                window.location.href = $(this).attr('href');
             });
-
             $("#load-more").click(function (event) {
                 event.preventDefault();
                 var total_items = parseInt({{ total_items }});
-
-                console.log(position, total_items);
                 $('.loading').show();
-
                 $.ajax({
                     method: "POST",
                     url: "{{path('blog_blog_category', {'category': category.slug })}}",
@@ -111,13 +82,11 @@
                         offset: position,
                         limit: 2
                     }
-
                 }).done(function (data) {
                     console.log(data);
                     $('.post-more').before(data);
                     $('.post-more').before('<div style="clear: both; padding: 0"> </div>');
                     $('.loading').hide();
-                    //$('html, body').scrollTop($(document).height());
                     $("#load-more a").blur();
                     //check if there are more news, if not, hide ver mas noticias
                     position = position + 2;
@@ -131,16 +100,26 @@
             });
         {% endif %}
          
-        $('.list > li a').click(function() {
-            $(this).parent().find('ul').eq(0).toggle();
+        $('.list > li a').click(function () {
+            $(this).parent().find('ul').eq(0).slideToggle('slow');
 
-            if ($('#'+$(this).attr('id')+ " span.active").css('display') == 'inline-block'){
-                $('#'+$(this).attr('id')+ " span.active").css('display', 'none');
-                $('#'+$(this).attr('id')+ " span.pasive").css('display','inline-block');
-            }else{
-                $('#'+$(this).attr('id')+ " span.pasive").css('display', 'none');
-                $('#'+$(this).attr('id')+ " span.active").css('display','inline-block');
+            if ($('#' + $(this).attr('id') + " span.active").css('display') == 'inline-block') {
+                $('#' + $(this).attr('id') + " span.active").css('display', 'none');
+                $('#' + $(this).attr('id') + " span.pasive").css('display', 'inline-block');
+            } else {
+                $('#' + $(this).attr('id') + " span.pasive").css('display', 'none');
+                $('#' + $(this).attr('id') + " span.active").css('display', 'inline-block');
             }
+            
+            setTimeout(function(){
+                var sidebarHeight = $('#sidebarContent').height();
+                var mainHeight = $('#mainContent').height();
+                if(sidebarHeight > mainHeight) {
+                    //console.log(sidebarHeight);
+                    $('#mainContent').height(sidebarHeight-15);
+                }
+            }, 1000);
+            
         });
         
         $('.share-content').each(function( index ) {

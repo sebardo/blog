@@ -4,7 +4,7 @@
             <div class="col-md-12 subcategory-container">
                 {% set count = 10%}
 
-                {% for cat in categories %}
+                {% for cat in get_blog_categories() %}
                     {% if loop.index < count %}
                         {% if cat.subcategories | length > 0 %}
                             <div class="btn-group {% if category is defined and category.slug ==  cat.slug%}active{% endif %}" style="width: auto!important;">
@@ -34,7 +34,7 @@
                         <span style="margin-top: 0px;" class="login-label ion-chevron-down"></span>
                     </a>
                      <ul class="dropdown-menu dropdown-menu-right" role="menu" style="margin-top: 0;padding-top: 0px;">
-                        {% for cat in categories %}
+                        {% for cat in get_blog_categories() %}
                             {% if loop.index > 10 %}
                                 <li >
                                     <a href="{{ path('blog_blog_category', {'category': cat.slug }) }}">

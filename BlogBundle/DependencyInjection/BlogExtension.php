@@ -24,5 +24,10 @@ class BlogExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+        
+        //blog parameters
+        if (isset($config['fixture_data'])) {
+            $container->setParameter('blog.fixture_data', $config['fixture_data']);
+        }
     }
 }

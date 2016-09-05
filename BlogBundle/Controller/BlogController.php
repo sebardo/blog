@@ -172,7 +172,7 @@ class BlogController extends Controller
 
     /**
      * @Route("/category/{category}")
-     * @Template()
+     * @Template("BlogBundle:Blog:list.html.twig")
      */
     public function categoryAction(Request $request, $category)
     {
@@ -208,7 +208,7 @@ class BlogController extends Controller
     
     /**
      * @Route("/tag/{tag}")
-     * @Template()
+     * @Template("BlogBundle:Blog:list.html.twig")
      */
     public function tagAction($tag)
     {
@@ -258,7 +258,7 @@ class BlogController extends Controller
         $em->persist($comment);
         $em->flush();
        
-        return $this->redirect($this->getRefererPath($request));
+        return $this->redirect($this->get('core_manager')->getRefererPath($request));
     }
     /**
      * Creates a form to create a Post entity.
@@ -277,8 +277,6 @@ class BlogController extends Controller
 
         return $form;
     }
-    
-    
     
     /**
      * @param Comment $comment
@@ -342,22 +340,11 @@ class BlogController extends Controller
         
         return $actor;
     }
-    
-    public function getRefererPath(Request $request=null)
-    {
-        $referer = $request->headers->get('referer');
-
-        $baseUrl = $request->getSchemeAndHttpHost();
-
-        $lastPath = substr($referer, strpos($referer, $baseUrl) + strlen($baseUrl));
-
-        return $lastPath;
-    }
  
     /**
      * @Route("/search/", name="blog_search")
      * @Route("/search/{search}")
-     * 
+     * @Template("BlogBundle:Blog:list.html.twig")
      */
     public function searchAction(Request $request, $search = null) {
 
@@ -366,16 +353,12 @@ class BlogController extends Controller
         }
        
         $em = $this->getDoctrine()->getManager();
-        $categories = $em->getRepository('BlogBundle:Category')->findBy(array('parentCategory' => null ), array('order' => 'ASC'));
-        $tags = $em->getRepository('BlogBundle:Tag')->findBy(array(), array('name' => 'ASC'));
         $posts = $em->getRepository('BlogBundle:Post')->findPost($search);
         
-        return $this->render('BlogBundle:Blog:search.html.twig', array(
+        return array(
             'search'     => $search,
             'posts'      => $posts,
-            'categories' => $categories,
-            'tags'       => $tags
-        ));
+        );
     }
    
 }

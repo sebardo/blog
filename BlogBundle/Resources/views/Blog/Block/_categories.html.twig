@@ -1,0 +1,19 @@
+<!-- Categories -->      
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4>CATEGORIES</h4>
+    </div>
+    <div class="panel-body">
+        <ul class="list-inline">
+            {% for category in get_blog_categories() %}
+                <li>
+                    <a href="{{ path('blog_blog_category', {'category': category.slug }) }}">
+                        <i class="ion-ios-arrow-right"></i> {{ category.name }}({{ category.posts | length }})
+                    </a>
+                </li>
+            {% else %}
+                No entry
+            {% endfor %}  
+        </ul>
+    </div>
+</div>
