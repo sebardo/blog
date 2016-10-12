@@ -26,6 +26,7 @@ class BlogExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
+            new Twig_SimpleFunction('blog_list', array($this, 'blogList'), array('is_safe' => array('html'))),
             new Twig_SimpleFunction('blog_search', array($this, 'blogSearch')),
             new Twig_SimpleFunction('blog_categories', array($this, 'blogCategories')),
             new Twig_SimpleFunction('blog_tags', array($this, 'blogTags')),
@@ -39,10 +40,39 @@ class BlogExtension extends \Twig_Extension
             new Twig_SimpleFunction('get_posts', array($this, 'getPosts')),
             new Twig_SimpleFunction('get_tags', array($this, 'getTags')),
             new Twig_SimpleFunction('get_blog_categories', array($this, 'getCategories')),
+            new Twig_SimpleFunction('get_blog_total_items', array($this, 'getBlogTotalItems')),
         );
     }
     
   
+    public function blogList($limit=null, $categoryId=null, $tagId=null)
+    {
+        $twig = $this->container->get('twig');
+        $em = $this->container->get('doctrine')->getManager();
+        
+        $qb = $em->getRepository('BlogBundle:Post')->createQueryBuilder('p')
+                ->join('p.translations', 't');
+        if(!is_null($limit)){
+            $qb->setMaxResults($limit);
+        }
+        if(!is_null($categoryId)){
+            $qb->join('p.categories', 'c')
+               ->where('c.id = :categoryId')
+               ->setParameter('categoryId', $tagId);
+        }
+        if(!is_null($tagId)){
+            $qb->join('p.tags', 'tag')
+               ->where('tag.id = :tag')
+               ->setParameter('tag', $tagId);
+        }
+        $qb->orderBy('p.published', 'ASC');
+        
+        $posts = $qb->getQuery()->getResult();
+        
+        $content = $twig->render('BlogBundle:Blog/Block:_list.html.twig', array('posts' => $posts));
+        return $content;
+    }
+    
     public function blogSearch()
     {
         $twig = $this->container->get('twig');
@@ -232,6 +262,20 @@ class BlogExtension extends \Twig_Extension
         return $entities;
     }
     
+    /**
+    * Returns integer
+    *
+    * @param itenger $total_items  
+    */
+    public function getBlogTotalItems()
+    {
+        $em = $this->container->get('doctrine')->getManager();
+        $total_items = $em->getRepository('BlogBundle:Post')->countTotal();
+        
+        return $total_items;
+    }
+            
+            
     /**
      * {@inheritDoc}
      */

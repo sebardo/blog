@@ -6,3 +6,8 @@ blog:
       singular: Social Network
       plural: Social Networks
   history: Blog history
+  last.post: Latest Posts
+  loading: Loading
+  more.post: See more post
+  previous: Previous
+  next: Next

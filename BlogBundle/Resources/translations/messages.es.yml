@@ -6,7 +6,11 @@ blog:
       singular: Red Social
       plural: Redes Sociales
   history: Historial del blog
-  
+  last.post: Últimas publicaciones
+  loading: Cargando
+  more.post: Ver más publicaciones
+  previous: Anterior
+  next: Siguiente
       
 es: España
 mx: Mexico

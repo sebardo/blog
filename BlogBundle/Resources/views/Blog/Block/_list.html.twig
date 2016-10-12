@@ -1,0 +1,56 @@
+<h1>{{ 'blog.last.post' | trans }}</h1>
+{% set position = 0 %}
+{% for post in posts %}
+    {% set position = position + 1 %}
+    {% include 'BlogBundle:Blog/Block:_article.html.twig' %}
+{% endfor %}
+{% set total_items = get_blog_total_items() %}
+{% if total_items is defined and posts|length >  1 %}
+    <div class="row post-list">
+        <div class="col-md-12 col-sm-12 col-xs-12 more-post">
+            <div class="loading" style="display: none;">{{ 'blog.loading' | trans }}...<br></div>
+            <div class="view-more" >
+                <button style="background-color: transparent" id="load-more"><a>{{ 'blog.more.post' | trans | upper }}</a></button>
+            </div>
+        </div> 
+    </div>
+    
+    <script>
+        $("#load-more").click(function (event) {
+            event.preventDefault();
+            var position = parseInt($("#post-list>div:last-child").attr('data-position'));
+            var total_items = parseInt({{ total_items }});
+
+            console.log(position, total_items);
+            $('.loading').show();
+
+            $.ajax({
+                method: "POST",
+                url: "{{path('blog_blog_index')}}",
+                data: {
+                    offset: position,
+                    limit: 1
+                }
+
+            }).done(function (data) {
+                $('#post-list').append(data);
+                $('.loading').hide();
+                $('html, body').scrollTop($(document).height());
+                $("#load-more a").blur();
+                //check if there are more news, if not, hide ver mas noticias
+                var position = parseInt($("#post-list>div:last-child").attr('data-position'));
+                if (total_items === position) {
+                    $(".view-more").hide();
+                }
+            }).fail(function () {
+                $('.loading').hide();
+                alert('Problem!');
+            });
+        });
+
+    </script>
+{% endif %}
+<ul class="pager">
+    <li class="previous"><a href="#">← {{ 'blog.previous' | trans }}</a></li>
+    <li class="next"><a href="#">{{ 'blog.next' | trans }} →</a></li>
+</ul>
