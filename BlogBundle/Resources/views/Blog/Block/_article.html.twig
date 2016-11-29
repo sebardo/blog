@@ -30,7 +30,7 @@
         <img src="http://placehold.it/900x300" class="img-responsive">
     {% endif%}
     <br>
-    <p class="lead">{{ post.shortDescription }}</p>
+    <p class="lead">{{ post.shortDescription | raw }}</p>
     <p>{{ post.description | striptags | truncate(400, true, '...') | raw }}</p>
     <p class="text-right"><a href="{{path("blog_blog_show", {slug: post.slug})}}"> continue reading... </a></p>
   <hr>

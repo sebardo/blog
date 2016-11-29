@@ -29,23 +29,29 @@ class BlogController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         
-        $categories = $em->getRepository('BlogBundle:Category')->findBy(array('parentCategory' => null ), array('order' => 'ASC'));
-        $tags = $em->getRepository('BlogBundle:Tag')->findBy(array(), array('name' => 'ASC'));
-//        $posts = $em->getRepository('BlogBundle:Post')->findBy(array(),array('published' =>  'ASC'));
+        if ($request->isXmlHttpRequest()) {
+            
+            $offset = $request->get('offset');
+            $limit = $request->get('limit');
+            $posts = $em->getRepository('BlogBundle:Post')->loadPostsCategory($offset, $limit, $categoryEntity);
+            return $this->render('BlogBundle:Blog/Block:more.post.html.twig', array(
+                'posts'    => $posts,
+                'position' => $offset
+            ));
+        } else {
+            
+            $categories = $em->getRepository('BlogBundle:Category')->findBy(array('parentCategory' => null ), array('order' => 'ASC'));
+            $tags = $em->getRepository('BlogBundle:Tag')->findBy(array(), array('name' => 'ASC'));
+
+
+            return array(
+                'categories' => $categories,
+                'posts' => $posts,
+                'tags' => $tags
+            );
+        }
+ 
         
-         $qb = $em->getRepository('BlogBundle:Post')->createQueryBuilder('p')
-                ->join('p.translations', 't')
-//                ->where('t.id = :tag')
-//                ->setParameter('tag', $tagEntity->getId())
-//                ->setMaxResults(3)
-                ->orderBy('p.published', 'ASC');
-        $posts = $qb->getQuery()->getResult();
-        
-        return array(
-            'categories' => $categories,
-            'posts' => $posts,
-            'tags' => $tags
-        );
 
     }
    

@@ -11,6 +11,9 @@ blog:
   more.post: Ver más publicaciones
   previous: Anterior
   next: Siguiente
+  feed:
+    message: "No quieres perderte las actualizaciones? Por favor, haga clic en el botón de abajo!"
+    button: Suscribete a mis feeds
       
 es: España
 mx: Mexico

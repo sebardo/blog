@@ -11,3 +11,6 @@ blog:
   more.post: Weitere Publikationen
   previous: Früher
   next: Nächster
+  feed:
+    message: "Wollen Sie nicht zu verpassen Updates? Bitte klicken Sie unten!"
+    button: Abonnieren Sie meinen Feed

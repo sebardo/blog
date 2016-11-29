@@ -1,56 +1,97 @@
-<h1>{{ 'blog.last.post' | trans }}</h1>
+{% set total_items = get_blog_total_items() %}
 {% set position = 0 %}
+<script> position = 0; </script> 
 {% for post in posts %}
+    <script> position = position + 1; </script> 
     {% set position = position + 1 %}
     {% include 'BlogBundle:Blog/Block:_article.html.twig' %}
 {% endfor %}
-{% set total_items = get_blog_total_items() %}
 {% if total_items is defined and posts|length >  1 %}
-    <div class="row post-list">
-        <div class="col-md-12 col-sm-12 col-xs-12 more-post">
-            <div class="loading" style="display: none;">{{ 'blog.loading' | trans }}...<br></div>
-            <div class="view-more" >
-                <button style="background-color: transparent" id="load-more"><a>{{ 'blog.more.post' | trans | upper }}</a></button>
-            </div>
-        </div> 
-    </div>
+    <ul class="post-more pager text-center">
+        <li class="more"><a href="#" id="load-more">{{ 'blog.more.post' | trans | upper }} <span class="loading" style="display: none;">{{ 'blog.loading' | trans }}...</span></a> </li>
+    </ul>
     
     <script>
-        $("#load-more").click(function (event) {
-            event.preventDefault();
-            var position = parseInt($("#post-list>div:last-child").attr('data-position'));
-            var total_items = parseInt({{ total_items }});
+        $(function() {
+            $(".blog-menu a.item").click(function (event) {   
+                console.log($(this).attr('href')); 
+                window.location.href = $(this).attr('href');
+             });
 
-            console.log(position, total_items);
-            $('.loading').show();
-
-            $.ajax({
-                method: "POST",
-                url: "{{path('blog_blog_index')}}",
-                data: {
-                    offset: position,
-                    limit: 1
-                }
-
-            }).done(function (data) {
-                $('#post-list').append(data);
-                $('.loading').hide();
-                $('html, body').scrollTop($(document).height());
-                $("#load-more a").blur();
-                //check if there are more news, if not, hide ver mas noticias
-                var position = parseInt($("#post-list>div:last-child").attr('data-position'));
-                if (total_items === position) {
-                    $(".view-more").hide();
-                }
-            }).fail(function () {
-                $('.loading').hide();
-                alert('Problem!');
+            {% if category is defined %}
+                {% set path = path('blog_blog_category', {'category': category.slug }) %}
+            {% else %} 
+                {% set path = path('blog_blog_index') %}
+            {% endif %}
+            $("#load-more").click(function (event) {
+                 event.preventDefault();
+                 var total_items = parseInt({{ total_items }});
+                 $('.loading').show();
+                 $.ajax({
+                     method: "POST",
+                     url: "{{path}}",
+                     data: {
+                         offset: position,
+                         limit: 2
+                     }
+                 }).done(function (data) {
+                     console.log(data);
+                     $('.post-more').before(data);
+                     $('.post-more').before('<div style="clear: both; padding: 0"> </div>');
+                     $('.loading').hide();
+                     $("#load-more a").blur();
+                     //check if there are more news, if not, hide ver mas noticias
+                     position = position + 2;
+                     if (total_items === position) {
+                         $(".pager").hide();
+                     }
+                 }).fail(function () {
+                     $('.loading').hide();
+                     alert('Problem!');
+                 });
             });
-        });
 
+            $('.list > li a').click(function () {
+                $(this).parent().find('ul').eq(0).slideToggle('slow');
+
+                if ($('#' + $(this).attr('id') + " span.active").css('display') == 'inline-block') {
+                    $('#' + $(this).attr('id') + " span.active").css('display', 'none');
+                    $('#' + $(this).attr('id') + " span.pasive").css('display', 'inline-block');
+                } else {
+                    $('#' + $(this).attr('id') + " span.pasive").css('display', 'none');
+                    $('#' + $(this).attr('id') + " span.active").css('display', 'inline-block');
+                }
+
+                setTimeout(function(){
+                    var sidebarHeight = $('#sidebarContent').height();
+                    var mainHeight = $('#mainContent').height();
+                    if(sidebarHeight > mainHeight) {
+                        //console.log(sidebarHeight);
+                        $('#mainContent').height(sidebarHeight-15);
+                    }
+                }, 1000);
+
+            });
+
+            $('.share-content').each(function( index ) {
+                var dir = $( this ).attr('data');
+                if(dir != ''){
+                    //var url = dir.replace("http://", "");
+                    var self = $(this);
+                    $.ajax({
+                        type: 'GET',
+                        url: "/blog/share-counter?url="+dir
+                        //data: {'url': url}
+                    }).done(function(result) {
+                        //console.log(result);
+                        //console.log(self.find('.tweet-counter>span.share-container-counter').html());
+                        self.find('.tweet-counter span.share-container-counter').text(result.tweet);
+                        self.find('.facebook-counter span.share-container-counter').text(result.facebook);
+                        self.find('.google-counter span.share-container-counter').text(result.google);
+                        self.find('.linked-counter span.share-container-counter').text(result.linkedin);
+                    });
+                }
+              });
+        });
     </script>
 {% endif %}
-<ul class="pager">
-    <li class="previous"><a href="#">← {{ 'blog.previous' | trans }}</a></li>
-    <li class="next"><a href="#">{{ 'blog.next' | trans }} →</a></li>
-</ul>

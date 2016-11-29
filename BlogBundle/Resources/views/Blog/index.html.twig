@@ -12,6 +12,7 @@
 <div class="container container-blog">
     <div class="row core-row blog">
         <div class="col-md-8 post-list" id="post-list">
+            <h1>{{ 'blog.last.post' | trans }}</h1>
             {{ blog_list() }}
         </div>
         <div class="col-md-4 post-sidebar">
@@ -36,52 +37,9 @@
     {{ parent() }}
                             
     <script type="text/javascript">
-        
         $(".blog-menu a.item").click(function (event) {   
            console.log($(this).attr('href')); 
            window.location.href = $(this).attr('href');
-        });
-        
-        $('.list > li a').click(function () {
-            $(this).parent().find('ul').eq(0).slideToggle('slow');
-
-            if ($('#' + $(this).attr('id') + " span.active").css('display') == 'inline-block') {
-                $('#' + $(this).attr('id') + " span.active").css('display', 'none');
-                $('#' + $(this).attr('id') + " span.pasive").css('display', 'inline-block');
-            } else {
-                $('#' + $(this).attr('id') + " span.pasive").css('display', 'none');
-                $('#' + $(this).attr('id') + " span.active").css('display', 'inline-block');
-            }
-            
-            setTimeout(function(){
-                var sidebarHeight = $('#sidebarContent').height();
-                var mainHeight = $('#mainContent').height();
-                if(sidebarHeight > mainHeight) {
-                    //console.log(sidebarHeight);
-                    $('#mainContent').height(sidebarHeight-15);
-                }
-            }, 1000);
-            
-        });
-
-        $('.share-content').each(function (index) {
-            var dir = $(this).attr('data');
-            if (dir != '') {
-                //var url = dir.replace("http://", "");
-                var self = $(this);
-                $.ajax({
-                    type: 'GET',
-                    url: "/blog/share-counter?url=" + dir
-                            //data: {'url': url}
-                }).done(function (result) {
-                    //console.log(result);
-                    //console.log(self.find('.tweet-counter>span.share-container-counter').html());
-                    self.find('.tweet-counter span.share-container-counter').text(result.tweet);
-                    self.find('.facebook-counter span.share-container-counter').text(result.facebook);
-                    self.find('.google-counter span.share-container-counter').text(result.google);
-                    self.find('.linked-counter span.share-container-counter').text(result.linkedin);
-                });
-            }
         });
     </script>
 {% endblock %}

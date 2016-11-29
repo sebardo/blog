@@ -11,3 +11,6 @@ blog:
   more.post: See more post
   previous: Previous
   next: Next
+  feed:
+    message: "Don't want to miss updates? Please click the below button!"
+    button: Subscribe to my feed

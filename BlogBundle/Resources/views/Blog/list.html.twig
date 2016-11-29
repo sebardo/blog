@@ -13,15 +13,10 @@
     <div class="container container-blog">
         <div class="row core-row blog">
             <h1>List Posts</h1>
-            
-            
-
-
             {% if category is defined %}
                 <div>{% include 'BlogBundle:Blog/Block:carousel.blog.html.twig' %}</div>
             {% endif %}
             <div class="col-md-8 post-list" id="post-list">
-                
                 {% if search is defined%}
                     <div class="search-results">
                         {% if posts|length > 0 %}
@@ -32,18 +27,7 @@
                     </div>
                 {% endif %}
 
-                {% set position = 0 %}
-                <script> position = 0; </script> 
-                {% for post in posts %}
-                    <script> position = position + 1; </script> 
-                    {% set position = position + 1 %}
-                    {% include 'BlogBundle:Blog/Block:_article.html.twig' %}
-                {% endfor %}
-                {% if total_items is defined and posts|length >  1 %}
-                    <ul class="post-more pager text-center">
-                        <li class="more"><a href="#" id="load-more">Load more post <span class="loading" style="display: none;">cargando...</span></a> </li>
-                    </ul>
-                {% endif %}
+                {{ blog_list() }}
             </div>
             <div class="col-md-4 post-sidebar">
                 {% include 'BlogBundle:Blog:sidebar.html.twig'%}
@@ -65,12 +49,14 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
-        
+        {% set total_items = get_blog_total_items() %}
         {% if total_items is defined %}
+            
             $(".blog-menu a.item").click(function (event) {   
                console.log($(this).attr('href')); 
                window.location.href = $(this).attr('href');
             });
+            
             $("#load-more").click(function (event) {
                 event.preventDefault();
                 var total_items = parseInt({{ total_items }});
@@ -99,48 +85,7 @@
                 });
             });
         {% endif %}
-         
-        $('.list > li a').click(function () {
-            $(this).parent().find('ul').eq(0).slideToggle('slow');
-
-            if ($('#' + $(this).attr('id') + " span.active").css('display') == 'inline-block') {
-                $('#' + $(this).attr('id') + " span.active").css('display', 'none');
-                $('#' + $(this).attr('id') + " span.pasive").css('display', 'inline-block');
-            } else {
-                $('#' + $(this).attr('id') + " span.pasive").css('display', 'none');
-                $('#' + $(this).attr('id') + " span.active").css('display', 'inline-block');
-            }
-            
-            setTimeout(function(){
-                var sidebarHeight = $('#sidebarContent').height();
-                var mainHeight = $('#mainContent').height();
-                if(sidebarHeight > mainHeight) {
-                    //console.log(sidebarHeight);
-                    $('#mainContent').height(sidebarHeight-15);
-                }
-            }, 1000);
-            
-        });
-        
-        $('.share-content').each(function( index ) {
-            var dir = $( this ).attr('data');
-            if(dir != ''){
-                //var url = dir.replace("http://", "");
-                var self = $(this);
-                $.ajax({
-                    type: 'GET',
-                    url: "/blog/share-counter?url="+dir
-                    //data: {'url': url}
-                }).done(function(result) {
-                    //console.log(result);
-                    //console.log(self.find('.tweet-counter>span.share-container-counter').html());
-                    self.find('.tweet-counter span.share-container-counter').text(result.tweet);
-                    self.find('.facebook-counter span.share-container-counter').text(result.facebook);
-                    self.find('.google-counter span.share-container-counter').text(result.google);
-                    self.find('.linked-counter span.share-container-counter').text(result.linkedin);
-                });
-            }
-          });
+       
     </script>
 {% endblock %}
 
