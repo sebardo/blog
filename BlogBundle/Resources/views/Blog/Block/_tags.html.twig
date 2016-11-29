@@ -1,7 +1,7 @@
 <!-- Tags -->
 <div class="panel panel-primary tags">
     <div class="panel-heading">
-        <h4>{{ 'post.tags' | trans | upper}}</h4>
+        <h4>{{ 'blog.tags' | trans | upper}}</h4>
     </div>
     <div class="panel-body">
         <ul class="list-inline">
@@ -12,7 +12,7 @@
                     </a>
                 </li>
             {% else %}
-                No entry
+                <div class="text-center">{{ 'blog.no.entry' | trans }}</div>
             {% endfor %}  
         </ul>
     </div>

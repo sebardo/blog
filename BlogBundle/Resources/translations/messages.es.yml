@@ -13,7 +13,10 @@ blog:
   next: Siguiente
   feed:
     message: "No quieres perderte las actualizaciones? Por favor, haga clic en el botón de abajo!"
-    button: Suscribete a mis feeds
+    button: Suscribete a mis feeds  
+  no.entry: No hay publicaciones
+  categories: Categorías
+  tags: Etiquetas
       
 es: España
 mx: Mexico

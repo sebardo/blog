@@ -14,3 +14,9 @@ blog:
   feed:
     message: "Don't want to miss updates? Please click the below button!"
     button: Subscribe to my feed
+  no.entry: No entry
+  categories: Categories
+  tags: Tags
+  
+
+
