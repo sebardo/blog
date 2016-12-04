@@ -18,5 +18,71 @@ blog:
   categories: Categories
   tags: Tags
   
+posts: Posts
+post:
+  singular: Post
+  plural: Post
+  title: Title
+  category: Category
+  categories: Categories
+  tags: Tags
+  slug: Slug
+  new: New
+  description: Description
+  createdAt: Created at
+  updatedAt:  Updated at 
+  published: Publish date 
+  created: Successfully created publication
+  edited: Successfully edited publication
+  deleted: Successfully deleted publication
+  date: Published at
+  of: of
+  continue: Continue reading
+  
+postcategories: Categories
+category:
+  singular: Category
+  plural: Categories
+  choose: Select category
+  parent: Parent category
+  created: Successfully created category
+  edited: Successfully edited category
+  deleted: Successfully deleted category
+  sort: Order categories
 
+subcategory:
+  plural: Subcategories
+  from_category: Subcategories of %category%
+  
+category.sub:
+  created: Successfully created subcategory
+  edited: Successfully edited subcategory
+  deleted: Successfully deleted subcategory
+  
+posttags: Tags
+tag:
+  singular: Tag
+  plural: Tags
+  created: Successfully created tag
+  edited: Successfully edited tag
+  deleted: Successfully deleted tag
+  sort: Order tags
+
+new.tag: New tag
+new.post: New publication
+
+postcomments: Comments
+comment:
+  singular: Comment
+  plural: Comments
+  active: Active
+  actor: User
+  leave: ¡Leave a comment!
+  header: There
+  header2: comments in this post
+  new: New comment
+  created: Successfully created comment
+  edited: Successfully edited comment
+  deleted: Successfully deleted comment
+  wait.for.validate: Your comment is awaiting verification
 

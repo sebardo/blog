@@ -17,24 +17,6 @@ blog:
   no.entry: No hay publicaciones
   categories: Categorías
   tags: Etiquetas
-      
-es: España
-mx: Mexico
-Bad credentials: El correo electrónico o la contraseña que ingresaste son incorrectos.
-January: Enero
-February: Febrero
-March: Marzo
-April: Abril
-May:  Mayo
-June: Junio
-July: Julio
-August: Augusto
-September: Septiembre
-October: Octubre
-November: Noviembre
-December: Deciembre
-
-
   
 posts: Publicaciones
 post:
@@ -45,7 +27,7 @@ post:
   categories: Categorías
   tags: Tags
   slug: Slug
-  new: Nueva novedad
+  new: Nueva
   description: Descripción
   createdAt: Fecha de creacion
   updatedAt:  Fecha de actualización
@@ -103,7 +85,4 @@ comment:
   created: Se ha creado el comentario satisfactoriamente
   edited: Se ha editado el comentario satisfactoriamente
   deleted: Se ha eliminado el comentario satisfactoriamente
-  wait.for.validate: Su comentario esta esperando validación.
-
-site:
-  singular: Sitio
+  wait.for.validate: Su comentario esta esperando validación
