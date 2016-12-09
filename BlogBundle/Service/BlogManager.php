@@ -22,7 +22,7 @@ class BlogManager
     
     public function blogHistory()
     {
-        $locale = $this->container->get('request')->getLocale();
+        $locale = $this->container->get('request_stack')->getCurrentRequest()->getLocale();
         
         $manager = $this->getManager();
 //        if($this->container->getParameter('database_driver') == 'pdo_mysql'){
