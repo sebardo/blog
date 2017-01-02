@@ -46,7 +46,6 @@ class BlogController extends Controller
 
             return array(
                 'categories' => $categories,
-                'posts' => $posts,
                 'tags' => $tags
             );
         }
