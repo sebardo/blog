@@ -9,15 +9,13 @@
 
 {% block content %}
     
-<div class="container container-blog">
-    <div class="row core-row blog">
-        <div class="col-md-8 post-list" id="post-list">
-            <h1>{{ 'blog.last.post' | trans }}</h1>
-            {{ blog_list() }}
-        </div>
-        <div class="col-md-4 post-sidebar">
-            {% include 'BlogBundle:Blog:sidebar.html.twig'%}
-        </div>
+<div class="container-blog">
+    <div class="col-md-8 post-list" id="post-list">
+        <h1>{{ 'blog.last.post' | trans }}</h1>
+        {{ blog_list() }}
+    </div>
+    <div class="col-md-4 post-sidebar">
+        {% include 'BlogBundle:Blog:sidebar.html.twig'%}
     </div>
 </div>
     

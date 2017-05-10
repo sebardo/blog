@@ -9,15 +9,12 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use A2lix\TranslationFormBundle\Form\Type\TranslationsType;
+
 
 class PostType extends AbstractType
 {
-    protected $formConfig;
-
-    public function __construct($formConfig=array())
-    {
-        $this->formConfig = $formConfig;
-    }
+    protected $translator;
     
     /**
      * @param FormBuilderInterface $builder
@@ -26,7 +23,10 @@ class PostType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
          
-    
+        if(isset($options['translator'])){
+            $this->translator = $options['translator'];
+        }
+        
         $tagConf = array(
                 'class'    => 'BlogBundle\Entity\Tag',
                 'query_builder' => function (\Doctrine\ORM\EntityRepository $er){
@@ -39,22 +39,16 @@ class PostType extends AbstractType
                 'required' => false,
             );
         $builder
-            ->add('translations', 'a2lix_translations', array(
-                'fields' => array(                               
-                    'title' => array(                       
-                        'required' => true
-                    ),
-                    'slug' => array(                         
-                        'required' => false
-                    ),
-                    'shortDescription' => array(                         
-                        'required' => true
-                    ),
-                    'description' => array(                         
-                        'required' => true
-                    ),
-                ),
-            ))
+            ->add('translations', TranslationsType::class, array(
+                    'fields' => array(                               
+                        'title' => array( 'label' => $this->translator->trans('title')),
+                        'description' => array( 'label' => $this->translator->trans('description')),
+                        'slug' => array(                         
+                            'label' => $this->translator->trans('slug'),                     
+                            'display' => false
+                        )
+                    )
+                ))
             ->add('categories', EntityType::class, array(
                 'class' => 'BlogBundle:Category',
                 'query_builder' => function (\Doctrine\ORM\EntityRepository $er) {
@@ -87,7 +81,8 @@ class PostType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'BlogBundle\Entity\Post'
+            'data_class' => 'BlogBundle\Entity\Post',
+            'translator' => null
         ));
     }
 

@@ -65,7 +65,7 @@ class PostController extends Controller
     public function newAction(Request $request)
     {
         $post = new Post();
-        $form = $this->createForm('BlogBundle\Form\PostType', $post);
+        $form = $this->createForm('BlogBundle\Form\PostType', $post, array('translator' => $this->get('translator') ));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -117,7 +117,7 @@ class PostController extends Controller
             $post->setPublished(null);
         }
         $deleteForm = $this->createDeleteForm($post);
-        $editForm = $this->createForm('BlogBundle\Form\PostType', $post);
+        $editForm = $this->createForm('BlogBundle\Form\PostType', $post, array('translator' => $this->get('translator') ));
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

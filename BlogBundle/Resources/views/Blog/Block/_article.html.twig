@@ -1,6 +1,6 @@
 <article data-position="{{position}}">
-    <h2><a  href="{{path("blog_blog_show", {slug: post.slug})}}">{{ post.title }}</a></h2>
-    <div class="row">
+    
+    <div class="post-header">
         <div class="col-sm-6 col-md-6">
             <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
             {% for category in post.categories %}
@@ -29,9 +29,11 @@
     {%else%}
         <img src="http://placehold.it/900x300" class="img-responsive">
     {% endif%}
-    <br>
-    <p class="lead">{{ post.shortDescription | raw }}</p>
-    <p>{{ post.description | striptags | truncate(400, true, '...') | raw }}</p>
-    <p class="text-right"><a href="{{path("blog_blog_show", {slug: post.slug})}}"> continue reading... </a></p>
+    <div class="post-content">
+        <h2><a  href="{{path("blog_blog_show", {slug: post.slug})}}">{{ post.title }}</a></h2>
+        <p class="lead">{{ post.shortDescription | raw }}</p>
+        <p class="text-right"><a href="{{path("blog_blog_show", {slug: post.slug})}}"> continue reading... </a></p>
+    </div>
+    
   <hr>
 </article>
