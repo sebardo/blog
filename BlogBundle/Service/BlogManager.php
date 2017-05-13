@@ -133,4 +133,21 @@ class BlogManager
 
         return ($return && is_writable($prev_path)) ? mkdir($path) : false;
     }
+    
+    public function getRelatedPost($entity)
+    {
+        $categories = $entity->getCategories();
+        $em = $this->container->get('doctrine')->getManager();
+        $returnValues = array();
+        
+        foreach ($categories as $category) {
+            $posts = $em->getRepository('BlogBundle:Post')->loadPostsCategory(0, 5, $category);
+            foreach ($posts as $post) {
+                if($entity->getId() != $post->getId())
+                $returnValues[] = $post;
+            }
+        }
+        return $returnValues;
+    }
+    
 }

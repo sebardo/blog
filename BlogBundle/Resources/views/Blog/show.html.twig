@@ -24,127 +24,102 @@
 
 {% block content %}
        
-    
-<div class="container container-blog">
-    <div class="row core-row blog">
-        <div class="col-md-8">
-            <article>
-                <h1>{{ post.title }}</h1>
+<div class="container-blog">
+    <div class="col-md-8 post-list" id="post-list">
+        <h1>{{ post.title }}</h1>
 
-                <div class="row">
-                    <div class="col-sm-6 col-md-6">
-                        <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
-                        {% for category in post.categories %}
-                            <a href="{{ path('blog_blog_tag', {'tag': category.slug }) }}">{{ category.name }} ({{ category.posts | length }})</a>
-                            {{ (not loop.last) ? ',' : ''}} 
-                        {% endfor %}&nbsp;&nbsp;
-                        <span class="glyphicon glyphicon-bookmark"></span>
-                        {% for tag in post.tags %}
-                            <a href="{{ path('blog_blog_tag', {'tag': tag.slug }) }}">{{ tag.name }} ({{ tag.posts | length }})</a>
-                            {{ (not loop.last) ? ',' : ''}} 
-                        {% endfor %} 
-                    </div>
-                    <div class="col-sm-6 col-md-6">
-                        <span class="glyphicon glyphicon-pencil"></span> <a href="singlepost.html#comments">{{post.comments | length}} Comments</a>			          		
-                        &nbsp;&nbsp;<span class="glyphicon glyphicon-time"></span> 
-                        {{ post.published | date ('F') | trans }} {{ post.published | date ('d\, Y h:i A')}}
-                    </div>
-                </div>
-                <hr>
-                {% set path = '' %}
-                {% if post.images|length > 0 %}
-                    {% set path = post.images.first.path %}
-                {% endif %}
-                {% if path != ''%}
-                    <img src="{{path}}" class="img-responsive">
-                {%else%}
-                    <img src="http://placehold.it/900x300" class="img-responsive">
-                {% endif%}
-                <div class="networks">
-                    <div class="share-content" data="{{app.request.uri}}" style="display: inline-block">
-                        {% if post.title is not defined %}
-                            {{shareUrlBlog( app.request.uri, true , 'Blog Kundalini Woman')}}
-                        {% else%}
-                            {{shareUrlBlog( app.request.uri, true , post.title)}}
-                        {% endif %}
-
-                    </div>
-                </div>
-                <br>
-                <p class="lead">{{ post.shortDescription }}</p>
-                <p>{{ post.description | raw }}</p>
-                <hr>
-            </article>				
-
-            <ul class="pager">
-                <li class="previous"><a href="index.html">← Back to posts</a></li>
-            </ul>	
-
-            <!-- Comment form -->
-            <div class="well">
-                <h4>{{ 'comment.leave' | trans }}</h4>
-                {% include 'CoreBundle:Base:alert.messages.html.twig' %}
-                {% include 'BlogBundle:Blog/Block:_form_comment.html.twig' %}			
+        <div class="row">
+            <div class="col-sm-6 col-md-6">
+                <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
+                {% for category in post.categories %}
+                    <a href="{{ path('blog_blog_tag', {'tag': category.slug }) }}">{{ category.name }} ({{ category.posts | length }})</a>
+                    {{ (not loop.last) ? ',' : ''}} 
+                {% endfor %}&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-bookmark"></span>
+                {% for tag in post.tags %}
+                    <a href="{{ path('blog_blog_tag', {'tag': tag.slug }) }}">{{ tag.name }} ({{ tag.posts | length }})</a>
+                    {{ (not loop.last) ? ',' : ''}} 
+                {% endfor %} 
             </div>
-            <hr>
-            <ul id="comments" class="comments">
-                {% include "BlogBundle:Blog/Block:comments.html.twig" %}
-                <li class="comment">
-                    <div class="clearfix">
-                        <h4 class="pull-left">John</h4>
-                        <p class="pull-right">9:41 PM on August 24, 2013</p>
-                    </div>
-                    <p>
-                        <em>I don't believe in astrology but still your writing style is really great!</em>
-                    </p>
-                </li>
-
-                <li class="comment clearfix">
-                    <div class="clearfix">
-                        <h4 class="pull-left">John</h4>
-                        <p class="pull-right">9:41 PM on August 24, 2013</p>
-                    </div>
-                    <p>
-                        <em>I don't believe in astrology but still your writing style is really great!</em>
-                    </p>
-                </li>
-            </ul>
-        </div>
-        <div class="col-md-4 post-sidebar">
-            {% include 'BlogBundle:Blog:sidebar.html.twig'%}
-        </div>
-        
-        <div style="clear: both"></div>
-        {% if related | length %}
-            <div class="col-md-12 col-xs-12 realted blog">
-                <h3>Te puede interesar ...</h3>
-                <div id="related" class="post-list">
-                    {% for post in related %}
-                        {% if loop.index < 5 %}
-                            <div class="col-md-3 col-xs-6" data-position="{{loop.index}}">
-                            <article>
-                                <div class="post-content list">
-                                    <a  href="{{path("blog_blog_show", {slug: post.slug})}}" >
-                                        {% set path = 'http://placehold.it/260x123' %}
-                                        {% if post.images|length > 0 %}
-                                            {% set path = get_thumb_image(post.images.first.path, '260') %}
-                                        {% endif %}
-                                        {%if path != ''%}<img style="width: 100%" src="{{ path }}" />{%endif%}
-                                        <p>{{ post.title }}</p>
-                                    </a>
-                                </div>
-                            </article>
-                        </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
+            <div class="col-sm-6 col-md-6">
+                <span class="glyphicon glyphicon-pencil"></span> <a href="singlepost.html#comments">{{post.comments | length}} Comments</a>			          		
+                &nbsp;&nbsp;<span class="glyphicon glyphicon-time"></span> 
+                {{ post.published | date ('F') | trans }} {{ post.published | date ('d\, Y h:i A')}}
             </div>
+        </div>
+        <hr>
+        {% set path = '' %}
+        {% if post.images|length > 0 %}
+            {% set path = post.images.first.path %}
         {% endif %}
-    </div>
-</div>
-    
-    
+        {% if path != ''%}
+            <img src="{{path}}" class="img-responsive">
+        {%else%}
+            <img src="http://placehold.it/900x300" class="img-responsive">
+        {% endif%}
+        <div class="networks">
+            <div class="share-content" data="{{app.request.uri}}" style="display: inline-block">
+                {% if post.title is not defined %}
+                    {{shareUrlBlog( app.request.uri, true , 'Blog Kundalini Woman')}}
+                {% else%}
+                    {{shareUrlBlog( app.request.uri, true , post.title)}}
+                {% endif %}
 
+            </div>
+        </div>
+        <br>
+        <p class="lead">{{ post.shortDescription }}</p>
+        {{ post.description | raw }}
+        
+        <hr>
+        <ul class="pager">
+            <li class="previous"><a href="{{ path('blog_blog_index')}}">← Back to posts</a></li>
+        </ul>	
+
+        <!-- Comment form -->
+        <div class="well">
+            <h4>{{ 'comment.leave' | trans }}</h4>
+            {% include 'CoreBundle:Base:alert.messages.html.twig' %}
+            {% include 'BlogBundle:Blog/Block:_form_comment.html.twig' %}			
+        </div>
+        <hr>
+        <ul id="comments" class="comments">
+            {% include "BlogBundle:Blog/Block:comments.html.twig" %}
+        </ul>
+        
+        
+    </div>
+    <div class="col-md-4 post-sidebar">
+        {% include 'BlogBundle:Blog:sidebar.html.twig'%}
+    </div>
+    
+    <div style="clear: both"></div>
+    {% if related | length %}
+        <div class="col-md-12 col-xs-12 realted blog">
+            <h3>Te puede interesar ...</h3>
+            <div id="related" class="post-list">
+                {% for post in related %}
+                    {% if loop.index < 5 %}
+                        <div class="col-md-3 col-xs-6" data-position="{{loop.index}}">
+                        <article>
+                            <div class="post-content list">
+                                <a  href="{{path("blog_blog_show", {slug: post.slug})}}" >
+                                    {% set path = 'http://placehold.it/260x123' %}
+                                    {% if post.images|length > 0 %}
+                                        {% set path = get_thumb_image(post.images.first.path, '260') %}
+                                    {% endif %}
+                                    {%if path != ''%}<img style="width: 100%" src="{{ path }}" />{%endif%}
+                                    <p>{{ post.title }}</p>
+                                </a>
+                            </div>
+                        </article>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</div>
         
 {% block stylesheets %}
     {{ parent() }}

@@ -125,7 +125,6 @@ class BlogController extends Controller
      * @Route("/{slug}")
      * @Method("GET")
      * @Template()
-     * @I18nDoctrine
      */
     public function showAction($slug)
     {
