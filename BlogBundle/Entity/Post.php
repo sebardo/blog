@@ -26,7 +26,7 @@ class Post  extends Timestampable
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Image", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity="Image", inversedBy="posts")
      * @ORM\JoinTable(name="post_images",
      *                      joinColumns={@ORM\JoinColumn(name="post_id", referencedColumnName="id")},
      *                      inverseJoinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id")})
