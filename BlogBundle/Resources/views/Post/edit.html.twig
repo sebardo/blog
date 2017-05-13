@@ -131,7 +131,9 @@
         //var CKEDITOR_BASEPATH = "{{ asset('bundles/admin/js/plugins/ckeditor/') }}";
         
         $(function () {
-            CKEDITOR.replace('post_description', {
+            {% set locales = get_locales() %}
+            {% for locale in locales %}
+            CKEDITOR.replace('post_translations_{{locale}}_description', {
                 extraPlugins: 'uploadimage,image2,panelbutton,colorbutton',
                 height: 300,
 
@@ -161,18 +163,11 @@
                 image2_alignClasses: [ 'image-align-left', 'image-align-center', 'image-align-right' ],
                 image2_disableResizer: true
             });
+            {% endfor %}
         });
         
         jQuery(document).ready(function() {
             
-            
-            $('#delete-btn').on('click', function(e) {
-                e.preventDefault();
-
-                if (confirm('{{ "are.you.sure" | trans }}')) {
-                    $('#delete-entity').submit();
-                }
-            });
 
             $('#post_categories').SumoSelect();
             $('#post_tags').SumoSelect();
