@@ -1,14 +1,8 @@
-<article data-position="{{position}}">
-    
+<article data-position="{{position}}">    
     <div class="post-header">
         <div class="col-sm-6 col-md-6">
-            <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
-            {% for category in post.categories %}
-                <a href="{{ path('blog_blog_tag', {'tag': category.slug }) }}">{{ category.name }} ({{ category.posts | length }})</a>
-                {{ (not loop.last) ? ',' : ''}} 
-            {% endfor %}&nbsp;&nbsp;
-            <span class="glyphicon glyphicon-bookmark"></span>
             {% for tag in post.tags %}
+                {% if loop.first %}<span class="glyphicon glyphicon-bookmark"></span>{% endif%}
                 <a href="{{ path('blog_blog_tag', {'tag': tag.slug }) }}">{{ tag.name }} ({{ tag.posts | length }})</a>
                 {{ (not loop.last) ? ',' : ''}} 
             {% endfor %} 
@@ -32,7 +26,15 @@
     <div class="post-content">
         <h2><a  href="{{path("blog_blog_show", {slug: post.slug})}}">{{ post.title }}</a></h2>
         <p class="lead">{{ post.shortDescription | raw }}</p>
-        <p class="text-right"><a href="{{path("blog_blog_show", {slug: post.slug})}}"> continue reading... </a></p>
+        <div class="text-right">
+            
+            {% for category in post.categories %}
+                {% if loop.first %}<div class="categories pull-left"><span class="glyphicon glyphicon-folder-open"></span>&nbsp;{% endif%}
+                <a href="{{ path('blog_blog_tag', {'tag': category.slug }) }}">{{ category.name }} ({{ category.posts | length }})</a>
+                {% if loop.last %}</div>{% endif%}
+            {% endfor %}&nbsp;&nbsp;
+            <a class="pull-right" href="{{path("blog_blog_show", {slug: post.slug})}}"> {{ 'see.more' | trans }}</a>
+        </div>
     </div>
     
   <hr>
