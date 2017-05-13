@@ -204,7 +204,7 @@ class BlogExtension extends \Twig_Extension
         }elseif($entity instanceof Tag){
             $qb = $em->getRepository('BlogBundle:Post')
                 ->createQueryBuilder('p')
-                ->join('p.tags', 't')
+                ->join('p.tags', 'tag')
                 ->join('p.translations', 't')
                 ->where('t.id = :tag')
                 ->andWhere('p.highlighted = true')

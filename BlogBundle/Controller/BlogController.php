@@ -200,11 +200,12 @@ class BlogController extends Controller
             $total_items = $em->getRepository('BlogBundle:Post')->countTotal();
 
             return array(
-                'category'   => $categoryEntity,
+                'entity'   => $categoryEntity,
                 'posts'      => $posts,
                 'categories' => $categories,
                 'total_items' => $total_items,
-                'tags'       => $tags
+                'tags'       => $tags,
+                'load_more_path' => $this->generateUrl('blog_blog_category', array('category'=>$categoryEntity->getSlug()))
             );
         }
         
@@ -214,30 +215,35 @@ class BlogController extends Controller
      * @Route("/tag/{tag}")
      * @Template("BlogBundle:Blog:list.html.twig")
      */
-    public function tagAction($tag)
+    public function tagAction(Request $request, $tag)
     {
         $em = $this->getDoctrine()->getManager();
-              
-        $categories = $em->getRepository('BlogBundle:Category')->findBy(array('parentCategory' => null ), array('order' => 'ASC'));
-        $tags = $em->getRepository('BlogBundle:Tag')->findBy(array(), array('name' => 'ASC'));
         $tagEntity = $em->getRepository('BlogBundle:Tag')->findOneBySlug($tag);
+        
+        if ($request->isXmlHttpRequest()) {
+            
+            $offset = $request->get('offset');
+            $limit = $request->get('limit');
+            $posts = $em->getRepository('BlogBundle:Post')->loadPostsTag($offset, $limit, $tagEntity);
+            return $this->render('BlogBundle:Blog/Block:more.post.html.twig', array(
+                'posts'    => $posts,
+                'position' => $offset
+            ));
+        } else {
+            $tags = $em->getRepository('BlogBundle:Tag')->findBy(array(),array('id' => 'DESC'));
+            $categories = $em->getRepository('BlogBundle:Category')->findBy(array(), array('name' => 'ASC'));
+            $posts = $em->getRepository('BlogBundle:Post')->loadPostsTag(0, 2, $tagEntity);
+            $total_items = $em->getRepository('BlogBundle:Post')->countTotal();
 
-
-        $qb = $em->getRepository('BlogBundle:Post')
-                ->createQueryBuilder('p')
-                ->join('p.tags', 't')
-                ->where('t.id = :tag')
-                ->setParameter('tag', $tagEntity->getId())
-                ->setMaxResults(3)
-                ->orderBy('p.published', 'DESC');
-        $posts = $qb->getQuery()->getResult();
-       
-        return array(
-            'tag'        => $tagEntity,
-            'tags'       => $tags,
-            'posts'      => $posts,
-            'categories' => $categories,
-        );
+            return array(
+                'entity'   => $tagEntity,
+                'posts'      => $posts,
+                'categories' => $categories,
+                'total_items' => $total_items,
+                'tags'       => $tags,
+                'load_more_path' => $this->generateUrl('blog_blog_tag', array('tag'=>$tagEntity->getSlug()))
+            );
+        }
     }
     
     /**

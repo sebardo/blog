@@ -12,7 +12,7 @@
     <div class="container container-blog">
         <div class="row core-row blog">
             <h1>List Posts</h1>
-            {% if category is defined %}
+            {% if entity is defined %}
                 <div>{% include 'BlogBundle:Blog/Block:carousel.blog.html.twig' %}</div>
             {% endif %}
             <div class="col-md-8 post-list" id="post-list">
@@ -62,7 +62,7 @@
                 $('.loading').show();
                 $.ajax({
                     method: "POST",
-                    url: "{{path('blog_blog_category', {'category': category.slug })}}",
+                    url: "{{load_more_path}}",
                     data: {
                         offset: position,
                         limit: 2

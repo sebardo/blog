@@ -146,6 +146,20 @@ class PostRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+    
+    public function loadPostsTag($offset=0, $limit=2, $tag)
+    {
+        // select
+        $qb = $this->getQueryBuilder()
+                ->join('p.tags', 'c')
+                ->where('c.id = :tag')
+                ->setParameter('tag', $tag->getId())
+                ->setFirstResult($offset)
+                ->setMaxResults($limit)
+                ->orderBy('p.published', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
 
     private function getQueryBuilder()
     {
