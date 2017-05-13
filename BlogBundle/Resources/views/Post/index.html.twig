@@ -1,5 +1,5 @@
-{#% extends extended_layout_admin ? extended_layout_admin : 'AdminBundle:Base:layout.html.twig' %#}
-{% extends "AdminBundle:Base:layout.html.twig" %}
+{% extends twig_global.getParameter('extended_layout_admin') ? twig_global.getParameter('extended_layout_admin') : 'AdminBundle:Base:layout.html.twig' %}
+
 
 {% block section %}posts{% endblock %}
 
