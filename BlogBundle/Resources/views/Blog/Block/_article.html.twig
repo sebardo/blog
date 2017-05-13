@@ -30,7 +30,7 @@
             
             {% for category in post.categories %}
                 {% if loop.first %}<div class="categories pull-left"><span class="glyphicon glyphicon-folder-open"></span>&nbsp;{% endif%}
-                <a href="{{ path('blog_blog_tag', {'tag': category.slug }) }}">{{ category.name }} ({{ category.posts | length }})</a>
+                <a href="{{ path('blog_blog_category', {'category': category.slug }) }}">{{ category.name }} ({{ category.posts | length }})</a>
                 {% if loop.last %}</div>{% endif%}
             {% endfor %}&nbsp;&nbsp;
             <a class="pull-right" href="{{path("blog_blog_show", {slug: post.slug})}}"> {{ 'see.more' | trans }}</a>
