@@ -1,29 +1,17 @@
 <article data-position="{{position}}">    
-    <div class="post-header">
-        <div class="col-sm-6 col-md-6">
-            {% for tag in post.tags %}
-                {% if loop.first %}<span class="glyphicon glyphicon-bookmark"></span>{% endif%}
-                <a href="{{ path('blog_blog_tag', {'tag': tag.slug }) }}">{{ tag.name }} ({{ tag.posts | length }})</a>
-                {{ (not loop.last) ? ',' : ''}} 
-            {% endfor %} 
-        </div>
-        <div class="col-sm-6 col-md-6">
-            <span class="glyphicon glyphicon-pencil"></span> <a href="singlepost.html#comments">{{post.comments | length}} Comments</a>			          		
-            &nbsp;&nbsp;<span class="glyphicon glyphicon-time"></span> 
-            {{ post.published | date ('F') | trans }} {{ post.published | date ('d\, Y h:i A')}}
-        </div>
-    </div>
-    <hr>
+    
     {% set path = '' %}
     {% if post.images|length > 0 %}
         {% set path = post.images.first.path %}
     {% endif %}
     {% if path != ''%}
         <img src="{{path}}" class="img-responsive">
+        {% set width = '75%' %}
     {%else%}
-        <img src="http://placehold.it/900x300" class="img-responsive">
+        {% set width = '100%' %}
+        {#<img src="http://placehold.it/900x300" class="img-responsive">#}
     {% endif%}
-    <div class="post-content">
+    <div class="post-content" style="width: {{ width }}">
         <h2><a  href="{{path("blog_blog_show", {slug: post.slug})}}">{{ post.title }}</a></h2>
         <p class="lead">{{ post.shortDescription | raw }}</p>
         <div class="text-right">
