@@ -7,7 +7,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-         {{ "tag.plural" | trans }}
+         {{ "post.tag.plural" | trans }}
         <small></small>
       </h1>
       <ol class="breadcrumb">
@@ -71,7 +71,7 @@
             {#{ "mData": "order" },#}
             {
                 "mData": function(source) {
-                    return    '<a href="' + source.id + '/edit" class="btn btn-primary btn-xs btn-flat"><i class="ion-compose"></i> {{ "edit.singular" | trans }}</a> ';
+                    return    '<a href="' + source.id + '/edit" class="btn btn-primary btn-xs btn-flat"><i class="ion-compose"></i> {{ "edit" | trans }}</a> ';
                 }
             }
         ];

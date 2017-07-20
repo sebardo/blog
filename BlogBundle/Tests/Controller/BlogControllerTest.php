@@ -11,14 +11,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *
  * To run the testcase:
  * @code
- * phpunit -v -c app vendor/sebardo/blog/BlogBundle/Tests/Controller/BlogControllerTest.php
+ * php vendor/bin/phpunit -v vendor/sebardo/blog/BlogBundle/Tests/Controller/BlogControllerTest.php
  * @endcode
  */
 class BlogControllerTest  extends CoreTest
 {
     /**
      * @code
-     * phpunit -v --filter testBlog -c app vendor/sebardo/blog/BlogBundle/Tests/Controller/BlogControllerTest.php
+     * php vendor/bin/phpunit -v --filter testBlog vendor/sebardo/blog/BlogBundle/Tests/Controller/BlogControllerTest.php
      * @endcode
      * 
      */
@@ -32,7 +32,7 @@ class BlogControllerTest  extends CoreTest
         
         $container = $this->client->getContainer();
         $manager = $container->get('doctrine')->getManager();
-        $post = $manager->getRepository('BlogBundle:PostTranslation')->findOneByTitle('post '.$uid.' (es)');
+        $post = $manager->getRepository('BlogBundle:PostTranslation')->findOneByTitle('post '.$uid.' (en)');
         //$post = $post->getTranslatable();
 
         $crawler = $this->client->request('GET', '/blog/'.$post->getSlug(), array(), array(), array(
@@ -61,7 +61,7 @@ class BlogControllerTest  extends CoreTest
         $this->assertTrue($this->client->getResponse() instanceof RedirectResponse);
         $crawler = $this->client->followRedirect();
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Su comentario esta esperando validación.")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Your comment is awaiting verification")')->count());
 
         //enable comment
         $comment = $manager->getRepository('BlogBundle:Comment')->findOneByComment('test comment '.$uid);
@@ -72,22 +72,19 @@ class BlogControllerTest  extends CoreTest
         
         //Asserts
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Editar Comentario")')->count());
-        
-        
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Edit")')->count());
 
         //fill form
         $uid = rand(999,9999);
-        $form = $crawler->selectButton('Guardar')->form();
-        $form['comment[isActive]']->tick();
+        $form = $crawler->selectButton('Save')->form();
+        $form['comment[active]']->tick();
         $crawler = $this->client->submit($form);// submit the form
         
         //Asserts
         $this->assertTrue($this->client->getResponse() instanceof RedirectResponse);
         $crawler = $this->client->followRedirect();
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Se ha editado el comentario satisfactoriamente")')->count());
-        
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Comment has been edited successfully")')->count());
         
         ///////////////////////////////////////////////////////////////////////////////////////////
         //Click delete/////////////////////////////////////////////////////////////////////////////
@@ -98,7 +95,7 @@ class BlogControllerTest  extends CoreTest
         $crawler = $this->client->followRedirect();
         //Asserts
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Se ha eliminado el comentario satisfactoriamente")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Comment has been deleted successfully")')->count());
     }
    
 }

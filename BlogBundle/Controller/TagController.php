@@ -77,7 +77,7 @@ class TagController extends Controller
             $em->persist($tag);
             $em->flush();
 
-            $this->get('session')->getFlashBag()->add('success', 'tag.created');
+            $this->get('session')->getFlashBag()->add('success', 'post.tag.created');
             
             return $this->redirectToRoute('blog_tag_show', array('id' => $tag->getId()));
         }
@@ -123,7 +123,7 @@ class TagController extends Controller
             $em->persist($tag);
             $em->flush();
 
-            $this->get('session')->getFlashBag()->add('success', 'tag.edited');
+            $this->get('session')->getFlashBag()->add('success', 'post.tag.edited');
             
             return $this->redirectToRoute('blog_tag_show', array('id' => $tag->getId()));
         }
@@ -152,7 +152,7 @@ class TagController extends Controller
             $em->remove($tag);
             $em->flush();
             
-            $this->get('session')->getFlashBag()->add('success', 'tag.deleted');
+            $this->get('session')->getFlashBag()->add('success', 'post.tag.deleted');
         }
 
         return $this->redirectToRoute('blog_tag_index');

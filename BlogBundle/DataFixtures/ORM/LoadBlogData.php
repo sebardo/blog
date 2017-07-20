@@ -10,13 +10,18 @@ use CoreBundle\Entity\Actor;
 use BlogBundle\Entity\Comment;
 use BlogBundle\Entity\Image;
 
+/*
+ * php app/console doctrine:fixtures:load --fixtures=vendor/sebardo/core/BlogBundle/DataFixtures/ORM/LoadBlogData.php
+ */
 class LoadBlogData extends SqlScriptFixture
 {
     public function createFixtures()
     {
-        if($this->container->getParameter('blog.fixture_data'))
+        if($this->container->getParameter('blog.fixtures_dev'))
         {
-            $actor = $this->getManager()->getRepository('CoreBundle:Actor')->findOneByUsername('user');
+            $this->runSqlScript('Translation.sql');
+                         
+            $actor = $this->getManager()->getRepository('CoreBundle:BaseActor')->findOneByUsername('user');
             $locales = $this->get('core_manager')->getLocales();
             
             $categories = array(

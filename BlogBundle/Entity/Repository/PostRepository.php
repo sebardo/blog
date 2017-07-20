@@ -65,16 +65,15 @@ class PostRepository extends EntityRepository
      *
      * @return \Doctrine\ORM\Query
      */
-    public function findAllForDataTables($search, $sortColumn, $sortDirection)
+    public function findAllForDataTables($search, $sortColumn, $sortDirection, $locale='en')
     {
-        $locale = 'es';
         
         // select
         $qb = $this->getQueryBuilder()
             ->select('p.id, pTrans.title');    
 
         // join
-        $qb->join('p.translations', 'pTrans');
+        $qb->leftJoin('p.translations', 'pTrans');
         
         // search
         if (!empty($search)) {
@@ -83,9 +82,9 @@ class PostRepository extends EntityRepository
                 ->setParameter('search', '%'.$search.'%')
                 ->setParameter('locale', $locale);
         }else{
-            $qb->andWhere('pTrans.locale = :locale ')
-               ->setParameter('locale', $locale)
-                    ;
+//            $qb->andWhere('pTrans.locale = :locale ')
+//               ->setParameter('locale', $locale)
+//                    ;
         }
 
         // sort by column

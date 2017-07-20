@@ -11,14 +11,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *
  * To run the testcase:
  * @code
- * phpunit -v -c app vendor/sebardo/blog/BlogBundle/Tests/Controller/TagControllerTest.php
+ * php vendor/bin/phpunit -v vendor/sebardo/blog/BlogBundle/Tests/Controller/TagControllerTest.php
  * @endcode
  */
 class TagControllerTest  extends CoreTest
 {
     /**
      * @code
-     * phpunit -v --filter testTagAdmin -c app vendor/sebardo/blog/BlogBundle/Tests/Controller/TagControllerTest.php
+     * php vendor/bin/phpunit -v --filter testTagAdmin vendor/sebardo/blog/BlogBundle/Tests/Controller/TagControllerTest.php
      * @endcode
      * 
      */
@@ -38,17 +38,17 @@ class TagControllerTest  extends CoreTest
         //Click edit///////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////
         $link = $crawler
-            ->filter('a:contains("Editar")') // find all links with the text "Greet"
+            ->filter('a:contains("Edit")') // find all links with the text "Greet"
             ->eq(0) // select the second link in the list
             ->link()
         ;
         $crawler = $this->client->click($link);// and click it
         //Asserts
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Editar tag '.$uid.'")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Edit tag '.$uid.'")')->count());
         
         //fill form
-        $form = $crawler->selectButton('Guardar')->form();
+        $form = $crawler->selectButton('Save')->form();
         $uid = rand(999,9999);
         $form['tag[name]'] = 'tag '.$uid;
         $form['tag[description]'] = 'tag description'.$uid;
@@ -61,7 +61,7 @@ class TagControllerTest  extends CoreTest
         $crawler = $this->client->followRedirect();
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("tag '.$uid.'")')->count());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Se ha editado la etiqueta satisfactoriamente")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Tag has been edited successfully")')->count());
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         //Click delete/////////////////////////////////////////////////////////////////////////////
@@ -72,7 +72,7 @@ class TagControllerTest  extends CoreTest
         $crawler = $this->client->followRedirect();
         //Asserts
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Se ha eliminado la etiqueta satisfactoriamente")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Tag has been deleted successfully")')->count());
     }
 
 }

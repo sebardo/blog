@@ -39,7 +39,7 @@ class CommentRepository extends EntityRepository
     {
         // select
         $qb = $this->getQueryBuilder()
-            ->select('c.id, c.comment, c.isActive, a.name, a.surnames')
+            ->select('c.id, c.comment, c.active, a.name, a.lastname')
             ->leftJoin('c.actor', 'a')
             ->leftJoin('c.post', 'p')
             ;
@@ -79,7 +79,7 @@ class CommentRepository extends EntityRepository
     {
         // select
         $qb = $this->getQueryBuilder()
-            ->select('c.id, c.comment, c.isActive, a.name as actorName, a.surnames as actorSurnames')
+            ->select('c.id, c.comment, c.active, a.name as actorName, a.lastname as actorSurnames')
             ;
 
         // join

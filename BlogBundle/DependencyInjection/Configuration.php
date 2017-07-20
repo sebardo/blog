@@ -22,7 +22,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->booleanNode('fixture_data')->defaultTrue()->end()
+                ->booleanNode('fixtures_dev')->defaultTrue()->end()
             ->end();
         return $treeBuilder;
     }

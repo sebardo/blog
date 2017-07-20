@@ -9,7 +9,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        {{ "edit.singular" | trans }} {{ entity.title }}
+        {{ "edit" | trans }} {{ entity.title }}
         <small></small>
       </h1>
       <ol class="breadcrumb">
@@ -17,7 +17,7 @@
         <li><a href="javascript:">{{ "blog.singular" | trans }}</a></li>
         <li><a href="{{ path('blog_post_index') }}">{{ "post.plural" | trans }}</a></li>
         <li><a href="{{ path('blog_post_show', { id: entity.id }) }}">{{ entity.title }}</a></li>
-        <li><a href="{{ path('blog_post_edit', { id: entity.id }) }}">{{ "edit.singular" | trans }} </a></li>
+        <li><a href="{{ path('blog_post_edit', { id: entity.id }) }}">{{ "edit" | trans }} </a></li>
       </ol>
     </section>
       
@@ -44,7 +44,7 @@
                                 <div class="col-sm-2"></div>
                                 <div class="col-sm-10">
                                     <button type="submit" class="btn btn-flat btn-primary"><i class="ion-checkmark"></i> {{ "save" | trans }}</button>
-                                    <a href="{{ path('blog_post_show', { id: entity.id }) }}" class="btn btn-flat btn-default">{{ "cancel.singular" | trans }}</a>
+                                    <a href="{{ path('blog_post_show', { id: entity.id }) }}" class="btn btn-flat btn-default">{{ "cancel" | trans }}</a>
                                     <button type="submit" class="btn btn-danger btn-flat pull-right" id="delete-btn">{{ "delete" | trans }}</button>
                                 </div>
                             </div>

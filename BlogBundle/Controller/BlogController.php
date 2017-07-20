@@ -140,7 +140,7 @@ class BlogController extends Controller
                 
         $categories = $em->getRepository('BlogBundle:Category')->findBy(array('parentCategory' => null ), array('order' => 'ASC'));
         $tags = $em->getRepository('BlogBundle:Tag')->findBy(array(), array('name' => 'ASC'));
-        $comments = $em->getRepository('BlogBundle:Comment')->findBy(array('post' => $entity->getId(), 'isActive' => true));
+        $comments = $em->getRepository('BlogBundle:Comment')->findBy(array('post' => $entity->getId(), 'active' => true));
         
         $related = $this->getRelatedPost($entity);
         

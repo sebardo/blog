@@ -26,8 +26,8 @@ class BlogExtension extends Extension
         $loader->load('services.yml');
         
         //blog parameters
-        if (isset($config['fixture_data'])) {
-            $container->setParameter('blog.fixture_data', $config['fixture_data']);
+        if (isset($config['fixtures_dev'])) {
+            $container->setParameter('blog.fixtures_dev', $config['fixtures_dev']);
         }
     }
 }

@@ -35,7 +35,7 @@
                         <tr>
                             <td>{{ "comment.active" | trans }}</td>
                             <td>
-                                 {% if entity.isActive %}
+                                 {% if entity.active %}
                                     <span class="label label-success">{{ "yes" | trans }}</span>
                                 {% else %}
                                     <span class="label label-important">{{ "no" | trans }}</span>
@@ -53,7 +53,7 @@
                     </table>
                 </div>
                 <div class="box-footer">
-                    <a href="{{ path('blog_comment_edit', { id: entity.id }) }}" class="btn btn-primary btn-flat"><i class="ion-compose"></i> {{ "edit.singular" | trans }}</a>
+                    <a href="{{ path('blog_comment_edit', { id: entity.id }) }}" class="btn btn-primary btn-flat"><i class="ion-compose"></i> {{ "edit" | trans }}</a>
                     <button type="submit" class="btn btn-danger btn-flat pull-right" id="delete-btn">{{ "delete" | trans }}</button>
                                  
                     <form id="delete-entity" action="{{ path('blog_comment_delete', { id: entity.id }) }}" method="post">

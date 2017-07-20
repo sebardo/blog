@@ -80,6 +80,40 @@ class CategoryController extends Controller
         );
     }
 
+    
+    /**
+     * Sorts a list of features.
+     *
+     * @param Request $request
+     * @param int     $categoryId
+     *
+     * @throws NotFoundHttpException
+     * @return array|Response
+     *
+     * @Route("/sort")
+     * @Method({"GET", "POST"})
+     * @Template
+     */
+    public function sortAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        if ($request->isXmlHttpRequest()) {
+            $this->get('admin_manager')->sort('BlogBundle:Category', $request->get('values'));
+
+            return new Response(0, 200);
+        }
+
+        $categories = $em->getRepository('BlogBundle:Category')->findBy(
+            array('parentCategory' => NULL),
+            array('order' => 'asc')
+        );
+
+        return array(
+            'categories' => $categories
+        );
+    }
+    
     /**
      * Finds and displays a Category entity.
      *
@@ -165,36 +199,4 @@ class CategoryController extends Controller
         ;
     }
     
-    /**
-     * Sorts a list of features.
-     *
-     * @param Request $request
-     * @param int     $categoryId
-     *
-     * @throws NotFoundHttpException
-     * @return array|Response
-     *
-     * @Route("/sort")
-     * @Method({"GET", "POST"})
-     * @Template
-     */
-    public function sortAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        if ($request->isXmlHttpRequest()) {
-            $this->get('admin_manager')->sort('BlogBundle:Category', $request->get('values'));
-
-            return new Response(0, 200);
-        }
-
-        $categories = $em->getRepository('BlogBundle:Category')->findBy(
-            array('parentCategory' => NULL),
-            array('order' => 'asc')
-        );
-
-        return array(
-            'categories' => $categories
-        );
-    }
 }

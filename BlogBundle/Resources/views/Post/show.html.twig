@@ -99,7 +99,7 @@
                           </table>
                         </div>   
                         <div class="box-footer">
-                            <a href="{{ path('blog_post_edit', { id: entity.id }) }}" class="btn btn-primary btn-flat blue"><i class="ion-compose"></i> {{ "edit.singular" | trans }}</a>
+                            <a href="{{ path('blog_post_edit', { id: entity.id }) }}" class="btn btn-primary btn-flat blue"><i class="ion-compose"></i> {{ "edit" | trans }}</a>
                             <button type="submit" class="btn btn-danger btn-flat pull-right" id="delete-btn">{{ "delete" | trans }}</button>
                             {{ form_start(delete_form, {'action': path('blog_post_delete', { id: entity.id }) , 'method': 'post', attr: { 'id': 'delete-entity' } }) }}
                                 <input type="hidden" name="_method" value="DELETE" />

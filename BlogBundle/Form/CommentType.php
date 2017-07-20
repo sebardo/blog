@@ -16,7 +16,7 @@ class CommentType extends AbstractType
     {
         $builder
             ->add('comment')
-            ->add('isActive')
+            ->add('active')
             ->add('actor', null, array('required' => false))
             ->add('post')
         ;

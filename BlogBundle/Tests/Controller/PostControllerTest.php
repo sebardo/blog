@@ -11,14 +11,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *
  * To run the testcase:
  * @code
- * phpunit -v -c app vendor/sebardo/blog/BlogBundle/Tests/Controller/PostControllerTest.php
+ * php vendor/bin/phpunit -v vendor/sebardo/blog/BlogBundle/Tests/Controller/PostControllerTest.php
  * @endcode
  */
 class PostControllerTest  extends CoreTest
 {
     /**
      * @code
-     * phpunit -v --filter testPostAdmin -c app vendor/sebardo/blog/BlogBundle/Tests/Controller/PostControllerTest.php
+     * php vendor/bin/phpunit -v --filter testPostAdmin vendor/sebardo/blog/BlogBundle/Tests/Controller/PostControllerTest.php
      * @endcode
      * 
      */
@@ -29,7 +29,7 @@ class PostControllerTest  extends CoreTest
         //////////////////////////////////////////////////////////////////////////////
         $uid = rand(999,9999);
         $crawler = $this->createPost($uid);
-        
+
         ///////////////////////////////////////////////////////////////////////////////////////////
         //Show/////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -38,14 +38,15 @@ class PostControllerTest  extends CoreTest
         //Click edit///////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////
         $link = $crawler
-            ->filter('a:contains("Editar")') // find all links with the text "Greet"
+            ->filter('a:contains("Edit")') // find all links with the text "Greet"
             ->eq(0) // select the second link in the list
             ->link()
         ;
         $crawler = $this->client->click($link);// and click it
+        
         //Asserts
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Editar post '.$uid.'")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Edit post '.$uid.'")')->count());
         
         //fill form
         $uid = rand(999,9999);
@@ -69,7 +70,7 @@ class PostControllerTest  extends CoreTest
         $crawler = $this->client->followRedirect();
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("post '.$uid.'")')->count());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Se ha editado la publicación satisfactoriamente")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Post has been edited successfully")')->count());
         
         
         
@@ -83,7 +84,7 @@ class PostControllerTest  extends CoreTest
        
         //Asserts
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Se ha eliminado la publicación satisfactoriamente")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Post has been deleted successfully")')->count());
     }
    
 }

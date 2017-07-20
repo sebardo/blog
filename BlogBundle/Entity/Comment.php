@@ -2,7 +2,7 @@
 namespace BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use CoreBundle\Entity\Actor;
+use CoreBundle\Entity\BaseActor;
 use CoreBundle\Entity\Timestampable;
 
 /**
@@ -20,8 +20,8 @@ class Comment extends Timestampable
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\Actor", inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="CoreBundle\Entity\BaseActor")
+     * @ORM\JoinColumn(nullable=true)
      */
     protected $actor;
 
@@ -39,7 +39,7 @@ class Comment extends Timestampable
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $isActive=false;
+    protected $active=false;
 
 
     /**
@@ -58,7 +58,7 @@ class Comment extends Timestampable
      * @param  Actor $actor
      * @return Post
      */
-    public function setActor(Actor $actor)
+    public function setActor(BaseActor $actor)
     {
         $this->actor = $actor;
 
@@ -120,35 +120,35 @@ class Comment extends Timestampable
 
     
      /**
-     * Set isActive
+     * Set active
      *
      * @return Comment
      */
-    public function setIsActive($isActive)
+    public function setActive($active)
     {
-        $this->isActive = $isActive;
+        $this->active = $active;
 
         return $this;
     }
 
     /**
-     * Get isActive
+     * Get active
      *
      * @return boolean
      */
     public function isActive()
     {
-        return $this->isActive;
+        return $this->active;
     }
     
     /**
-     * Get isActive
+     * Get active
      *
      * @return boolean
      */
-    public function getIsActive()
+    public function getActive()
     {
-        return $this->isActive;
+        return $this->active;
     }
 
 }

@@ -11,14 +11,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *
  * To run the testcase:
  * @code
- * phpunit -v -c app vendor/sebardo/blog/BlogBundle/Tests/Controller/CategoryControllerTest.php
+ * php vendor/bin/phpunit -v vendor/sebardo/blog/BlogBundle/Tests/Controller/CategoryControllerTest.php
  * @endcode
  */
 class CategoryControllerTest  extends CoreTest
 {
     /**
      * @code
-     * phpunit -v --filter testCategoryAdmin -c app vendor/sebardo/blog//BlogBundle/Tests/Controller/CategoryControllerTest.php
+     * php vendor/bin/phpunit -v --filter testCategoryAdmin vendor/sebardo/blog//BlogBundle/Tests/Controller/CategoryControllerTest.php
      * @endcode
      * 
      */
@@ -38,17 +38,17 @@ class CategoryControllerTest  extends CoreTest
         //Click edit///////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////
         $link = $crawler
-            ->filter('a:contains("Editar")') // find all links with the text "Greet"
+            ->filter('a:contains("Edit")') // find all links with the text "Greet"
             ->eq(0) // select the second link in the list
             ->link()
         ;
         $crawler = $this->client->click($link);// and click it
         //Asserts
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Editar category '.$uid.'")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Edit category '.$uid.'")')->count());
         
         //fill form
-        $form = $crawler->selectButton('Guardar')->form();
+        $form = $crawler->selectButton('Save')->form();
         $uid = rand(999,9999);
         $form['category[name]'] = 'category '.$uid;
         $form['category[description]'] = 'category description'.$uid;
@@ -61,7 +61,7 @@ class CategoryControllerTest  extends CoreTest
         $crawler = $this->client->followRedirect();
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("category '.$uid.'")')->count());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Se ha editado la categoría satisfactoriamente")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Category has been edited successfully")')->count());
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         //Click delete/////////////////////////////////////////////////////////////////////////////
@@ -72,7 +72,7 @@ class CategoryControllerTest  extends CoreTest
         $crawler = $this->client->followRedirect();
         //Asserts
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Se ha eliminado la categoría satisfactoriamente")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Category has been deleted successfully")')->count());
     }
    
 }

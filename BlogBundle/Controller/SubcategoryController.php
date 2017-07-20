@@ -90,7 +90,7 @@ class SubcategoryController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            $this->get('session')->getFlashBag()->add('success', 'category.sub.created');
+            $this->get('session')->getFlashBag()->add('success', 'subcategory.created');
             
             return $this->redirectToRoute('blog_category_show', array('id' => $entity->getId()));
         }

@@ -1,8 +1,8 @@
 {{ form_errors(form) }}
 
 {{ form_row(form.comment, { label: 'comment.singular' }) }}
-{{ form_row(form.actor, { label: 'user.singular' }) }}
+{{ form_row(form.actor, { label: 'user' }) }}
 
-{{ form_widget(form.isActive) }}
+{{ form_row(form.active) }}
 
 {{ form_rest(form) }}

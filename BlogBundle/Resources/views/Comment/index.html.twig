@@ -67,7 +67,7 @@
             { "mData": "id" },
             {
                 "mData": function (source) {
-                    return source.name + ' ' + source.surnames ;
+                    return source.name + ' ' + source.lastname ;
                 }
             },
             {
@@ -79,7 +79,7 @@
                 }
             },
             {
-                "mData": "isActive",
+                "mData": "active",
                 "mRender": function(data) {
                     var code = '';
 
@@ -94,7 +94,7 @@
             },
             {
                 "mData": function(source) {
-                    return '<a href="' + source.id + '/edit" class="btn btn-xs btn-primary btn-flat"><i class="ion-compose"></i> {{ "edit.singular" | trans }}</a> ';
+                    return '<a href="' + source.id + '/edit" class="btn btn-xs btn-primary btn-flat"><i class="ion-compose"></i> {{ "edit" | trans }}</a> ';
                 }
             }
         ];

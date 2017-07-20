@@ -61,7 +61,7 @@ class Image extends Timestampable
     private $alt;
     
     /**
-    * @ORM\ManyToMany(targetEntity="Post", mappedBy="categories")
+    * @ORM\ManyToMany(targetEntity="Post", mappedBy="images")
     */
     protected $posts;
     

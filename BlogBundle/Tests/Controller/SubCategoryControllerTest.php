@@ -11,14 +11,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *
  * To run the testcase:
  * @code
- * phpunit -v -c app vendor/sebardo/blog/BlogBundle/Tests/Controller/SubCategoryControllerTest.php
+ * php vendor/bin/phpunit -v vendor/sebardo/blog/BlogBundle/Tests/Controller/SubCategoryControllerTest.php
  * @endcode
  */
 class SubCategoryControllerTest  extends CoreTest
 {
     /**
      * @code
-     * phpunit -v --filter testCategoryAdmin -c app vendor/sebardo/blog/Bundle/BlogBundle/Tests/Controller/SubCategoryControllerTest.php
+     * php vendor/bin/phpunit -v --filter testCategoryAdmin vendor/sebardo/blog/Bundle/BlogBundle/Tests/Controller/SubCategoryControllerTest.php
      * @endcode
      * 
      */
@@ -37,22 +37,24 @@ class SubCategoryControllerTest  extends CoreTest
             'PHP_AUTH_USER' => 'admin',
             'PHP_AUTH_PW'   => 'admin',
         ));
-
+        //Asserts
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Subcategories of category '.$uid.'")')->count());
         ///////////////////////////////////////////////////////////////////////////////////////////
         // New ////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////
         $link = $crawler
-            ->filter('a:contains("Añadir nueva")') // find all links with the text "Greet"
+            ->filter('a:contains("Add new")') // find all links with the text "Greet"
             ->eq(0) // select the second link in the list
             ->link()
         ;
         $crawler = $this->client->click($link);// and click it
         //Asserts
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Nueva subcategoría")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("New subcategory")')->count());
         
         //fill form
-        $form = $crawler->selectButton('Guardar')->form();
+        $form = $crawler->selectButton('Save')->form();
         $uid = rand(999,9999);
         $form['subcategory[name]'] = 'subcategory '.$uid;
         $form['subcategory[description]'] = 'subcategory description'.$uid;
@@ -65,23 +67,23 @@ class SubCategoryControllerTest  extends CoreTest
         $crawler = $this->client->followRedirect();
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("subcategory '.$uid.'")')->count());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Se ha creado la subcategoría satisfactoriamente")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Subcategory has been created successfully")')->count());
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         //Click edit///////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////
         $link = $crawler
-            ->filter('a:contains("Editar")') // find all links with the text "Greet"
+            ->filter('a:contains("Edit")') // find all links with the text "Greet"
             ->eq(0) // select the second link in the list
             ->link()
         ;
         $crawler = $this->client->click($link);// and click it
         //Asserts
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Editar subcategory '.$uid.'")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Edit subcategory '.$uid.'")')->count());
         
         //fill form
-        $form = $crawler->selectButton('Guardar')->form();
+        $form = $crawler->selectButton('Save')->form();
         $uid = rand(999,9999);
         $form['category[name]'] = 'subcategory '.$uid;
         $form['category[description]'] = 'subcategory description'.$uid;
@@ -94,7 +96,7 @@ class SubCategoryControllerTest  extends CoreTest
         $crawler = $this->client->followRedirect();
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("subcategory '.$uid.'")')->count());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Se ha editado la categoría satisfactoriamente")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Category has been edited successfully")')->count());
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         //Click delete/////////////////////////////////////////////////////////////////////////////
@@ -105,7 +107,7 @@ class SubCategoryControllerTest  extends CoreTest
         $crawler = $this->client->followRedirect();
         //Asserts
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Se ha eliminado la categoría satisfactoriamente")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Category has been deleted successfully")')->count());
         
     }
   

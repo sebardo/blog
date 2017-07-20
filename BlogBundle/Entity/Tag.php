@@ -206,7 +206,7 @@ class Tag
     }
     
     /**
-     * Get isActive
+     * Get active
      *
      * @return boolean
      */
@@ -216,7 +216,7 @@ class Tag
     }
 
     /**
-     * Get isActive
+     * Get active
      *
      * @return boolean
      */

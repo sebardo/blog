@@ -72,6 +72,7 @@ class PostType extends AbstractType
             ->add('highlighted', null, array(
                 'required' => false
             ))
+            ->add('actor')
         ;
     }
     

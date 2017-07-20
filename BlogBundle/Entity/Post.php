@@ -5,7 +5,7 @@ namespace BlogBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
-use CoreBundle\Entity\Actor;
+use CoreBundle\Entity\BaseActor;
 use CoreBundle\Entity\Timestampable;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -33,10 +33,9 @@ class Post  extends Timestampable
      */
     private $images;
     
-
     /**
-     * @ORM\ManyToOne(targetEntity="\CoreBundle\Entity\Actor", inversedBy="posts")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="\CoreBundle\Entity\BaseActor")
+     * @ORM\JoinColumn(nullable=true)
      */
     protected $actor;
 
@@ -151,7 +150,7 @@ class Post  extends Timestampable
      * @param  Actor $actor
      * @return Post
      */
-    public function setActor(Actor $actor)
+    public function setActor(BaseActor $actor)
     {
         $this->actor = $actor;
 
