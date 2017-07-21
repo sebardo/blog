@@ -26,6 +26,5 @@ class BlogExtension extends Extension
         $loader->load('services.yml');
         
         $container->setParameter('blog.fixtures_dev', $config['fixtures_dev']);
-        $container->setParameter('blog.mapping', $config['mapping']);
     }
 }

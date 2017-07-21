@@ -34,15 +34,15 @@ class DynamicRelationSubscriber implements EventSubscriber
         // the $metadata is the whole mapping info for this class
         $metadata = $eventArgs->getClassMetadata();
         $class = $metadata->getReflectionClass();
-        
+                        
         if ($metadata->getName() == 'BlogBundle\Entity\Post') {
             $metadata->mapManyToOne(array(
-                'targetEntity' => $this->mapping['baseactor'],
+                'targetEntity' => $this->mapping['baseactor']['entity'],
                 'fieldName' => 'actor',
                 'joinColumns' => array(array('name' => 'actor_id')),
                 'inversedBy' => 'posts',
             ));
-        }elseif ($metadata->getName() == $this->mapping['baseactor']) {
+        }elseif ($metadata->getName() == $this->mapping['baseactor']['entity']) {
             $metadata->mapOneToMany(array(
                 'targetEntity' => $class->getName(),
                 'fieldName' => 'posts',
