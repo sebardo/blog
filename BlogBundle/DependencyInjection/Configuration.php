@@ -23,6 +23,11 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->booleanNode('fixtures_dev')->defaultTrue()->end()
+                ->arrayNode('mapping')
+                    ->useAttributeAsKey('name')
+                    ->prototype('scalar')
+                    ->end()
+                ->end()
             ->end();
         return $treeBuilder;
     }

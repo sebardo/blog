@@ -12,3 +12,9 @@ services:
         class: "BlogBundle\\Service\\BlogManager"
         calls:
             - [setContainer, ["@service_container"] ]
+
+    dynamic_relation_map.listener.doctrine_event_listener:
+        class: "BlogBundle\\EventListener\\DynamicRelationSubscriber"
+        arguments: ["%blog.mapping%"]
+        tags:
+            - { name: doctrine.event_listener, event: loadClassMetadata }

@@ -34,8 +34,7 @@ class Post  extends Timestampable
     private $images;
     
     /**
-     * @ORM\ManyToOne(targetEntity="\CoreBundle\Entity\BaseActor")
-     * @ORM\JoinColumn(nullable=true)
+     * Dinamyc
      */
     protected $actor;
 
