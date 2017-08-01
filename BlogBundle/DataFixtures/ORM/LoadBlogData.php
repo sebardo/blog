@@ -15,12 +15,25 @@ use BlogBundle\Entity\Image;
  */
 class LoadBlogData extends SqlScriptFixture
 {
+    /**
+     * There two kind of fixtures
+     * Bundle fixtures: all info bundle needed
+     * Dev fixtures: info for testing porpouse
+     */
     public function createFixtures()
     {
-        if($this->container->getParameter('blog.fixtures_dev'))
-        {
+        /**
+         * Bundle fixtures
+         */
+        if($this->container->getParameter('core.fixture_bundle')){
             $this->runSqlScript('Translation.sql');
-                         
+        }
+        
+        /**
+         * Dev fixtures
+         */
+        if($this->container->getParameter('core.fixtures_dev')){
+                
             $actor = $this->getManager()->getRepository('CoreBundle:BaseActor')->findOneByUsername('user');
             $locales = $this->get('core_manager')->getLocales();
             
