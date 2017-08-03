@@ -25,14 +25,14 @@ class LoadBlogData extends SqlScriptFixture
         /**
          * Bundle fixtures
          */
-        if($this->container->getParameter('core.fixture_bundle_blog')){
+        if($this->container->getParameter('core.fixtures_bundle_blog')){
             $this->runSqlScript('Translation.sql');
         }
         
         /**
          * Dev fixtures
          */
-        if($this->container->getParameter('core.fixtures_dev_blog_blog')){
+        if($this->container->getParameter('core.fixtures_dev_blog')){
                 
             $actor = $this->getManager()->getRepository('CoreBundle:BaseActor')->findOneByUsername('user');
             $locales = $this->get('core_manager')->getLocales();
