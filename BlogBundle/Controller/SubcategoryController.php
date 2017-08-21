@@ -92,7 +92,7 @@ class SubcategoryController extends Controller
 
             $this->get('session')->getFlashBag()->add('success', 'subcategory.created');
             
-            return $this->redirectToRoute('blog_category_show', array('id' => $entity->getId()));
+            return $this->redirectToRoute('blog_category_index');
         }
         
         return array(

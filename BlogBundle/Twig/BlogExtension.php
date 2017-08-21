@@ -58,7 +58,7 @@ class BlogExtension extends \Twig_Extension
         if(!is_null($categoryId)){
             $qb->join('p.categories', 'c')
                ->where('c.id = :categoryId')
-               ->setParameter('categoryId', $tagId);
+               ->setParameter('categoryId', $categoryId);
         }
         if(!is_null($tagId)){
             $qb->join('p.tags', 'tag')
@@ -69,7 +69,7 @@ class BlogExtension extends \Twig_Extension
         
         $posts = $qb->getQuery()->getResult();
         
-        $content = $twig->render('BlogBundle:Blog/Block:_list.html.twig', array('posts' => $posts));
+        $content = $twig->render('BlogBundle:Blog/Block:_list.html.twig', array('posts' => $posts, 'categoryId' => $categoryId));
         return $content;
     }
     
@@ -267,10 +267,10 @@ class BlogExtension extends \Twig_Extension
     *
     * @param itenger $total_items  
     */
-    public function getBlogTotalItems()
+    public function getBlogTotalItems($categoryId=null)
     {
         $em = $this->container->get('doctrine')->getManager();
-        $total_items = $em->getRepository('BlogBundle:Post')->countTotal();
+        $total_items = $em->getRepository('BlogBundle:Post')->countTotal($categoryId);
         
         return $total_items;
     }

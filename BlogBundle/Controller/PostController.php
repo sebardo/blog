@@ -77,7 +77,7 @@ class PostController extends Controller
 
             $this->get('session')->getFlashBag()->add('success', 'post.created');
             
-            return $this->redirectToRoute('blog_post_show', array('id' => $post->getId()));
+            return $this->redirectToRoute('blog_post_index');
         }
 
         return array(
@@ -127,7 +127,7 @@ class PostController extends Controller
 
             $this->get('session')->getFlashBag()->add('success', 'post.edited');
             
-            return $this->redirectToRoute('blog_post_show', array('id' => $post->getId()));
+            return $this->redirectToRoute('blog_post_index');
         }
 
         return array(

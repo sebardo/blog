@@ -2,26 +2,26 @@
     
     {% set path = '' %}
     {% if post.images|length > 0 %}
-        {% set path = post.images.first.path %}
+        {% set path = '/uploads/images/post/'~post.id~'/'~post.images.first.path %}
     {% endif %}
-    {% if path != ''%}
-        <img src="{{path}}" class="img-responsive">
-        {% set width = '75%' %}
-    {%else%}
-        {% set width = '100%' %}
-        {#<img src="http://placehold.it/900x300" class="img-responsive">#}
-    {% endif%}
-    <div class="post-content" style="width: {{ width }}">
+    
+    <div class="post-content">
         <h2><a  href="{{path("blog_blog_show", {slug: post.slug})}}">{{ post.title }}</a></h2>
-        <p class="lead">{{ post.shortDescription | raw }}</p>
+        {% set width = '' %}
+        {% if path != ''%}
+            <img src="{{ get_thumb_image(path, '142')}}" class="img-responsive">
+            {% set width = 'adaptative' %}
+        {% endif%}
+        <div class="post-description {{ width }}" >
+            {{ post.shortDescription | raw }}
+        </div>
         <div class="text-right">
-            
             {% for category in post.categories %}
                 {% if loop.first %}<div class="categories pull-left"><span class="glyphicon glyphicon-folder-open"></span>&nbsp;{% endif%}
                 <a href="{{ path('blog_blog_category', {'category': category.slug }) }}">{{ category.name }} ({{ category.posts | length }})</a>
                 {% if loop.last %}</div>{% endif%}
             {% endfor %}&nbsp;&nbsp;
-            <a class="pull-right" href="{{path("blog_blog_show", {slug: post.slug})}}"> {{ 'see.more' | trans }}</a>
+            <a class="pull-right" href="{{path("blog_blog_show", {slug: post.slug})}}"> {{ 'blog.more' | trans }}</a>
         </div>
     </div>
 </article>

@@ -11,14 +11,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *
  * To run the testcase:
  * @code
- * php vendor/bin/phpunit -v vendor/sebardo/blog/BlogBundle/Tests/Controller/SubCategoryControllerTest.php
+ * php vendor/bin/phpunit -v src/BlogBundle/Tests/Controller/SubCategoryControllerTest.php
  * @endcode
  */
 class SubCategoryControllerTest  extends CoreTest
 {
     /**
      * @code
-     * php vendor/bin/phpunit -v --filter testCategoryAdmin vendor/sebardo/blog/Bundle/BlogBundle/Tests/Controller/SubCategoryControllerTest.php
+     * php vendor/bin/phpunit -v --filter testCategoryAdmin src/Bundle/BlogBundle/Tests/Controller/SubCategoryControllerTest.php
      * @endcode
      * 
      */
@@ -66,9 +66,20 @@ class SubCategoryControllerTest  extends CoreTest
         $this->assertTrue($this->client->getResponse() instanceof RedirectResponse);
         $crawler = $this->client->followRedirect();
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("subcategory '.$uid.'")')->count());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Subcategory has been created successfully")')->count());
 
+        
+        $entity = $this->getEntity($uid, 'BlogBundle:Category', 'name');
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        //Show/////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        $crawler = $this->client->request('GET', '/admin/post/category/'.$entity->getId(), array(), array(), array(
+                'PHP_AUTH_USER' => 'admin',
+                'PHP_AUTH_PW'   => 'admin',
+            ));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("category '.$uid.'")')->count());
+        
         ///////////////////////////////////////////////////////////////////////////////////////////
         //Click edit///////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -95,9 +106,18 @@ class SubCategoryControllerTest  extends CoreTest
         $this->assertTrue($this->client->getResponse() instanceof RedirectResponse);
         $crawler = $this->client->followRedirect();
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("subcategory '.$uid.'")')->count());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Category has been edited successfully")')->count());
 
+         ///////////////////////////////////////////////////////////////////////////////////////////
+        //Show/////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        $crawler = $this->client->request('GET', '/admin/post/category/'.$entity->getId(), array(), array(), array(
+                'PHP_AUTH_USER' => 'admin',
+                'PHP_AUTH_PW'   => 'admin',
+            ));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("category '.$uid.'")')->count());
+        
         ///////////////////////////////////////////////////////////////////////////////////////////
         //Click delete/////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////

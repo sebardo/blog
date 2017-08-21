@@ -11,14 +11,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *
  * To run the testcase:
  * @code
- * php vendor/bin/phpunit -v vendor/sebardo/blog/BlogBundle/Tests/Controller/BlogControllerTest.php
+ * php vendor/bin/phpunit -v src/BlogBundle/Tests/Controller/BlogControllerTest.php
  * @endcode
  */
 class BlogControllerTest  extends CoreTest
 {
     /**
      * @code
-     * php vendor/bin/phpunit -v --filter testBlog vendor/sebardo/blog/BlogBundle/Tests/Controller/BlogControllerTest.php
+     * php vendor/bin/phpunit -v --filter testBlog src/BlogBundle/Tests/Controller/BlogControllerTest.php
      * @endcode
      * 
      */
@@ -86,9 +86,23 @@ class BlogControllerTest  extends CoreTest
         $this->assertTrue($this->client->getResponse()->isSuccessful());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Comment has been edited successfully")')->count());
         
+        //////////////////////////////
+        // Check comment on front //
+        //////////////////////////////
+        $crawler = $this->client->request('GET', '/blog/'.$post->getSlug(), array(), array(), array(
+                'PHP_AUTH_USER' => 'admin',
+                'PHP_AUTH_PW'   => 'admin',
+            ));
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("There 1 comments in this post")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("test comment")')->count());
+        
         ///////////////////////////////////////////////////////////////////////////////////////////
         //Click delete/////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////
+        $crawler = $this->client->request('GET', '/admin/post/comment/'.$comment->getId().'/edit', array(), array(), array(
+                'PHP_AUTH_USER' => 'admin',
+                'PHP_AUTH_PW'   => 'admin',
+            ));
         $form = $crawler->filter('form[id="delete-entity"]')->form();
         $crawler = $this->client->submit($form);// submit the form
         $this->assertTrue($this->client->getResponse() instanceof RedirectResponse);

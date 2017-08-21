@@ -18,11 +18,17 @@ class PostRepository extends EntityRepository
      *
      * @return int
      */
-    public function countTotal()
+    public function countTotal($categoryId=null)
     {
         $qb = $this->getQueryBuilder()
             ->select('COUNT(p)');
 
+        if(!is_null($categoryId)){
+            $qb->join('p.categories', 'c')
+               ->where('c.id = :categoryId')
+               ->setParameter('categoryId', $categoryId);
+        }
+        
         return $qb->getQuery()->getSingleScalarResult();
     }
 
@@ -51,7 +57,7 @@ class PostRepository extends EntityRepository
                 ->setParameter('search', '%'.$search.'%');
         }
 
-        $qb->orderBy('p.created', 'ASC');
+        $qb->orderBy('p.published', 'DESC');
 
         return $qb->getQuery()->getResult();
     }

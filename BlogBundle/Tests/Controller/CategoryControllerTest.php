@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *
  * To run the testcase:
  * @code
- * php vendor/bin/phpunit -v vendor/sebardo/blog/BlogBundle/Tests/Controller/CategoryControllerTest.php
+ * php vendor/bin/phpunit -v src/BlogBundle/Tests/Controller/CategoryControllerTest.php
  * @endcode
  */
 class CategoryControllerTest  extends CoreTest
@@ -29,10 +29,17 @@ class CategoryControllerTest  extends CoreTest
         //////////////////////////////////////////////////////////////////////////////
         $uid = rand(999,9999);
         $crawler = $this->createCategoryBlog($uid);
+        $entity = $this->getEntity($uid, 'BlogBundle:Category', 'name');
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         //Show/////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////
+        $crawler = $this->client->request('GET', '/admin/post/category/'.$entity->getId(), array(), array(), array(
+                'PHP_AUTH_USER' => 'admin',
+                'PHP_AUTH_PW'   => 'admin',
+            ));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("category '.$uid.'")')->count());
         
         ///////////////////////////////////////////////////////////////////////////////////////////
         //Click edit///////////////////////////////////////////////////////////////////////////////
@@ -60,9 +67,18 @@ class CategoryControllerTest  extends CoreTest
         $this->assertTrue($this->client->getResponse() instanceof RedirectResponse);
         $crawler = $this->client->followRedirect();
         $this->assertTrue($this->client->getResponse()->isSuccessful());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("category '.$uid.'")')->count());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Category has been edited successfully")')->count());
 
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        //Show/////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        $crawler = $this->client->request('GET', '/admin/post/category/'.$entity->getId(), array(), array(), array(
+                'PHP_AUTH_USER' => 'admin',
+                'PHP_AUTH_PW'   => 'admin',
+            ));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("category '.$uid.'")')->count());
+        
         ///////////////////////////////////////////////////////////////////////////////////////////
         //Click delete/////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////

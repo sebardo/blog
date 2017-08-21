@@ -79,7 +79,7 @@ class TagController extends Controller
 
             $this->get('session')->getFlashBag()->add('success', 'post.tag.created');
             
-            return $this->redirectToRoute('blog_tag_show', array('id' => $tag->getId()));
+            return $this->redirectToRoute('blog_tag_index');
         }
 
         return array(
@@ -125,7 +125,7 @@ class TagController extends Controller
 
             $this->get('session')->getFlashBag()->add('success', 'post.tag.edited');
             
-            return $this->redirectToRoute('blog_tag_show', array('id' => $tag->getId()));
+            return $this->redirectToRoute('blog_tag_index');
         }
 
         return array(

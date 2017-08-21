@@ -12,7 +12,7 @@
 <div class="container-blog">
     <div class="col-md-8 post-list" id="post-list">
         <h1>{{ 'blog.last.post' | trans }}</h1>
-        {{ blog_list() }}
+        {{ blog_list(2) }}
     </div>
     <div class="col-md-4 post-sidebar">
         {% include 'BlogBundle:Blog:sidebar.html.twig'%}
@@ -31,13 +31,12 @@
     {% endstylesheets %}
 {% endblock %}
 
+
 {% block javascripts %}
     {{ parent() }}
-                            
-    <script type="text/javascript">
-        $(".blog-menu a.item").click(function (event) {   
-           console.log($(this).attr('href')); 
-           window.location.href = $(this).attr('href');
-        });
-    </script>
+    {% include 'BlogBundle:Blog/Block:_blog.js.twig'%}
 {% endblock %}
+
+
+
+

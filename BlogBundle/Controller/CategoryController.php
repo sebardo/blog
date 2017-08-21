@@ -71,7 +71,7 @@ class CategoryController extends Controller
 
             $this->get('session')->getFlashBag()->add('success', 'category.created');
             
-            return $this->redirectToRoute('blog_category_show', array('id' => $category->getId()));
+            return $this->redirectToRoute('blog_category_index');
         }
 
         return array(
@@ -151,7 +151,7 @@ class CategoryController extends Controller
 
             $this->get('session')->getFlashBag()->add('success', 'category.edited');
             
-            return $this->redirectToRoute('blog_category_show', array('id' => $category->getId()));
+            return $this->redirectToRoute('blog_category_index');
         }
 
         return array(

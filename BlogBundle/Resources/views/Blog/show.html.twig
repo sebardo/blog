@@ -28,23 +28,23 @@
     <div class="col-md-8 post-list" id="post-list">
         <h1>{{ post.title }}</h1>
         <hr>
-        <div>
-            <span class="glyphicon glyphicon-pencil"></span> <a href="singlepost.html#comments">{{post.comments | length}} Comments</a>			          		
-            &nbsp;&nbsp;<span class="glyphicon glyphicon-time"></span> 
+        <div class="post-detail">
+            <span class="glyphicon glyphicon-time"></span> 
             {{ post.published | date ('F') | trans }} {{ post.published | date ('d\, Y h:i A')}}
+            <div class="pull-right">
+                <span class="glyphicon glyphicon-pencil"></span> 
+                <a href="singlepost.html#comments">{{post.comments | length}} Comments</a>			          		
+            </div>
         </div>   
         
         
         
         {% set path = '' %}
         {% if post.images|length > 0 %}
-            {% set path = post.images.first.path %}
+            {% set path = '/uploads/images/post/'~post.id~'/'~post.images.first.path %}
         {% endif %}
         {% if path != ''%}
-            
             <img src="{{path}}" class="img-responsive">
-        {%else%}
-            {#<img src="http://placehold.it/900x300" class="img-responsive">#}
         {% endif%}
         <div class="networks">
             <div class="share-content" data="{{app.request.uri}}" style="display: inline-block">
@@ -57,7 +57,7 @@
             </div>
         </div>
         <br>
-        <p class="lead">{{ post.shortDescription }}</p>
+        <div class="lead">{{ post.shortDescription | raw }}</div>
         {{ post.description | raw }}
         
         

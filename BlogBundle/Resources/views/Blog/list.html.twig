@@ -1,20 +1,16 @@
 {% extends twig_global.getParameter('extended_layout') ? twig_global.getParameter('extended_layout') : 'CoreBundle:Base:base.layout.html.twig' %}
 
 {% block body_class %}{{parent()}} blog {% endblock %}
-{% block header %}
-    {{parent()}}
+ 
+{% block content_header %}
     {% include 'BlogBundle:Blog/Block:menu.blog.html.twig' %}
-    
 {% endblock %}
-
 
 {% block content %}
     <div class="container container-blog">
         <div class="row core-row blog">
             <h1>List Posts</h1>
-            {% if entity is defined %}
-                <div>{% include 'BlogBundle:Blog/Block:carousel.blog.html.twig' %}</div>
-            {% endif %}
+             
             <div class="col-md-8 post-list" id="post-list">
                 {% if search is defined%}
                     <div class="search-results">
@@ -24,9 +20,18 @@
                             <h4>NO HAY RESULTADOS PARA LA BÚSQUEDA: <b>{{search}}</b></h4>
                         {% endif %}
                     </div>
+                    
+                    {% include 'BlogBundle:Blog/Block:_list.html.twig' with {posts : posts} %}
+                {% else %}
+                {# if category view #}
+                {% if app.request.get('_route') == 'blog_blog_category' %}
+                    {{ blog_list(2, category.id) }}
+                {% elseif app.request.get('_route') == 'blog_blog_tag' %}
+                    {{ blog_list(2, null, tag.id) }}
+                {% else %}
+                    {{ blog_list(2) }}
+                {% endif  %}
                 {% endif %}
-
-                {{ blog_list() }}
             </div>
             <div class="col-md-4 post-sidebar">
                 {% include 'BlogBundle:Blog:sidebar.html.twig'%}
@@ -47,45 +52,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript">
-        {% set total_items = get_blog_total_items() %}
-        {% if total_items is defined %}
-            
-            $(".blog-menu a.item").click(function (event) {   
-               console.log($(this).attr('href')); 
-               window.location.href = $(this).attr('href');
-            });
-            
-            $("#load-more").click(function (event) {
-                event.preventDefault();
-                var total_items = parseInt({{ total_items }});
-                $('.loading').show();
-                $.ajax({
-                    method: "POST",
-                    url: "{{load_more_path}}",
-                    data: {
-                        offset: position,
-                        limit: 2
-                    }
-                }).done(function (data) {
-                    console.log(data);
-                    $('.post-more').before(data);
-                    $('.post-more').before('<div style="clear: both; padding: 0"> </div>');
-                    $('.loading').hide();
-                    $("#load-more a").blur();
-                    //check if there are more news, if not, hide ver mas noticias
-                    position = position + 2;
-                    if (total_items === position) {
-                        $(".pager").hide();
-                    }
-                }).fail(function () {
-                    $('.loading').hide();
-                    alert('Problem!');
-                });
-            });
-        {% endif %}
-       
-    </script>
+    {% include 'BlogBundle:Blog/Block:_blog.js.twig'%}
 {% endblock %}
 
 

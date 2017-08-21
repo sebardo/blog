@@ -15,6 +15,7 @@ INSERT INTO `translation` (`trans_key`, `trans_locale`, `message_domain`, `trans
 ('blog.no.entry', 'en', 'messages', 'No entry', '2017-02-26 17:38:22', '2017-02-26 17:38:22'),
 ('blog.categories', 'en', 'messages', 'Categories', '2017-02-26 17:38:22', '2017-02-26 17:38:22'),
 ('blog.tags', 'en', 'messages', 'Tags', '2017-02-26 17:38:22', '2017-02-26 17:38:22'),
+('blog.more', 'en', 'messages', 'Read more', '2017-02-26 17:38:22', '2017-02-26 17:38:22'),
 ('posts', 'en', 'messages', 'Posts', '2017-02-26 17:38:22', '2017-02-26 17:38:22'),
 ('post.singular', 'en', 'messages', 'Post', '2017-02-26 17:38:22', '2017-02-26 17:38:22'),
 ('post.plural', 'en', 'messages', 'Posts', '2017-02-26 17:38:22', '2017-02-26 17:38:22'),

@@ -44,7 +44,6 @@ class BlogManager
         $stmt->execute();
         $result = $stmt->fetchAll();
 
-//        print_r($result);die();
         $returnValues = array();
         foreach ($result as $key => $value) {
             $year = $value['year'];
