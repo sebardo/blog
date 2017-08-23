@@ -196,12 +196,13 @@ class LoadBlogData extends SqlScriptFixture
             $post4->setHighlighted(true);
             $post4->setPublished($publishDate);
             
-            $this->get('core_manager')->createPath(__DIR__ . '/../../../../web/uploads/images/post/4');
-            copy(__DIR__ . '/images/4/mars-attack-df5e0630b435be5870ed71881f706df2.jpeg', __DIR__ . '/../../../../web/uploads/images/post/4/mars-attack-df5e0630b435be5870ed71881f706df2.jpeg');
-            copy(__DIR__ . '/images/4/thumbnail/mars-attack-df5e0630b435be5870ed71881f706df2_142.jpg', __DIR__ . '/../../../../web/uploads/images/post/4/mars-attack-df5e0630b435be5870ed71881f706df2_142.jpg');
-            copy(__DIR__ . '/images/4/thumbnail/mars-attack-df5e0630b435be5870ed71881f706df2_260.jpg', __DIR__ . '/../../../../web/uploads/images/post/4/mars-attack-df5e0630b435be5870ed71881f706df2_260.jpg');
-            copy(__DIR__ . '/images/4/thumbnail/mars-attack-df5e0630b435be5870ed71881f706df2_380.jpg', __DIR__ . '/../../../../web/uploads/images/post/4/mars-attack-df5e0630b435be5870ed71881f706df2_380.jpg');
-            copy(__DIR__ . '/images/4/thumbnail/mars-attack-df5e0630b435be5870ed71881f706df2_400.jpg', __DIR__ . '/../../../../web/uploads/images/post/4/mars-attack-df5e0630b435be5870ed71881f706df2_400.jpg');
+            @mkdir(__DIR__ . '/../../../../../../web/uploads/images/post/4');
+            @mkdir(__DIR__ . '/../../../../../../web/uploads/images/post/4/thumbnail');
+            copy(__DIR__ . '/images/4/mars-attack-df5e0630b435be5870ed71881f706df2.jpeg', __DIR__ . '/../../../../../../web/uploads/images/post/4/mars-attack-df5e0630b435be5870ed71881f706df2.jpeg');
+            copy(__DIR__ . '/images/4/thumbnail/mars-attack-df5e0630b435be5870ed71881f706df2_142.jpg', __DIR__ . '/../../../../../../web/uploads/images/post/4/thumbnail/mars-attack-df5e0630b435be5870ed71881f706df2_142.jpg');
+            copy(__DIR__ . '/images/4/thumbnail/mars-attack-df5e0630b435be5870ed71881f706df2_260.jpg', __DIR__ . '/../../../../../../web/uploads/images/post/4/thumbnail/mars-attack-df5e0630b435be5870ed71881f706df2_260.jpg');
+            copy(__DIR__ . '/images/4/thumbnail/mars-attack-df5e0630b435be5870ed71881f706df2_380.jpg', __DIR__ . '/../../../../../../web/uploads/images/post/4/thumbnail/mars-attack-df5e0630b435be5870ed71881f706df2_380.jpg');
+            copy(__DIR__ . '/images/4/thumbnail/mars-attack-df5e0630b435be5870ed71881f706df2_400.jpg', __DIR__ . '/../../../../../../web/uploads/images/post/4/thumbnail/mars-attack-df5e0630b435be5870ed71881f706df2_400.jpg');
             $image = new Image();
             $image->setPath('mars-attack-df5e0630b435be5870ed71881f706df2.jpeg');
             $this->getManager()->persist($image);
