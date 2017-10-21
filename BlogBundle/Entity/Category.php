@@ -251,7 +251,7 @@ class Category
      */
     public function addPosts(Post $post)
     {
-        $this->posts[] = $post;
+        $this->posts->add($post);
 
         return $this;
     }
