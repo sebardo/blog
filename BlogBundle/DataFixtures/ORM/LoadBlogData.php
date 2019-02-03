@@ -8,8 +8,8 @@ use BlogBundle\Entity\PostTranslation;
 use BlogBundle\Entity\Tag;
 use BlogBundle\Entity\Image;
 
-/*
- * php app/console doctrine:fixtures:load --fixtures=vendor/sebardo/core/BlogBundle/DataFixtures/ORM/LoadBlogData.php
+/**
+ * php app/console doctrine:fixtures:load --fixtures=vendor/sebardo/blog/BlogBundle/DataFixtures/ORM/LoadBlogData.php
  */
 class LoadBlogData extends SqlScriptFixture
 {

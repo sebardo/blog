@@ -8,7 +8,7 @@
             {% for category in get_blog_categories() %}
                 <li>
                     <a href="{{ path('blog_blog_category', {'category': category.slug }) }}">
-                        <i class="ion-ios-arrow-right"></i> {{ category.name }}({{ category.posts | length }})
+                        <i class="ion-ios-arrow-right"></i> {{ category.name }}({#{ category.posts | length }#})
                     </a>
                 </li>
             {% else %}
